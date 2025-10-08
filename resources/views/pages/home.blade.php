@@ -1,6 +1,6 @@
 @extends('templates.app')
 
-@section('title', 'Tentang Kami')
+@section('title', 'Home')
 
 @section('content')
 
