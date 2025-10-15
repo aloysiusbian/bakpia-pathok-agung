@@ -6,8 +6,8 @@
             </a>
 
             <div class="input-group flex-grow-1 mx-lg-5">
-                <input type="text" class="form-control rounded-pill border-0" placeholder="Bakpia Pathok?" aria-label="Search">
-                <span class="input-group-text bg-transparent border-0 position-absolute end-0" style="z-index: 1;">
+                <input class="form-control rounded-pill border-0" placeholder="Bakpia Pathok?" aria-label="Search"">
+                <span class="input-group-text bg-transparent border-0 position-absolute end-0" style="z-index: 1;" >
                     <i class="bi bi-search text-secondary"></i>
                 </span>
             </div>
