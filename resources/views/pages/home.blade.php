@@ -20,7 +20,7 @@
                     <div class="carousel-item active">
                         <img src="{{ asset('images/bakpiaa.png') }}" class="d-block w-100"
                             alt="Bakpia Pathok Agung">
-                    </div>
+                    </div>  
                     <div class="carousel-item">
                         <img src="{{ asset('images/bakpiaa.png') }}" class="d-block w-100" alt="Produk Wingko">
                     </div>
