@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="jumbotron-container bg-light-subtle py-5">
+    <div class="jumbotron-container py-5">
         <div class="container-fluid overflow-hidden" style="border-radius: 20px;">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
@@ -20,7 +20,7 @@
                     <div class="carousel-item active">
                         <img src="{{ asset('images/bakpiaa.png') }}" class="d-block w-100"
                             alt="Bakpia Pathok Agung">
-                    </div>
+                    </div>  
                     <div class="carousel-item">
                         <img src="{{ asset('images/bakpiaa.png') }}" class="d-block w-100" alt="Produk Wingko">
                     </div>

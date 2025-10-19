@@ -8,6 +8,12 @@
 
     <title>Bakpia Pathok Agung - @yield('title')</title>
 
+    {{-- Icon Webpage --}}
+    <link rel="icon" href="{{ asset('images/symbol.png') }}">
+
+    {{-- Font (opsional) --}}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     {{-- CSS Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -17,6 +23,48 @@
 
     {{-- File CSS Kustom Anda --}}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <style>
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+        }
+        .payment-box {
+      background-color: #f9f3e2;
+      border: 1px solid #d6c29e;
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 500px;
+      margin: 80px auto;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-box img.qris-logo {
+      width: 70px;
+      margin: 10px 0 20px;
+    }
+
+    .payment-box table {
+      margin: 20px auto;
+      text-align: left;
+      width: 80%;
+    }
+
+    .payment-box table td {
+      padding: 4px 0;
+    }
+
+    .payment-box .btn-status {
+      background-color: #000;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border: none;
+      cursor: default;
+    }
+    </style>
 
 </head>
 
