@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 col-md-6 mb-4">
-                <img src="{{ asset('images/image.png') }}" alt="Agung Logo" class="h-10 mb-3" height="50">
+                <img src="{{ asset('images/logo.png') }}" alt="Agung Logo" class="h-10 mb-3" height="50">
                 <p class="text-sm text-secondary">
                     Kami memiliki oleh oleh khas Yogyakarta dengan beragam macam jenis. Dari Bakpia hingga Wingko.
                 </p>
