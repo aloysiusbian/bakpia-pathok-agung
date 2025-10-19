@@ -42,4 +42,69 @@
             </div>
         </div>
     </div>
+    
+<main>
+    @php
+        $products = [
+            [
+                'id' => 1,
+                'nama' => 'Bakpia Durian',
+                'deskripsi' => 'Rasa durian legit dan lembut',
+                'harga' => 250000,
+                'stok' => 100,
+                'rating' => 4.9,
+                'gambar' => 'images/bakpiadurian.png',
+            ],
+            [
+                'id' => 2,
+                'nama' => 'Bakpia Coklat',
+                'deskripsi' => 'Rasa coklat manis lezat',
+                'harga' => 150000,
+                'stok' => 100,
+                'rating' => 4.5,
+                'gambar' => 'images/bakpiacoklat.png',
+            ],
+            [
+                'id' => 3,
+                'nama' => 'Bakpia Kacang Hijau',
+                'deskripsi' => 'Isi kacang hijau gurih dan manis',
+                'harga' => 99000,
+                'stok' => 120,
+                'rating' => 4.8,
+                'gambar' => 'images/bakpiakacanghijau.png',
+            ],
+            [
+                'id' => 4,
+                'nama' => 'Bakpia Keju',
+                'deskripsi' => 'Rasa keju lembut dan creamy',
+                'harga' => 99000,
+                'stok' => 90,
+                'rating' => 4.7,
+                'gambar' => 'images/bakpiakeju.png',
+            ],
+        ];
+    @endphp
+
+    <div class="container py-4">
+        <div class="products">
+            @forelse ($products as $product)
+                <div class="product-card">
+                    
+                    <img src="{{ !empty($product['gambar']) ? asset($product['gambar']) : 'https://via.placeholder.com/300x200/A0522D/FFFFFF?text=Bakpia' }}"
+                        alt="{{ $product['nama'] }}">
+
+                    <div class="product-info"> 
+                        <div class="product-name">{{ $product['nama'] }}</div>
+                        <div class="product-stock">Stok : {{ $product['stok'] }}</div>
+                        <div class="product-rating">Rating : {{ $product['rating'] }} ⭐</div>
+                        <div class="product-price">Rp{{ number_format($product['harga'], 0, ',', '.') }}</div>
+                    </div>
+                </div>
+            @empty
+                <p style="text-align: center; width: 100%;">Tidak ada produk yang ditampilkan.</p>
+            @endforelse
+        </div>
+    </div>
+</main>
 @endsection
+
