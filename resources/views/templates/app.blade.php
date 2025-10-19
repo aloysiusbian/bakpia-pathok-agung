@@ -28,6 +28,42 @@
         body {
             font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
         }
+        .payment-box {
+      background-color: #f9f3e2;
+      border: 1px solid #d6c29e;
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 500px;
+      margin: 80px auto;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-box img.qris-logo {
+      width: 70px;
+      margin: 10px 0 20px;
+    }
+
+    .payment-box table {
+      margin: 20px auto;
+      text-align: left;
+      width: 80%;
+    }
+
+    .payment-box table td {
+      padding: 4px 0;
+    }
+
+    .payment-box .btn-status {
+      background-color: #000;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin-top: 20px;
+      border: none;
+      cursor: default;
+    }
     </style>
 
 </head>
