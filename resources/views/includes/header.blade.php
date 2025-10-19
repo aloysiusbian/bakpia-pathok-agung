@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg bg-warning shadow-sm">
         <div class="container-fluid">
             <a class="navbar-brand" href="/home">
-                <img src="{{ asset('images/logo.png') }}" alt="Agung Logo" height="40">
+                <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
             </a>
 
             <div class="input-group flex-grow-1 mx-lg-5">
