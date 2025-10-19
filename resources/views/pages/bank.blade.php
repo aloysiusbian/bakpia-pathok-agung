@@ -22,7 +22,7 @@
     .bank-logo {
       display: block;
       margin: 0 auto 10px;
-      width: 160px; /* ukuran logo bank */
+      width: 300px; /* ukuran logo bank */
     }
 
     .account-number {
@@ -60,7 +60,7 @@
 </style>
 <div class="payment-box">
     <!-- Logo Bank -->
-    <img src="{{ asset('images/bank.png') }}" alt="Bank Transfer Logo" class="bank-logo" height="150">
+    <img src="{{ asset('images/bank2.png') }}" alt="Bank Transfer Logo" class="bank-logo" height="150">
 
     <!-- Nomor Rekening -->
     <div class="account-number">5314 1790 0008 223</div>

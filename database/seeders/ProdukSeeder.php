@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Produk;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -22,6 +23,7 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 15000.00,
                 'stok' => 60,
+                'gambar' => 'public/images/bakpiacoklat.png'
             ],
             [
                 'idProduk' => '2',
@@ -32,6 +34,7 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 10000.00,
                 'stok' => 30,
+                'gambar' => 'public/images/bakpiakacanghijau.png'
             ],
             [
                 'idProduk' => '3',
@@ -42,6 +45,7 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 10000.00,
                 'stok' => 30,
+                'gambar' => 'public/images/bakpiadurian.png'
             ],
         ]);
     }

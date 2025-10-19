@@ -6,10 +6,11 @@
 <style>
   body {
       background-color: #f9f3e2; /* warna krem lembut */
+
     }
 
     .payment-box {
-      background-color: #f9f3e2;
+      background-color: #ffffffff;
       border-radius: 10px;
       max-width: 600px;
       margin: 80px auto;
@@ -50,7 +51,7 @@
 
     <!-- QRIS Logo -->
     <div>
-      <img src="{{ asset('images/qris.png') }}" alt="Pembayaran 1" class="h-8" height="100">
+      <img src="{{ asset('images/qris2.png') }}" alt="Pembayaran 1" class="h-8" height="40">
     </div>
     <!-- Detail pembayaran -->
     <table>
