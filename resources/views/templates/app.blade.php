@@ -8,6 +8,12 @@
 
     <title>Bakpia Pathok Agung - @yield('title')</title>
 
+    {{-- Icon Webpage --}}
+    <link rel="icon" href="{{ asset('images/symbol.png') }}">
+
+    {{-- Font (opsional) --}}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
     {{-- CSS Bootstrap --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -17,6 +23,12 @@
 
     {{-- File CSS Kustom Anda --}}
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <style>
+        body {
+            font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+        }
+    </style>
 
 </head>
 

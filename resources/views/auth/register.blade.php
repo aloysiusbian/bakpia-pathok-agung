@@ -7,15 +7,9 @@
   <div class="py-10 lg:py-16">
     {{-- Logo + Brand --}}
     <div class="mb-10 flex items-center gap-3">
-      <img src="{{ asset('images/image.png') }}" class="h-50 w-60 rounded" alt="Agung">
+      <img src="{{ asset('image/logo.png') }}" class="h-50 w-60 rounded" alt="Agung">
       <span class="text-3xl font-semibold"></span>
     </div>
-
-    <h1 class="text-4xl font-semibold mb-2">Sign up</h1>
-    <p class="text-slate-600 mb-8">
-      If you already have an account, you can
-      <a href="{{ route('login') }}" class="text-blue-700 font-semibold underline underline-offset-2">Login here!</a>
-    </p>
 
     {{-- Ringkasan error --}}
     @if ($errors->any())
@@ -69,6 +63,7 @@
           required>
       </div>
       @error('email') <p class="text-red-600 text-sm mt-1">{{ $message }}</p> @enderror
+      
 
       {{-- Password --}}
       <label for="password" class="block text-sm text-slate-600 mt-6 mb-1">Password</label>
@@ -120,7 +115,7 @@
   <div class="hidden lg:block">
     <div class="rounded-2xl overflow-hidden border border-black/10 shadow-md h-full">
       <div class="relative h-full min-h-[560px]">
-        <img src="{{ asset('images/Bakpia.png') }}" alt="Bakpia Agung" class="object-cover w-full h-full">
+        <img src="{{ asset('images/image.png') }}" alt="Bakpia Agung" class="object-cover w-full h-full">
         <div class="absolute top-4 right-5 text-white/90 text-sm flex items-center gap-2">
           {{-- phone icon --}}
           <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="currentColor">
