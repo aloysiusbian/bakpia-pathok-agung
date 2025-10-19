@@ -20,6 +20,7 @@ return new class extends Migration
             $table->decimal('rating', 2, 1);
             $table->double('harga', 10, 2);
             $table->integer('stok');
+            $table->text('gambar');
         });
     }
 
