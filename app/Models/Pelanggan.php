@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Notifications\Notifiable;
 
-class Pelanggan extends Model
+class Pelanggan extends Authenticatable 
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table = 'pelanggan';
     protected $primaryKey = 'idPelanggan';
@@ -20,8 +21,19 @@ class Pelanggan extends Model
     ];
     public $incrementing = true; // Mengaktifkan auto-increment karena primary key adalah integer
 
+    protected $hidden = [
+        'password',
+        'remember_token', 
+    ];
+
+    protected $casts = [
+        'password' => 'hashed', 
+    ];
+
     public function pemesananOnline()
     {
         return $this->hasMany(PemesananOnline::class, 'idPelanggan', 'idPelanggan');
     }
+
+   
 }
