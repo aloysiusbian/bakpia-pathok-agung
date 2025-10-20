@@ -11,12 +11,10 @@
         color: #374151; 
     }
 
-    
     .page-container {
         padding-top: 3rem;
         padding-bottom: 3rem;
     }
-
     
     .checkout-container {
         width: 100%;
