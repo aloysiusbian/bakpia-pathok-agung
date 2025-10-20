@@ -10,7 +10,6 @@ use App\Http\Controllers\keranjangController;
 // });
 
 Route::get('/', [ProdukController::class, 'index'])->name('pages.home');
-<<<<<<< HEAD
 
 Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name('produk.show');
 
@@ -40,10 +39,3 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
-=======
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('pages.dashboard');
-
-// Route::get('/dashboard', function () {
-//     return view('pages.dashboard');
-// });
->>>>>>> b95c6a024161e4053913624caba93f74c0b08fb0
