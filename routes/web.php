@@ -39,3 +39,10 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('pages.dashboard');
+
+Route::get('/keranjang', function () {
+    return view('pages.keranjang');
+});
+
