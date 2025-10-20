@@ -16,4 +16,17 @@ class Keranjang extends Model
         'idProduk',
         'totalNota',
     ];
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'idProduk', 'idProduk');
+    }
+
+    /**
+     * Definisikan relasi: setiap item keranjang dimiliki oleh satu User.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'idPelanggan');
+    }
 }
