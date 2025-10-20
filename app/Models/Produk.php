@@ -23,6 +23,7 @@ class Produk extends Model
         'rating',
         'harga',
         'stok',
+        'gambar',
     ];
 
     public function detailTransaksiOffline()

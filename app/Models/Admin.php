@@ -16,5 +16,6 @@ class Admin extends Model
         'username',
         'password',
         'email',
+        'image',
     ];
 }

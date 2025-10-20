@@ -1,6 +1,7 @@
-  <!-- resources/views/admin/dashboard.blade.php -->
+<!-- resources/views/admin/dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,11 +26,15 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      box-shadow: 0 0 6px rgba(0,0,0,0.2);
+      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
       transition: all 0.3s ease;
       padding: 10px 0;
     }
-    .sidebar.collapsed { width: 80px; }
+
+    .sidebar.collapsed {
+      width: 80px;
+    }
+
     .sidebar .logo {
       display: flex;
       align-items: center;
@@ -37,19 +42,29 @@
       gap: 10px;
       margin-bottom: 15px;
     }
-    .sidebar .logo img { width: 45px; }
-    .sidebar .logo h5 { margin: 0; font-weight: 700; color: #3a2d1a; }
+
+    .sidebar .logo img {
+      align-self;: center
+    }
+
+    .sidebar .logo h5 {
+      margin: 0;
+      font-weight: 700;
+      color: #3a2d1a;
+    }
 
     .sidebar .profile {
       text-align: center;
       margin-bottom: 20px;
     }
+
     .sidebar .profile img {
       width: 60px;
       height: 60px;
       border-radius: 50%;
       object-fit: cover;
     }
+
     .sidebar .profile h6 {
       margin-top: 8px;
       font-weight: 600;
@@ -73,7 +88,9 @@
       padding: 8px 12px;
       transition: all 0.2s;
     }
-    .sidebar .nav-link:hover, .sidebar .nav-link.active {
+
+    .sidebar .nav-link:hover,
+    .sidebar .nav-link.active {
       background-color: #d1b673;
       color: #000;
       font-weight: 600;
@@ -86,6 +103,7 @@
       color: #3a2d1a;
       font-weight: 600;
     }
+
     .offline-btn i {
       margin-right: 5px;
     }
@@ -97,7 +115,11 @@
       margin-left: 260px;
       transition: all 0.3s;
     }
-    .navbar.collapsed { margin-left: 80px; }
+
+    .navbar.collapsed {
+      margin-left: 80px;
+    }
+
     .navbar input {
       border-radius: 25px;
       border: none;
@@ -110,35 +132,40 @@
       padding: 30px;
       transition: all 0.3s;
     }
-    .content.collapsed { margin-left: 80px; }
+
+    .content.collapsed {
+      margin-left: 80px;
+    }
 
     .card {
       border: none;
       border-radius: 12px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     }
+
     .card i {
       display: inline-block;
       margin-bottom: 10px;
       border-radius: 10px;
       padding: 10px;
     }
+
     .card small {
       font-size: 0.85rem;
     }
   </style>
 </head>
+
 <body>
 
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div>
-      <div class="logo">
-        <img src="{{ asset('logo.png') }}" alt="Logo">
-        <h5>Agung</h5>
-      </div>
+      <a class="logo" href="/">
+        <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
+      </a>
       <div class="profile">
-        <img src="{{ asset('profile.jpg') }}" alt="Admin">
+        <img src="{{ asset('images/bian.png') }}" alt="Admin">
         <h6>Alberto Sahara</h6>
       </div>
 
@@ -209,4 +236,5 @@
     });
   </script>
 </body>
+
 </html>
