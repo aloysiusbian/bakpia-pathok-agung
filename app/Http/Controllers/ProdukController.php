@@ -13,7 +13,20 @@ class ProdukController extends Controller
         $products = [
             'products'    => Produk::orderBy('idProduk', 'DESC')->get()
         ];
-
         return view('pages.home', $products);
+    }
+   
+    public function detailProduk(Produk $produk)
+    {
+        $produksLainnya = Produk::where('idProduk', '!=', $produk->idProduk)
+                                  ->inRandomOrder() // Tampilkan secara acak
+                                  ->take(4)         // Ambil 4 produk saja
+                                  ->get();
+
+        // Kirim data produk yang dipilih dan produk lainnya ke view 'pages.detail'
+        return view('pages.detail_produk', [
+            'produk' => $produk,
+            'produksLainnya' => $produksLainnya
+        ]);
     }
 }
