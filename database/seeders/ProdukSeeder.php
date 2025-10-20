@@ -23,7 +23,7 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 15000.00,
                 'stok' => 60,
-                'gambar' => 'public/images/bakpiacoklat.png'
+                'gambar' => 'bakpiacoklat.png'
             ],
             [
                 'idProduk' => '2',
@@ -34,7 +34,7 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 10000.00,
                 'stok' => 30,
-                'gambar' => 'public/images/bakpiakacanghijau.png'
+                'gambar' => 'bakpiakacanghijau.png'
             ],
             [
                 'idProduk' => '3',
@@ -45,7 +45,18 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 10000.00,
                 'stok' => 30,
-                'gambar' => 'public/images/bakpiadurian.png'
+                'gambar' => 'bakpiadurian.png'
+            ],
+            [
+                'idProduk' => '4',
+                'namaProduk' => 'Bakpia Keju',
+                'deskripsiProduk' => 'Bakpia Keju adalah kue khas Yogyakarta berbentuk bulat pipih dengan kulit lembut dan sedikit renyah, berisi selai keju yang gurih, legit, dan harum khas keju. Setiap gigitan menghadirkan perpaduan rasa gurih kulit bakpia dan kelezatan selai keju yang creamy, menjadikannya pilihan istimewa bagi pecinta keju maupun penikmat camilan tradisional.',
+                'pilihanJenis' => '5',
+                'kategori' => 'Bakpia',
+                'rating' => 4.0,
+                'harga' => 15000.00,
+                'stok' => 35,
+                'gambar' => 'bakpiakeju.png'
             ],
         ]);
     }
