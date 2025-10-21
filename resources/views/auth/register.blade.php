@@ -7,7 +7,7 @@
   <div class="py-10 lg:py-16">
     {{-- Logo + Brand --}}
     <div class="mb-10 flex items-center gap-3">
-      <img src="{{ asset('image/logo.png') }}" class="h-50 w-60 rounded" alt="Agung">
+      <img src="{{ asset('images/logo.png') }}" class="h-50 w-60 rounded" alt="Agung">
       <span class="text-3xl font-semibold"></span>
     </div>
 
