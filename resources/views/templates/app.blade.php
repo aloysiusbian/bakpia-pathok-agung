@@ -2,33 +2,34 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Bakpia Pathok Agung - @yield('title')</title>
+  <title>Bakpia Pathok Agung - @yield('title')</title>
 
-    {{-- Icon Webpage --}}
-    <link rel="icon" href="{{ asset('images/symbol.png') }}">
+  {{-- Icon Webpage --}}
+  <link rel="icon" href="{{ asset('images/symbol.png') }}">
 
-    {{-- Font (opsional) --}}
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  {{-- Font (opsional) --}}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-    {{-- CSS Bootstrap --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  {{-- CSS Bootstrap --}}
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
-    {{-- Bootstrap Icons --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  {{-- Bootstrap Icons --}}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    {{-- File CSS Kustom Anda --}}
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  {{-- File CSS Kustom Anda --}}
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-    <style>
-        body {
-            font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
-        }
-        .payment-box {
+  <style>
+    body {
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+    }
+
+    .payment-box {
       background-color: #f9f3e2;
       border: 1px solid #d6c29e;
       border-radius: 10px;
@@ -64,27 +65,40 @@
       border: none;
       cursor: default;
     }
-    </style>
+
+    /* {{-- Menambahkan beberapa style untuk link produk dan hover effect --}} */
+    .product-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .product-link:hover .product-card {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-<div class="flex-grow-1">
+  <div class="flex-grow-1">
 
     @include('includes.header')
 
     <div class="container bg-cream-custom">
-        @yield('content')
+      @yield('content')
     </div>
 
-</div>
+  </div>
 
-@include('includes.footer')
+  @include('includes.footer')
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
 
 </body>
 
