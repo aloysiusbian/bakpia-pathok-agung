@@ -16,17 +16,33 @@ class Keranjang extends Model
         'idProduk',
         'totalNota',
     ];
+    public function tambahKeKeranjang($data)
+{
+    // Cek apakah produk sudah ada di keranjang
+    $existing = $this->where('idProduk', $data['idProduk'])->first();
 
-    public function produk()
+    if ($existing) {
+        // Update jumlah dan total
+        $data['jumlah_barang'] += $existing->jumlah_barang;
+        $data['total_harga'] += $existing->total_harga;
+        return $this->update($existing->idPemesanan, $data);
+    } else {
+        // Tambah baru
+        return $this->insert($data);
+    }
+}
+
+    public function getKeranjang()
     {
-        return $this->belongsTo(Produk::class, 'idProduk', 'idProduk');
+        return $this->findAll();
+    }
+    public function hapusDariKeranjang($nomorPemesanan)
+    {
+        return $this->delete($nomorPemesanan);
     }
 
-    /**
-     * Definisikan relasi: setiap item keranjang dimiliki oleh satu User.
-     */
-    public function user()
+    public function hapusKeranjang()
     {
-        return $this->belongsTo(User::class, 'idPelanggan');
+        return $this->emptyTable();
     }
 }
