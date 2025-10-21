@@ -25,9 +25,36 @@
 
 {{-- Cek apakah user sudah login (Authenticated) --}}
 @auth
-    <a href="{{ route('dashboard') }}" class="text-dark fs-4">
-        <i class="bi bi-person"></i>
-    </a>
+    {{-- Dropdown Container --}}
+    <div class="dropdown">
+        {{-- Tombol Dropdown (Ikon Profil) --}}
+        <a href="#" class="text-dark fs-4 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false"></a>
+
+        {{-- Menu Dropdown --}}
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+            {{-- 1. Link ke Profil Akun --}}
+            <li>
+                {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
+                <a class="dropdown-item" href="#" title="Halaman Profil Belum Dibuat">
+                    <i class="bi bi-person"></i> Profil Akun
+                </a>
+            </li>
+
+            <li><hr class="dropdown-divider"></li>
+
+            {{-- 2. Link untuk Logout --}}
+            <li>
+                {{-- Form untuk Logout (Wajib untuk Laravel) --}}
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+                <a class="dropdown-item" href="{{ route('logout') }}"
+                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
 @endauth
             </div>
         </div>
