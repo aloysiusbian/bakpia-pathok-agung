@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Pelanggan;
+use App\Models\Admin; // ✅ 1. Import model Admin
 
 class LoginController extends Controller
 {
@@ -19,7 +20,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Proses login pelanggan
+     * Proses login (Admin atau Pelanggan)
      */
     public function login(Request $request)
     {
@@ -29,21 +30,34 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        // 🔎 Cari pelanggan berdasarkan email
-        $pelanggan = Pelanggan::where('email', $request->email)->first();
+        $credentials = $request->only('email', 'password');
 
-        // ✅ Verifikasi password
-        if ($pelanggan && Hash::check($request->password, $pelanggan->password)) {
-            Auth::login($pelanggan);
-
+        // ✅ 2. Coba login sebagai ADMIN terlebih dahulu
+        // Kita gunakan Auth::guard('admin')->attempt()
+        // 'attempt' sudah otomatis melakukan Hash::check
+        if (Auth::guard('admin')->attempt($credentials)) {
+            
             // Regenerasi sesi untuk keamanan
             $request->session()->regenerate();
 
-            // 🔁 Redirect ke dashboard
+            // 🔁 Redirect ke dashboard ADMIN
+            // Pastikan Anda punya route bernama 'admin.dashboard'
+            return redirect()->route('admin.dashboard')->with('success', 'Login admin berhasil!');
+        }
+
+        // ⚠️ 3. Jika login admin GAGAL, coba login sebagai PELANGGAN
+        // Kita gunakan Auth::guard('web')->attempt() atau Auth::attempt() (karena 'web' adalah default)
+        else if (Auth::guard('web')->attempt($credentials)) {
+            
+            // Regenerasi sesi untuk keamanan
+            $request->session()->regenerate();
+
+            // 🔁 Redirect ke dashboard PELANGGAN
             return redirect()->route('pages.home')->with('success', 'Login berhasil!');
         }
 
-        // ❌ Jika gagal
+
+        // ❌ 4. Jika KEDUANYA gagal
         return back()->withErrors(['email' => 'Email atau password salah.'])->withInput();
     }
 }

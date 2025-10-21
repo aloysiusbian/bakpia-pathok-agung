@@ -14,8 +14,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => 'web', // 'web' tetap jadi default (untuk pelanggan)
+        'passwords' => 'users',
     ],
 
     /*
@@ -36,9 +36,15 @@ return [
     */
 
     'guards' => [
-        'web' => [
+        'web' => [ // Ini untuk Pelanggan (pengunjung web)
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'pelanggan', // 🛑 Ganti dari 'users' ke 'pelanggan'
+        ],
+
+        // ✅ Tambahkan guard baru untuk Admin
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
         ],
     ],
 
@@ -60,15 +66,17 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        // 🛑 Ubah nama 'users' menjadi 'pelanggan' agar jelas
+        'pelanggan' => [ 
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\Pelanggan::class),
+            'model' => App\Models\Pelanggan::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        // ✅ Tambahkan provider baru untuk model Admin
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
     ],
 
     /*
@@ -91,9 +99,10 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
-            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+        // 🛑 Sesuaikan provider ini jika perlu (misal, jadi 'pelanggan')
+        'users' => [ 
+            'provider' => 'pelanggan', // Ganti ke 'pelanggan'
+            'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
         ],
