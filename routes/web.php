@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\keranjangController;
 
@@ -10,7 +13,6 @@ use App\Http\Controllers\keranjangController;
 // });
 
 Route::get('/', [ProdukController::class, 'index'])->name('pages.home');
-<<<<<<< HEAD
 
 Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name('produk.show');
 
@@ -40,16 +42,3 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
-=======
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('pages.dashboard');
-
-<<<<<<< HEAD
-Route::get('/keranjang', function () {
-    return view('pages.keranjang');
-});
-=======
-// Route::get('/dashboard', function () {
-//     return view('pages.dashboard');
-// });
->>>>>>> b95c6a024161e4053913624caba93f74c0b08fb0
->>>>>>> 259a5a36b30c0a92ea875a950ef67e6822fd850e

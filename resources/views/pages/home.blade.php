@@ -4,21 +4,6 @@
 
 @section('content')
 
-    {{-- Menambahkan beberapa style untuk link produk dan hover effect --}}
-    <style>
-        .product-link {
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .product-link:hover .product-card {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-    </style>
-
     <div class="jumbotron-container py-5">
         <div class="container-fluid overflow-hidden" style="border-radius: 20px;">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
