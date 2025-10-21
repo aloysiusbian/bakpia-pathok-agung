@@ -62,7 +62,6 @@ class KeranjangController extends Controller
 
     public function tampilKeranjang()
     {
-        $data['items'] = $this->Keranjang->getKeranjang();
-        return view('pages.keranjang', $data);
+        return view('pages.keranjang');
     }
 }
