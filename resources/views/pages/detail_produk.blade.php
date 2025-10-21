@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <!-- KOLOM KANAN (Pembelian Barang Interaktif) -->
+        
         <div class="col-lg-4">
             <div class="sticky-purchase">
                 <form action="{{ route('keranjang.store') }}" method="POST">
@@ -73,7 +73,7 @@
                         <div class="d-flex justify-content-between align-items-center my-2">
                             <div class="input-group" style="width: 130px;">
                                 <button class="btn btn-outline-dark" type="button" id="btn-minus">-</button>
-                                <input type="text" name="kuantitas" class="form-control text-center" value="1" id="kuantitas-input" readonly>
+                                <input type="text" name="jumlahBarang" class="form-control text-center" value="1" id="kuantitas-input" readonly>
                                 <button class="btn btn-outline-dark" type="button" id="btn-plus">+</button>
                             </div>
                             <span>Stok: <strong id="stok-display">{{ $produk->stok }}</strong></span>
