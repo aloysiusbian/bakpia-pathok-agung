@@ -38,6 +38,6 @@ class RegisterController extends Controller
         Auth::login($pelanggan);
 
         // Redirect ke dashboard
-        return redirect()->route('home')->with('success', 'Registrasi berhasil! Selamat datang.');
+        return redirect()->route('pages.home')->with('success', 'Registrasi berhasil! Selamat datang.');
     }
 }
