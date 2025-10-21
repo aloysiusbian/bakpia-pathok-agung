@@ -44,6 +44,10 @@ Route::middleware('guest')->group(function () {
 <<<<<<< HEAD
 <<< HEAD
 });
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 80db7f74c0a9b05b010abdb00b1053e4275a15de
 =======
 });
 
@@ -53,8 +57,21 @@ Route::get('/keranjang', function () {
     return view('pages.keranjang');
 });
 
+<<<<<<< HEAD
 >>>>>>> 29e06b4592f9e80444f67efc1fecf84a16a03f86
 >>>>>>> 353dc9fd287e4886aa2d364f7082d80783690101
 =======
 });
 >>>>>>> refs/remotes/origin/main
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> 06e67e3584936a04978511c32fffe93a2f295973
+>>>>>>> 29e06b4592f9e80444f67efc1fecf84a16a03f86
+>>>>>>> 353dc9fd287e4886aa2d364f7082d80783690101
+>>>>>>> 53e92f3059aa332425f59f6456b68bdeacaaca32
+=======
+>>>>>>> 1c09094a40ad6abff4fdb80d3e31e3d1154d8c5e
+>>>>>>> 80db7f74c0a9b05b010abdb00b1053e4275a15de

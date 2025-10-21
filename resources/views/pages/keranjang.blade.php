@@ -1,41 +1,8 @@
-{{-- resources/views/cart.blade.php --}}
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bakpia Pathok Agung - Keranjang</title>
+@extends('templates.app')
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-</head>
-<body class="d-flex flex-column min-vh-100">
+@section('title', 'keranjang')
 
-  {{-- HEADER --}}
-  <header>
-    <nav class="navbar navbar-expand-lg bg-warning shadow-sm">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img src="{{ asset('images/logo.png') }}" alt="Agung Logo" height="40">
-        </a>
-
-        <div class="input-group flex-grow-1 mx-lg-5 position-relative">
-          <input type="text" class="form-control rounded-pill border-0 ps-4 pe-5" placeholder="Cari di sini" aria-label="Search">
-          <span class="position-absolute end-0 top-50 translate-middle-y pe-3 text-secondary">
-            <i class="bi bi-search"></i>
-          </span>
-        </div>
-
-        <div class="d-flex align-items-center gap-3 ms-lg-auto">
-          <a href="#" class="text-dark fs-4" title="Akun">
-            <i class="bi bi-person"></i>
-          </a>
-        </div>
-      </div>
-    </nav>
-  </header>
+@section('content')
 
   {{-- KONTEN --}}
   <main class="flex-grow-1">
@@ -284,8 +251,4 @@
     });
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-          crossorigin="anonymous"></script>
-</body>
-</html>
+@endsection
