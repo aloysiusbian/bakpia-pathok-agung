@@ -171,13 +171,13 @@
 
       <div class="menu px-2">
         <p class="nav-section-title">Dashboard</p>
-        <a href="#" class="nav-link active"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+        <a href="/admin/dashboard" class="nav-link active"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
         <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
 
         <p class="nav-section-title mt-3">Pages</p>
         <a href="#" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan</span></a>
         <a href="#" class="nav-link"><i class="bi bi-people-fill"></i> <span>Data Users</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Produk</span></a>
+        <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Tambah Produk</span></a>
       </div>
     </div>
 

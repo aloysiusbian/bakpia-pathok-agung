@@ -93,3 +93,6 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
+// routes/web.php atau routes/admin.php 
+Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
+Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store'); 
