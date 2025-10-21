@@ -20,7 +20,7 @@ Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name(
 Route::middleware('auth')->group(function () {
     // Route untuk menambahkan item ke keranjang
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
-    
+
     // Route untuk logout
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
@@ -42,6 +42,7 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
+<<<<<<< HEAD
 =======
 });
 
@@ -59,3 +60,5 @@ Route::get('/keranjang', function () {
 >>>>>>> 29e06b4592f9e80444f67efc1fecf84a16a03f86
 >>>>>>> 353dc9fd287e4886aa2d364f7082d80783690101
 >>>>>>> 53e92f3059aa332425f59f6456b68bdeacaaca32
+=======
+>>>>>>> 1c09094a40ad6abff4fdb80d3e31e3d1154d8c5e
