@@ -2,15 +2,16 @@
 @section('title', 'Login')
 
 @section('content')
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-    {{-- Kiri: Form --}}
-    <div class="py-10 lg:py-16">
-      {{-- Logo + Brand --}}
-      <div class="mb-10 flex items-center gap-3">
+ <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+  {{-- Kiri: Form --}}
+  <div class="py-10 lg:py-16">
+    {{-- Logo + Brand --}}
+    <a href="/" class="text-decoration-none">
+    <div class="mb-10 flex items-center gap-3">
         <img src="{{ asset('images/logo.png') }}" class="h-50 w-60 rounded" alt="Agung">
         <span class="text-3xl font-semibold"></span>
-      </div>
-
+    </div>
+</a>
       {{-- Judul dan link register --}}
       <h1 class="text-4xl font-extrabold mb-2">Login</h1>
       <p class="text-slate-600 mb-6">
