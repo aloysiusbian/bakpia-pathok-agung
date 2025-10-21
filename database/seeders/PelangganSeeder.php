@@ -16,7 +16,7 @@ class PelangganSeeder extends Seeder
         DB::table('pelanggan')->insert([
             'idPelanggan' => DB::raw('UUID()'),
             'password' => Hash::make('4444'),
-            'email' => 'albertokontol@gmail.com',
+            'email' => 'alberto@gmail.com',
             'alamat' => 'jalan kanigoro, kost rafi, paingan, Depok, Sleman, Yogyakarta',
             'noTelp' => '6282289183719',
         ]);
