@@ -17,6 +17,7 @@ Route::get('/', [ProdukController::class, 'index'])->name('pages.home');
 Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name('produk.show');
 
 
+
 Route::middleware('auth')->group(function () {
     // Route untuk menambahkan item ke keranjang
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
