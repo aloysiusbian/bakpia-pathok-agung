@@ -20,7 +20,7 @@ Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name(
 Route::middleware('auth')->group(function () {
     // Route untuk menambahkan item ke keranjang
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
-
+    
     // Route untuk logout
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
