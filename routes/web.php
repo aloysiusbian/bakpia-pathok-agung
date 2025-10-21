@@ -41,4 +41,18 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
+<<<<<<< HEAD
 });
+=======
+});
+<<<<<<< HEAD
+=======
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('pages.dashboard');
+
+Route::get('/keranjang', function () {
+    return view('pages.keranjang');
+});
+
+>>>>>>> 06e67e3584936a04978511c32fffe93a2f295973
+>>>>>>> 29e06b4592f9e80444f67efc1fecf84a16a03f86
