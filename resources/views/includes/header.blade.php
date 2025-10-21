@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg bg-warning shadow-sm">
         <div class="container-fluid">
-            <a class="navbar-brand" href="/home">
+            <a class="navbar-brand" href="/">
                 <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
             </a>
 
@@ -13,7 +13,7 @@
             </div>
 
             <div class="d-flex align-items-center gap-3 ms-lg-auto">
-                <a href="#" class="text-dark fs-4">
+                <a href="/keranjang" class="text-dark fs-4">
                     <i class="bi bi-cart"></i>
                 </a>
                 <a href="#" class="text-dark fs-4">
