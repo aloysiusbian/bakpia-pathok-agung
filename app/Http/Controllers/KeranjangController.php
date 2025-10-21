@@ -59,4 +59,10 @@ class KeranjangController extends Controller
         // 4. Redirect kembali dengan pesan sukses
         return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
+
+    public function tampilKeranjang()
+    {
+        $data['items'] = $this->Keranjang->getKeranjang();
+        return view('pages.keranjang', $data);
+    }
 }
