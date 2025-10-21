@@ -40,7 +40,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             // 🔁 Redirect ke dashboard
-            return redirect()->route('dashboard')->with('success', 'Login berhasil!');
+            return redirect()->route('pages.home')->with('success', 'Login berhasil!');
         }
 
         // ❌ Jika gagal
