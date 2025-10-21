@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('keranjang', function (Blueprint $table) {
             $table->uuid('nomorPemesanan')->constrained('pemesananonline', 'nomorPemesanan')->cascadeOnDelete()->cascadeOnUpdate();;
-            $table->foreignId('idProduk', 7);
+            $table->foreignId('idProduk', 7)->constrained('produk', 'idProduk')->cascadeOnDelete()->cascadeOnUpdate();;
             $table->double('totalNota', 10, 2);
         });
     }
