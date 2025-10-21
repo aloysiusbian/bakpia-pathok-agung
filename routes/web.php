@@ -6,7 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\keranjangController;
+use App\Http\Controllers\KeranjangController;
 
 // Route::get('/', function () {
 //     return view('pages.home');
@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
     
     // Route untuk logout
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+    Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
     // Anda bisa menambahkan route lain yang butuh login di sini, contohnya:
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang.index');
