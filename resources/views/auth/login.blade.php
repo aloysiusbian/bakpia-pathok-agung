@@ -76,7 +76,7 @@
       </form>
     </div>
 
-    {{-- Kanan: Gambar --}}
+    {{-- Kanan: Gambarr --}}
     <div class="hidden lg:block">
       <div class="rounded-2xl overflow-hidden border border-black/10 shadow-md h-full">
         <div class="relative h-full min-h-[560px]">
