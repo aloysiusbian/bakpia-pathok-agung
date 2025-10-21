@@ -41,5 +41,9 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
+<<<<<<< HEAD
 });
 
+=======
+});
+>>>>>>> refs/remotes/origin/main
