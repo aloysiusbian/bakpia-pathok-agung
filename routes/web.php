@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\keranjangController;
 
@@ -38,6 +41,9 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
+<<<<<<< HEAD
+});
+=======
 });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('pages.dashboard');
@@ -46,3 +52,8 @@ Route::get('/keranjang', function () {
     return view('pages.keranjang');
 });
 
+<<<<<<< HEAD
+=======
+>>>>>>> 06e67e3584936a04978511c32fffe93a2f295973
+>>>>>>> 29e06b4592f9e80444f67efc1fecf84a16a03f86
+>>>>>>> 353dc9fd287e4886aa2d364f7082d80783690101
