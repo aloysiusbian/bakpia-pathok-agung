@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('pelanggan', function (Blueprint $table) {
             $table->uuid('idPelanggan')->primary()->default(DB::raw('UUID()'));
-            $table->string('password', 15);
+            $table->string('password');
             $table->string('email', 20);
             $table->text('alamat');
             $table->string('noTelp');
