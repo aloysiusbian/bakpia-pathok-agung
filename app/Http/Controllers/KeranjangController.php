@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Produk;
+use App\Models\Keranjang;
 use App\Models\DetailTransaksiOnline; // <-- GANTI: Gunakan model Keranjang dari database
 use Illuminate\Support\Facades\Auth; // <-- BARU: Diperlukan untuk mendapatkan info user yang login
 
