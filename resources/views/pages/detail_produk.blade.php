@@ -87,7 +87,7 @@
                         </div>
 
                         <div class="d-grid gap-2 mt-3">
-                            <button type="submit" onclick="event.preventDefault(); alert('Produk sudah ditambahkan. 🙏');" class="btn btn-warning fw-bold">+ Keranjang</button>
+                            <button type="submit" class="btn btn-warning fw-bold">+ Keranjang</button>
                             <button type="button" class="btn btn-outline-dark">Beli Sekarang</button>
                         </div>
                     </div>
