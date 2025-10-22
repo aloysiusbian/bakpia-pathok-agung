@@ -15,12 +15,12 @@
             </div>
 
             <div class="col-lg-2 col-md-6 mb-4">
-                <h5 class="fw-bold">COMPANY</h5>
+                <h5 class="fw-bold">Store</h5>
                 <ul class="list-unstyled text-sm">
                     <li><a href="#" class="text-secondary text-decoration-none">About</a></li>
-                    <li><a href="#" class="text-secondary text-decoration-none">Features</a></li>
-                    <li><a href="#" class="text-secondary text-decoration-none">Works</a></li>
-                    <li><a href="#" class="text-secondary text-decoration-none">Career</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
                 </ul>
             </div>
 
@@ -47,10 +47,10 @@
             <div class="col-lg-3 col-md-6 mb-4">
                 <h5 class="fw-bold">RESOURCES</h5>
                 <ul class="list-unstyled text-sm">
-                    <li><a href="#" class="text-secondary text-decoration-none">Free eBooks</a></li>
-                    <li><a href="#" class="text-secondary text-decoration-none">Development Tutorial</a></li>
-                    <li><a href="#" class="text-secondary text-decoration-none">How to - Blog</a></li>
-                    <li><a href="#" class="text-secondary text-decoration-none">Youtube Playlist</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none">--------</a></li>
                 </ul>
             </div>
         </div>

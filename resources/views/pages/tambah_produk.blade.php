@@ -2,14 +2,14 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin | Tambah Produk</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        /* SALIN SEMUA CSS DARI DASHBOARD.BLADE.PHP ANDA DI SINI */
-        /* Pastikan semua style .sidebar, .navbar, .content disalin */
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | Tambah Produk</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    /* SALIN SEMUA CSS DARI DASHBOARD.BLADE.PHP ANDA DI SINI */
+    /* Pastikan semua style .sidebar, .navbar, .content disalin */
 
     /* SIDEBAR */
     .sidebar {
@@ -40,7 +40,8 @@
     }
 
     .sidebar .logo img {
-      align-self;: center
+      align-self;
+      : center
     }
 
     .sidebar .logo h5 {
@@ -149,11 +150,12 @@
     .card small {
       font-size: 0.85rem;
     }
-        .form-control:focus {
-            border-color: #d1b673;
-            box-shadow: 0 0 0 0.25rem rgba(209, 182, 115, 0.4); 
-        }
-    </style>
+
+    .form-control:focus {
+      border-color: #d1b673;
+      box-shadow: 0 0 0 0.25rem rgba(209, 182, 115, 0.4);
+    }
+  </style>
 </head>
 
 <body>
@@ -193,81 +195,83 @@
     <i class="bi bi-person-circle fs-4"></i>
   </nav>
 
-    <div class="content" id="content">
-        <h1 class="h3 fw-bold mb-4">Tambah Produk Baru</h1>
+  <div class="content" id="content">
+    <h1 class="h3 fw-bold mb-4">Tambah Produk Baru</h1>
 
-        <div class="card p-4">
-            {{-- Form akan dikirimkan ke controller untuk menyimpan produk --}}
-            <<form action="/admin/produk" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="row g-4">
-                    
-                    {{-- Nama Produk --}}
-                    <div class="col-md-6">
-                        <label for="nama_produk" class="form-label fw-bold">Nama Produk</label>
-                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                    </div>
+    <div class="card p-4">
+      {{-- Form akan dikirimkan ke controller untuk menyimpan produk --}}
+        <form action="/admin/produk" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="row g-4">
 
-                    {{-- Harga --}}
-                    <div class="col-md-6">
-                        <label for="harga" class="form-label fw-bold">Harga (Rp)</label>
-                        <input type="number" class="form-control" id="harga" name="harga" required min="0">
-                    </div>
+          {{-- Nama Produk --}}
+          <div class="col-md-6">
+            <label for="nama_produk" class="form-label fw-bold">Nama Produk</label>
+            <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
+          </div>
 
-                    {{-- Stok --}}
-                    <div class="col-md-6">
-                        <label for="stok" class="form-label fw-bold">Stok Tersedia</label>
-                        <input type="number" class="form-control" id="stok" name="stok" required min="0">
-                    </div>
-                    
-                    {{-- Rating Default (Opsional) --}}
-                    <div class="col-md-6">
-                        <label for="rating" class="form-label fw-bold">Rating (Default)</label>
-                        <input type="number" class="form-control" id="rating" name="rating" step="0.1" min="0" max="5" value="5.0">
-                    </div>
+          {{-- Harga --}}
+          <div class="col-md-6">
+            <label for="harga" class="form-label fw-bold">Harga (Rp)</label>
+            <input type="number" class="form-control" id="harga" name="harga" required min="0">
+          </div>
 
-                    {{-- Pilihan Jenis (Comma Separated) --}}
-                    <div class="col-md-12">
-                        <label for="pilihan_jenis" class="form-label fw-bold">Pilihan Jenis (Contoh: Original, Durian, Coklat)</label>
-                        <input type="text" class="form-control" id="pilihan_jenis" name="pilihan_jenis" placeholder="Pisahkan dengan koma">
-                    </div>
+          {{-- Stok --}}
+          <div class="col-md-6">
+            <label for="stok" class="form-label fw-bold">Stok Tersedia</label>
+            <input type="number" class="form-control" id="stok" name="stok" required min="0">
+          </div>
 
-                    {{-- Deskripsi Produk --}}
-                    <div class="col-md-12">
-                        <label for="deskripsi_produk" class="form-label fw-bold">Deskripsi Produk</label>
-                        <textarea class="form-control" id="deskripsi_produk" name="deskripsi_produk" rows="5" required></textarea>
-                    </div>
+          {{-- Rating Default (Opsional) --}}
+          <div class="col-md-6">
+            <label for="rating" class="form-label fw-bold">Rating (Default)</label>
+            <input type="number" class="form-control" id="rating" name="rating" step="0.1" min="0" max="5" value="0.0">
+          </div>
 
-                    {{-- Gambar Produk --}}
-                    <div class="col-md-12">
-                        <label for="gambar" class="form-label fw-bold">Gambar Produk</label>
-                        <input class="form-control" type="file" id="gambar" name="gambar" accept="image/*" required>
-                    </div>
+          {{-- Pilihan Jenis (Comma Separated) --}}
+          <div class="col-md-12">
+            <label for="pilihan_jenis" class="form-label fw-bold">Pilihan Jenis (Contoh: Original, Durian,
+              Coklat)</label>
+            <input type="text" class="form-control" id="pilihan_jenis" name="pilihan_jenis"
+              placeholder="Pisahkan dengan koma">
+          </div>
 
-                    {{-- Tombol Submit --}}
-                    <div class="col-12 mt-4">
-                        <button type="submit" class="btn btn-dark fw-bold w-100">
-                            <i class="bi bi-plus-circle me-2"></i> Simpan Produk Baru
-                        </button>
-                    </div>
-                </div>
-            </form>
+          {{-- Deskripsi Produk --}}
+          <div class="col-md-12">
+            <label for="deskripsi_produk" class="form-label fw-bold">Deskripsi Produk</label>
+            <textarea class="form-control" id="deskripsi_produk" name="deskripsi_produk" rows="5" required></textarea>
+          </div>
+
+          {{-- Gambar Produk --}}
+          <div class="col-md-12">
+            <label for="gambar" class="form-label fw-bold">Gambar Produk</label>
+            <input class="form-control" type="file" id="gambar" name="gambar" accept="image/*" required>
+          </div>
+
+          {{-- Tombol Submit --}}
+          <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-dark fw-bold w-100">
+              <i class="bi bi-plus-circle me-2"></i> Simpan Produk Baru
+            </button>
+          </div>
         </div>
+      </form>
     </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const navbar = document.getElementById('navbar');
-        const content = document.getElementById('content');
-        const toggleBtn = document.getElementById('toggle-btn');
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const navbar = document.getElementById('navbar');
+    const content = document.getElementById('content');
+    const toggleBtn = document.getElementById('toggle-btn');
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            navbar.classList.toggle('collapsed');
-            content.classList.toggle('collapsed');
-        });
-    </script>
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      navbar.classList.toggle('collapsed');
+      content.classList.toggle('collapsed');
+    });
+  </script>
 </body>
 
 </html>
