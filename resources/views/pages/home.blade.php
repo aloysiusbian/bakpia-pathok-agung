@@ -3,7 +3,7 @@
 @section('title', 'Home')
 
 @section('content')
-
+<body  style="background-color: #fbf3df">
     <div class="jumbotron-container py-5">
         <div class="container-fluid overflow-hidden" style="border-radius: 20px;">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
@@ -107,4 +107,5 @@
             </div>
         </div>
     </main>
+    </body>
 @endsection

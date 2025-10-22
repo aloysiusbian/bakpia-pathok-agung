@@ -9,7 +9,7 @@
     }
 
     .payment-box {
-      background-color: #f9f3e2;
+      background-color: #ffffff;
       border-radius: 10px;
       max-width: 600px;
       margin: 80px auto;
@@ -50,7 +50,7 @@
 
     <!-- QRIS Logo -->
     <div>
-      <img src="{{ asset('images/qris.png') }}" alt="Pembayaran 1" class="h-8" height="100">
+      <img src="{{ asset('images/qris2.png') }}" alt="Pembayaran 1" class="h-8" height="50">
     </div>
     <!-- Detail pembayaran -->
     <table>

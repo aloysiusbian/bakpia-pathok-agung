@@ -6,7 +6,7 @@
 
 <style>
     body {
-        background-color: #FFFEFA; 
+        background-color: #fbf3df; 
         font-family: Arial, sans-serif; 
         color: #374151; 
     }
@@ -254,11 +254,13 @@
                     <h3 class="box-title payment-title">Pilih Metode Pembayaran:</h3>
                     <div class="payment-options">
                         
-                        <button class="payment-option-btn">
-                            <img src="images/qris2.png" alt="QRIS" class="payment-option-img">
-                        </button>
-                        <button class="payment-option-btn">
-                            <img src="images/Bank2.png" alt="Bank Transfer" class="payment-option-img" >
+                       <a href="/qris" class="payment-option-btn">
+    <img src="images/qris2.png" alt="QRIS" class="payment-option-img">
+</a>
+
+<a href="/bank" class="payment-option-btn">
+    <img src="images/Bank2.png" alt="Bank Transfer" class="payment-option-img">
+</a>
                         
                         </button>
                     </div>

@@ -11,17 +11,12 @@
     {{-- Anda bisa menambahkan link ke file CSS kustom Anda di sini --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> --}}
 </head>
-<body>
+<body  style="background-color: #fbf3df">
 @extends('templates.app')
 
 @section('title', 'Detail Produk: ' . $produk->namaProduk)
 
 @section('content')
-
-    {{-- Jumbotron bisa Anda sesuaikan atau biarkan --}}
-    <div class="jumbotron-container bg-light-subtle py-5">
-        {{-- ... Isi Jumbotron ... --}}
-    </div>
     
 <div class="container my-4" style="background-color:#fbf3df; border-radius:10px; padding:20px;">
     <div class="row">
@@ -88,7 +83,9 @@
 
                         <div class="d-grid gap-2 mt-3">
                             <button type="submit" class="btn btn-warning fw-bold">+ Keranjang</button>
-                            <button type="button" class="btn btn-outline-dark">Beli Sekarang</button>
+                            <a href="/pembayaran" class="btn btn-outline-dark" role="button">
+    Beli Sekarang
+</a>
                         </div>
                     </div>
                 </form>

@@ -96,3 +96,12 @@ Route::middleware('guest')->group(function () {
 // routes/web.php atau routes/admin.php 
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
+Route::get('/pembayaran', function () {
+    return view('pages.pembayaran');
+});
+Route::get('/qris', function () {
+    return view('pages.qris');
+});
+Route::get('/bank', function () {
+    return view('pages.bank');
+});
