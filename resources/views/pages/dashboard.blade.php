@@ -85,9 +85,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      padding: 8px 12px;
       transition: all 0.2s;
     }
+    .sidebar.collapsed {
+  transform: translateX(-200%);
+}
+
 
     .sidebar .nav-link:hover,
     .sidebar .nav-link.active {
@@ -108,34 +111,33 @@
       margin-right: 5px;
     }
 
-    /* NAVBAR */
-    .navbar {
-      background-color: #f5c24c;
-      padding: 10px 25px;
-      margin-left: 260px;
-      transition: all 0.3s;
-    }
+/* NAVBAR */
+.navbar {
+  background-color: #f5c24c;
+  padding: 10px 25px;
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: calc(100% - 260px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
 
-    .navbar.collapsed {
-      margin-left: 80px;
-    }
+.navbar.collapsed {
+  left: 80px;
+  width: calc(100% - 80px);
+}
 
-    .navbar input {
-      border-radius: 25px;
-      border: none;
-      padding-left: 20px;
-    }
+/* CONTENT */
+.content {
+  margin-left: 260px;
+  padding: 100px 30px 30px; /* biar gak ketimpa navbar */
+  transition: all 0.3s ease;
+}
 
-    /* CONTENT */
-    .content {
-      margin-left: 260px;
-      padding: 30px;
-      transition: all 0.3s;
-    }
-
-    .content.collapsed {
-      margin-left: 80px;
-    }
+.content.collapsed {
+  margin-left: 80px;
+}
 
     .card {
       border: none;
@@ -152,7 +154,13 @@
 
     .card small {
       font-size: 0.85rem;
-    }
+    }.menu hr {
+  border: none;
+  border-top: 3px solid #b48829ff; /* 🔸 coklat gelap dan agak tebal */
+  margin: 12px 0;
+  opacity: 1; /* pastikan warnanya tidak transparan */
+}
+
   </style>
 </head>
 
@@ -170,19 +178,25 @@
       </div>
 
       <div class="menu px-2">
+        <hr class="my-2">
         <p class="nav-section-title">Dashboard</p>
         <a href="/admin/dashboard" class="nav-link active"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
         <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
-
-        <p class="nav-section-title mt-3">Pages</p>
-        <a href="#" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-people-fill"></i> <span>Data Users</span></a>
+        <hr class="my-2">
+        <p class="nav-section-title mt-3">Pesanan</p>
+        <a href="#" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
+        <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
+        <hr class="my-2">
+        <p class="nav-section-title mt-3">Produk</p>
         <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Tambah Produk</span></a>
+        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Edit Produk</span></a>
+        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Hapus Produk</span></a>
+        <hr class="my-2">
       </div>
     </div>
 
     <div class="text-center mb-3">
-      <button class="btn offline-btn w-75"><i class="bi bi-telephone"></i> Pemesanan Offline</button>
+      <a href="/login"class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
   </div>
 
@@ -190,7 +204,6 @@
   <nav class="navbar d-flex align-items-center" id="navbar">
     <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
     <input type="text" class="form-control w-50 me-auto" placeholder="Admin Dashboard">
-    <i class="bi bi-person-circle fs-4"></i>
   </nav>
 
   <!-- MAIN CONTENT -->
@@ -224,17 +237,18 @@
   </div>
 
   <script>
-    const sidebar = document.getElementById('sidebar');
-    const navbar = document.getElementById('navbar');
-    const content = document.getElementById('content');
-    const toggleBtn = document.getElementById('toggle-btn');
+  const sidebar = document.getElementById('sidebar');
+  const navbar = document.getElementById('navbar');
+  const content = document.getElementById('content');
+  const toggleBtn = document.getElementById('toggle-btn');
 
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('collapsed');
-      navbar.classList.toggle('collapsed');
-      content.classList.toggle('collapsed');
-    });
-  </script>
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+    navbar.classList.toggle('collapsed');
+    content.classList.toggle('collapsed');
+  });
+</script>
+
 </body>
 
 </html>
