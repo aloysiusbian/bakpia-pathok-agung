@@ -105,3 +105,21 @@ Route::get('/qris', function () {
 Route::get('/bank', function () {
     return view('pages.bank');
 });
+Route::get('/testes', function () {
+    return view('pages.dbPelanggan');
+});
+Route::get('/tes', function () {
+    return view('pages.dashboard');
+});
+Route::get('/tesedit', function () {
+    return view('pages.edit_profile');
+});
+Route::get('/teslihat', function () {
+    return view('pages.profile');
+});
+Route::get('/tesriwayat', function () {
+    return view('pages.riwayat');
+});
+Route::get('/pelanggan/profile', [CustomerController::class, 'editProfile'])->name('pelanggan.editProfile');
+Route::put('/pelanggan/profile', [CustomerController::class, 'updateProfile'])->name('pelanggan.updateProfile');
+Route::get('/pelanggan/profile', [CustomerController::class, 'showProfile'])->name('pelanggan.showProfile');

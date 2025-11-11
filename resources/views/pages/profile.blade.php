@@ -1,11 +1,10 @@
-<!-- resources/views/admin/dashboard.blade.php -->
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pelanggan | Dashboard</title>
+  <title>Pelanggan | Edit Profil</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
@@ -118,6 +117,23 @@
       margin-left: 0;
     }
 
+    .form-control:focus {
+      box-shadow: 0 0 5px rgba(241, 173, 24, 0.8);
+      border-color: #e2b13c;
+    }
+
+    .btn-save {
+      background-color: #f5c24c;
+      color: #000;
+      font-weight: 600;
+      border-radius: 10px;
+      transition: all 0.2s;
+    }
+
+    .btn-save:hover {
+      background-color: #e0a918;
+    }
+
     .card {
       border: none;
       border-radius: 12px;
@@ -127,6 +143,16 @@
 </head>
 
 <body>
+  @php
+    // Simulasi data dari "database"
+    $customer = [
+      'nama' => 'Alberto Sahara',
+      'email' => 'alberto@example.com',
+      'telepon' => '0812-3456-7890',
+      'alamat' => 'Jl. Malioboro No. 12, Yogyakarta',
+      'gambar' => asset('images/bian.png')
+    ];
+  @endphp
 
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
@@ -135,82 +161,58 @@
         <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
       </a>
       <div class="profile">
-        <img src="{{ asset('images/bian.png') }}" alt="Admin">
-        <h6>Alberto Sahara</h6>
+        <img src="{{ asset('images/bian.png') }}" alt="Pelanggan">
+        <h6>{{ Auth::user()->name ?? 'Jawa irenk' }}</h6>
       </div>
 
       <div class="menu px-2">
-        <hr class="my-2">
-        <p class="nav-section-title">Dashboard</p>
-        <a href="/admin/dashboard" class="nav-link active"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
-        <hr class="my-2">
-        <p class="nav-section-title mt-3">Pesanan</p>
-        <a href="#" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
-        <hr class="my-2">
-        <p class="nav-section-title mt-3">Produk</p>
-        <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Tambah Produk</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Edit Produk</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Hapus Produk</span></a>
-        <hr class="my-2">
+        <hr>
+        <p class="nav-section-title">Menu Utama</p>
+        <a href="/testes" class="nav-link"><i class="bi bi-house-door"></i> <span>Beranda</span></a>
+        <a href="/teslihat" class="nav-link active"><i class="bi bi-person-circle"></i> <span>Lihat Profil</span></a>
+        <a href="/tesriwayat" class="nav-link"><i class="bi bi-clock-history"></i> <span>Riwayat Pembelian</span></a>
+        <hr>
       </div>
     </div>
 
     <div class="text-center mb-3">
-      <a href="/"class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i> Ingin Beli?</a>
+      <a href="/" class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i> Kembali? </a>
     </div>
   </div>
 
   <!-- NAVBAR -->
   <nav class="navbar d-flex align-items-center" id="navbar">
     <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
-    <input type="text" class="form-control w-50 me-auto" placeholder="Admin Dashboard">
+    <input type="text" class="form-control w-50 me-auto" placeholder="Lihat Profil">
   </nav>
 
-  <!-- MAIN CONTENT -->
+  <!-- CONTENT -->
   <div class="content" id="content">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card p-4 text-center">
-          <i class="bi bi-bag-fill fs-2 text-dark bg-light"></i>
-          <h6 class="mt-2 text-muted">Produk</h6>
-          <h3 class="fw-bold">281</h3>
-          <small class="text-success">+55% than last week</small>
+    <div class="card p-4">
+      <div class="d-flex align-items-center">
+        <img src="{{ $customer['gambar'] }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
+        <div class="profile-info">
+          <h5>{{ $customer['nama'] }}</h5>
+          <p>{{ $customer['email'] }}</p>
+          <p>{{ $customer['telepon'] }}</p>
+          <p>{{ $customer['alamat'] }}</p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="card p-4 text-center">
-          <i class="bi bi-bar-chart-fill fs-2 text-danger bg-light"></i>
-          <h6 class="mt-2 text-muted">Data Users</h6>
-          <h3 class="fw-bold">2,300</h3>
-          <small class="text-success">+3% than last week</small>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card p-4 text-center">
-          <i class="bi bi-basket-fill fs-2 text-success bg-light"></i>
-          <h6 class="mt-2 text-muted">Pemesanan</h6>
-          <h3 class="fw-bold">34k</h3>
-          <small class="text-success">+1% than yesterday</small>
-        </div>
-      </div>
-    </div>
-  </div>
+       <div class="mt-4">
+        <a href="/tesedit" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Profil</a>
 
   <script>
-  const sidebar = document.getElementById('sidebar');
-  const navbar = document.getElementById('navbar');
-  const content = document.getElementById('content');
-  const toggleBtn = document.getElementById('toggle-btn');
+    const sidebar = document.getElementById('sidebar');
+    const navbar = document.getElementById('navbar');
+    const content = document.getElementById('content');
+    const toggleBtn = document.getElementById('toggle-btn');
 
-  toggleBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('collapsed');
-    navbar.classList.toggle('collapsed');
-    content.classList.toggle('collapsed');
-  });
-</script>
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      navbar.classList.toggle('collapsed');
+      content.classList.toggle('collapsed');
+    });
+  </script>
 
 </body>
-
 </html>

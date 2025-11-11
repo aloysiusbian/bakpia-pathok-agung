@@ -36,8 +36,7 @@
                             {{-- 1. Link ke Profil Akun --}}
                             <li>
                                 {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
-                                <a class="dropdown-item" href="#"
-                                    onclick="event.preventDefault(); alert('🚧 Halaman profil akun Anda belum selesai dibuat. Silakan coba lagi nanti. 🙏');">
+                                <a class="dropdown-item" href="/testes">
                                     <i class="bi bi-person"></i> Profil Akun
                                 </a>
                             </li>
