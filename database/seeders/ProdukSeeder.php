@@ -23,7 +23,7 @@ class ProdukSeeder extends Seeder
                 'rating' => 4.0,
                 'harga' => 38000.00,
                 'stok' => 60,
-                'gambar' => 'bakpia-coklat.jpg'
+                'gambar' => 'bakpia-cokelat.jpg'
             ],
             [
                 'idProduk' => '2',
