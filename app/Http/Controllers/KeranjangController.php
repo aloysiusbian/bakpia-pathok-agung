@@ -62,7 +62,12 @@ class KeranjangController extends Controller
 
     public function tampilKeranjang()
     {
-        return view('pages.keranjang');
+        $idPelanggan = Auth::user()->idPelanggan;
+
+        // Ambil item keranjang, dan sertakan data produk terkait (Eager Loading)
+        $items = Keranjang::where('idPelanggan', $idPelanggan)->with('produk')->get();
+
+        return view('pages.keranjang', compact('items'));
     }
 }
 
