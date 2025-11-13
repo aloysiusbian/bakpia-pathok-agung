@@ -13,6 +13,7 @@ use App\Http\Controllers\KeranjangController;
 | Route Publik (Bisa diakses siapa saja)
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', [ProdukController::class, 'index'])->name('pages.home');
 
 Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name('produk.show');
@@ -28,12 +29,16 @@ Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name(
 |
 */
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
-    
+
     // Ini adalah route yang Anda panggil di LoginController
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Route logout khusus untuk admin
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+    Route::get('/pemesanan-online', function () {
+        return view('pages.pemesanan_online');
+    })->name('pemesanan.online');
 
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
@@ -59,9 +64,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 |
 */
 Route::middleware('auth')->group(function () {
-    
+
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
-    
+
     // Route untuk logout pelanggan
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
@@ -71,6 +76,8 @@ Route::middleware('auth')->group(function () {
     // ✅ TAMBAHKAN ROUTE INI
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+
+   
 });
 
 
