@@ -38,10 +38,11 @@
       gap: 10px;
       margin-bottom: 15px;
     }
-
-    .sidebar .logo img {
-      align-self;
-      : center
+    .sidebar .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
     }
 
     .sidebar .logo h5 {
