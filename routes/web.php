@@ -129,22 +129,21 @@ Route::get('/qris', function () {
 Route::get('/bank', function () {
     return view('pages.bank');
 });
-Route::get('/testes', function () {
-    return view('pages.dbPelanggan');
-});
 Route::get('/tes', function () {
     return view('pages.dashboard');
 });
 Route::get('/tesedit', function () {
     return view('pages.edit_profile');
 });
-Route::get('/teslihat', function () {
-    return view('pages.profile');
-});
-Route::get('/tesriwayat', function () {
-    return view('pages.riwayat');
-});
 Route::get('/teshapusadmin', function () {
     return view('pages.hapusproduk');
 });
-
+Route::get('/profilpelanggan', function () {
+    return view('pelanggan.dashboardPelanggan');
+});
+Route::get('/riwayat', function () {
+    return view('pelanggan.riwayat');
+});
+Route::get('/profil', function () {
+    return view('pages.profile');
+});

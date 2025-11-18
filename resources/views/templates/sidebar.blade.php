@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelanggan | Edit Profil</title>
+    <title>Pelanggan | @yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -68,12 +68,15 @@
 
         .sidebar .nav-link {
             color: #3a2d1a;
-            border-radius: 8px;
-            margin: 4px 10px;
+            border-radius: 5px;
+            margin: 2px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
             transition: all 0.2s;
+        }
+
+        .sidebar .nav-link i {;
         }
 
         .sidebar .nav-link:hover,
@@ -143,16 +146,6 @@
 </head>
 
 <body>
-@php
-// Simulasi data dari "database"
-$customer = [
-'nama' => 'Alberto Sahara',
-'email' => 'alberto@example.com',
-'telepon' => '0812-3456-7890',
-'alamat' => 'Jl. Malioboro No. 12, Yogyakarta',
-'gambar' => asset('images/bian.png')
-];
-@endphp
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
@@ -162,19 +155,32 @@ $customer = [
         </a>
         <div class="profile">
             <img src="{{ asset('images/bian.png') }}" alt="Pelanggan">
-            <h6>{{ Auth::user()->name ?? 'Jawa irenk' }}</h6>
+            <h6>{{ Auth::user()->name ?? 'Bian anjg' }}</h6>
         </div>
 
         <div class="menu px-2">
             <hr>
             <p class="nav-section-title">Menu Utama</p>
-            <a href="/profilpelanggan" class="nav-link {{ request()->is('profilpelanggan') ? 'active' : '' }}"><i
-                    class="bi bi-house-door"></i> <span>Berandaa</span></a>
-            <a href="/profil" class="nav-link {{ request()->is('profil') ? 'active' : '' }}"><i
-                    class="bi bi-person-circle"></i> <span>Lihat Profil</span></a>
-            <a href="/riwayat" class="nav-link {{ request()->is('riwayat') ? 'active' : '' }}"><i
-                    class="bi bi-clock-history"></i>
-                <span>Riwayat Pembelian</span></a>
+            <ul class="nav flex-column px-3">
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('profilpelanggan') ? 'active' : '' }}"
+                       href="/profilpelanggan" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Beranda"><i class="bi bi-house-door"></i>
+                        <span>Beranda</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('profil') ? 'active' : '' }}"
+                       href="/profil" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Beranda"><i class="bi bi-person-circle"></i>
+                        <span>Lihat Profil</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('riwayat') ? 'active' : '' }}"
+                       href="/riwayat" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Riwayat Pembelian"><i class="bi bi-clock-history"></i>
+                        <span>Riwayat Pembelian</span></a>
+                </li>
+            </ul>
             <hr>
         </div>
     </div>
@@ -187,36 +193,24 @@ $customer = [
 <!-- NAVBAR -->
 <nav class="navbar d-flex align-items-center" id="navbar">
     <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
-    <input type="text" class="form-control w-50 me-auto" placeholder="Lihat Profil">
+    <input type="text" class="form-control w-50 me-auto" placeholder="Dashboard Pelanggan">
 </nav>
 
-<!-- CONTENT -->
-<div class="content" id="content">
-    <div class="card p-4">
-        <div class="d-flex align-items-center">
-            <img src="{{ $customer['gambar'] }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
-            <div class="profile-info">
-                <h5>{{ $customer['nama'] }}</h5>
-                <p>{{ $customer['email'] }}</p>
-                <p>{{ $customer['telepon'] }}</p>
-                <p>{{ $customer['alamat'] }}</p>
-            </div>
-        </div>
-        <div class="mt-4">
-            <a href="/tesedit" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Profil</a>
+<!-- MAIN CONTENT -->
+@yield('content')
 
-            <script>
-                const sidebar = document.getElementById('sidebar');
-                const navbar = document.getElementById('navbar');
-                const content = document.getElementById('content');
-                const toggleBtn = document.getElementById('toggle-btn');
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const navbar = document.getElementById('navbar');
+    const content = document.getElementById('content');
+    const toggleBtn = document.getElementById('toggle-btn');
 
-                toggleBtn.addEventListener('click', () => {
-                    sidebar.classList.toggle('collapsed');
-                    navbar.classList.toggle('collapsed');
-                    content.classList.toggle('collapsed');
-                });
-            </script>
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        navbar.classList.toggle('collapsed');
+        content.classList.toggle('collapsed');
+    });
+</script>
 
 </body>
 </html>
