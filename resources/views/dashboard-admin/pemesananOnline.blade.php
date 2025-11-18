@@ -1,249 +1,8 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('templates.sidebar-admin')
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pemesanan Online | Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #fbf3df;
-      font-family: 'Poppins', sans-serif;
-      overflow-x: hidden;
-    }
+@section('title', 'Pemesanan Online')
 
-    .sidebar {
-      width: 260px;
-      background-color: #e3d3ad;
-      height: 100vh;
-      position: fixed;
-      top: 0;
-      left: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-      padding: 10px 0;
-      z-index: 1030;
-    }
-
-    .sidebar.collapsed {
-      transform: translateX(-200%);
-    }
-
-    .sidebar .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    .sidebar .profile {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .sidebar .profile img {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-
-    .sidebar .profile h6 {
-      margin-top: 8px;
-      font-weight: 600;
-      color: #3a2d1a;
-    }
-
-    .nav-section-title {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: #6e5b3b;
-      margin: 10px 20px 5px;
-    }
-
-    .sidebar .nav-link {
-      color: #3a2d1a;
-      border-radius: 8px;
-      margin: 4px 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.2s;
-    }
-
-    .sidebar .nav-link:hover,
-    .sidebar .nav-link.active {
-      background-color: #d1b673;
-      color: #000;
-      font-weight: 600;
-    }
-
-    .offline-btn {
-      margin: 15px 20px;
-      border-radius: 10px;
-      background-color: white;
-      color: #3a2d1a;
-      font-weight: 600;
-    }
-
-    .navbar {
-      background-color: #f5c24c;
-      padding: 10px 25px;
-      position: fixed;
-      top: 0;
-      left: 260px;
-      width: calc(100% - 260px);
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-
-    .navbar.collapsed {
-      left: 0;
-      width: 100%;
-    }
-
-    .content {
-      margin-left: 260px;
-      padding: 100px 30px 30px;
-      transition: all 0.3s ease;
-    }
-
-    .content.collapsed {
-      margin-left: 0;
-    }
-
-    .card {
-      border: none;
-      border-radius: 12px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .badge-status {
-      font-size: 0.75rem;
-      padding: 6px 10px;
-      border-radius: 999px;
-    }
-
-    /* === FILTER COMBOBOX DENGAN WARNA TEMA === */
-    .filter-select {
-      position: relative;
-    }
-
-    .filter-select i {
-      position: absolute;
-      left: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.9rem;
-      color: #a17a29;
-      pointer-events: none;
-    }
-
-    .filter-select .form-select {
-      padding-left: 2rem;
-      border-radius: 999px;
-      border: 1px solid #d4b36c;
-      background-color: #fff7e1;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: #5a4525;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .filter-select .form-select:hover {
-      background-color: #ffe9b6;
-      border-color: #c8a04a;
-    }
-
-    .filter-select .form-select:focus {
-      border-color: #f0b232;
-      background-color: #fff3cc;
-      box-shadow: 0 0 0 0.25rem rgba(240, 178, 50, 0.35);
-    }
-
-    .filter-select .form-select option {
-      padding: 5px 8px;
-      background: #fff;
-      color: #5a4525;
-    }
-
-    /* Kartu ringkasan */
-    .summary-card {
-      border-radius: 14px;
-      background: linear-gradient(135deg, #ffe2a4, #f5c24c);
-      color: #4a3312;
-    }
-
-    .summary-card.secondary {
-      background: linear-gradient(135deg, #f7e6c9, #d1b673);
-    }
-
-    .summary-card.danger {
-      background: linear-gradient(135deg, #ffd6c7, #ff9b7a);
-    }
-  </style>
-</head>
-
-<body>
-
-  <!-- SIDEBAR -->
-  <div class="sidebar" id="sidebar">
-    <div>
-      <a class="logo" href="/">
-        <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
-      </a>
-      <div class="profile">
-        <img src="{{ asset('images/bian.png') }}" alt="Admin">
-        <h6>Alberto Sahara</h6>
-      </div>
-
-      <div class="menu px-2">
-        <hr class="my-2">
-        <p class="nav-section-title">Dashboard</p>
-        <a href="/admin/dashboard" class="nav-link">
-          <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
-        </a>
-        <a href="#" class="nav-link">
-          <i class="bi bi-graph-up"></i> <span>Analytics</span>
-        </a>
-
-        <hr class="my-2">
-        <p class="nav-section-title mt-3">Pesanan</p>
-        <a href="/admin/pemesanan-online" class="nav-link active">
-          <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
-        </a>
-        <a href="/admin/pemesanan-offline" class="nav-link">
-          <i class="bi bi-telephone"></i> <span>Pemesanan Offline</span>
-        </a>
-
-        <hr class="my-2">
-        <p class="nav-section-title mt-3">Produk</p>
-        <a href="/tambah_produk" class="nav-link">
-          <i class="bi bi-box-seam"></i> <span>Lihat Produk</span>
-        </a>
-        <hr class="my-2">
-      </div>
-    </div>
-
-    <div class="text-center mb-3">
-      <a href="/" class="btn offline-btn w-75">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
-    </div>
-  </div>
-
-  <!-- NAVBAR -->
-  <nav class="navbar d-flex align-items-center" id="navbar">
-    <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
-    <input type="text" class="form-control w-50 me-auto" placeholder="Cari pesanan online...">
-    <span class="ms-3 fw-semibold">Pemesanan Online</span>
-  </nav>
+@section('content')
 
   <!-- CONTENT -->
   <main class="content" id="content">
@@ -292,7 +51,7 @@
       <!-- FILTER & JUDUL -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-          <h4 class="mb-0">Daftar Pemesanan Online</h4>
+          <h4 class="mb-0"><b>Daftar Pemesanan Online</b></h4>
           <small class="text-muted">Kelola pesanan yang masuk melalui website / aplikasi.</small>
         </div>
         <div class="d-flex gap-2">
@@ -363,16 +122,12 @@
                       <button class="btn btn-outline-dark">
                         <i class="bi bi-eye"></i> Detail
                       </button>
-                      <button class="btn btn-outline-primary btn-lihat-bukti"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalBuktiTransfer"
-                              data-bukti="{{ asset('images/bukti_transfer_rina.jpg') }}">
+                      <button class="btn btn-outline-primary btn-lihat-bukti" data-bs-toggle="modal"
+                        data-bs-target="#modalBuktiTransfer" data-bukti="{{ asset('images/bukti_transfer_rina.jpg') }}">
                         <i class="bi bi-file-earmark-image"></i> Bukti
                       </button>
-                      <button class="btn btn-success btn-konfirmasi"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalKonfirmasiPembayaran"
-                              data-orderid="ORD-20251101">
+                      <button class="btn btn-success btn-konfirmasi" data-bs-toggle="modal"
+                        data-bs-target="#modalKonfirmasiPembayaran" data-orderid="ORD-20251101">
                         <i class="bi bi-check2-circle"></i> Konfirmasi
                       </button>
                     </div>
@@ -397,10 +152,8 @@
                       <button class="btn btn-outline-dark">
                         <i class="bi bi-eye"></i> Detail
                       </button>
-                      <button class="btn btn-outline-primary btn-lihat-bukti"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modalBuktiTransfer"
-                              data-bukti="{{ asset('images/bukti_qris_budi.jpg') }}">
+                      <button class="btn btn-outline-primary btn-lihat-bukti" data-bs-toggle="modal"
+                        data-bs-target="#modalBuktiTransfer" data-bukti="{{ asset('images/bukti_qris_budi.jpg') }}">
                         <i class="bi bi-file-earmark-image"></i> Bukti
                       </button>
                     </div>
@@ -462,7 +215,8 @@
   </main>
 
   <!-- MODAL LIHAT BUKTI -->
-  <div class="modal fade" id="modalBuktiTransfer" tabindex="-1" aria-labelledby="modalBuktiTransferLabel" aria-hidden="true">
+  <div class="modal fade" id="modalBuktiTransfer" tabindex="-1" aria-labelledby="modalBuktiTransferLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -533,6 +287,5 @@
       });
     });
   </script>
-</body>
 
-</html>
+@endsection

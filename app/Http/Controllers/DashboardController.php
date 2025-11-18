@@ -14,6 +14,6 @@ class DashboardController extends Controller
             'admin'    => Admin::all()
         ];
 
-        return view('pages.dashboard', $data);
+        return view('dashboard-admin.dashboard', $data);
     }
 }

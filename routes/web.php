@@ -37,12 +37,27 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
     Route::get('/pemesananOnline', function () {
-        return view('pages.pemesananOnline');
+        return view('dashboard-admin.pemesananOnline');
     })->name('pemesanan.online');
 
     Route::get('/pemesananOffline', function () {
-        return view('pages.pemesananOffline');
+        return view('dashboard-admin.pemesananOffline');
     })->name('pemesanan.offline');
+
+    Route::get('/lihatproduk', function () {
+        return view('dashboard-admin.lihatproduk');
+    });
+
+    // COBAIN DOANG INI
+    Route::get('/produk', [ProdukController::class, 'index'])->name('produk.index');
+    Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
+    Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
+
+    Route::get('/produk/{produk}', [ProdukController::class, 'show'])->name('produk.show');
+    Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::put('/produk/{produk}', [ProdukController::class, 'update'])->name('produk.update');
+
+    Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
@@ -70,7 +85,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 Route::middleware('auth')->group(function () {
 
 
-        // --- FITUR KERANJANG (Updated) ---
+    // --- FITUR KERANJANG (Updated) ---
 
     // 1. Lihat Keranjang (Menggunakan method index)
     Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
@@ -89,12 +104,10 @@ Route::middleware('auth')->group(function () {
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
-   
+
 
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
-
-
 });
 
 
@@ -130,7 +143,7 @@ Route::get('/bank', function () {
     return view('pages.bank');
 });
 Route::get('/tes', function () {
-    return view('pages.dashboard');
+    return view('dashboard-admin.dashboard');
 });
 Route::get('/tesedit', function () {
     return view('pages.edit_profile');
@@ -139,11 +152,14 @@ Route::get('/teshapusadmin', function () {
     return view('pages.hapusproduk');
 });
 Route::get('/profilpelanggan', function () {
-    return view('pelanggan.dashboardPelanggan');
+    return view('dashboard-pelanggan.dashboardPelanggan');
 });
 Route::get('/riwayat', function () {
-    return view('pelanggan.riwayat');
+    return view('dashboard-pelanggan.riwayat');
 });
 Route::get('/profil', function () {
     return view('pages.profile');
 });
+// Route::get('/lihatproduk', function () {
+//     return view('dashboard-admin.lihatproduk');
+// });

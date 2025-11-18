@@ -38,11 +38,12 @@
       gap: 10px;
       margin-bottom: 15px;
     }
+
     .sidebar .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
     }
 
     .sidebar .logo h5 {
@@ -85,9 +86,10 @@
       gap: 10px;
       transition: all 0.2s;
     }
+
     .sidebar.collapsed {
-  transform: translateX(-200%);
-}
+      transform: translateX(-200%);
+    }
 
     .sidebar .nav-link:hover,
     .sidebar .nav-link.active {
@@ -109,32 +111,33 @@
     }
 
     /* NAVBAR */
-.navbar {
-  background-color: #f5c24c;
-  padding: 10px 25px;
-  position: fixed;
-  top: 0;
-  left: 260px;
-  width: calc(100% - 260px);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
+    .navbar {
+      background-color: #f5c24c;
+      padding: 10px 25px;
+      position: fixed;
+      top: 0;
+      left: 260px;
+      width: calc(100% - 260px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
 
-.navbar.collapsed {
-  left: 80px;
-  width: calc(100% - 80px);
-}
+    .navbar.collapsed {
+      left: 80px;
+      width: calc(100% - 80px);
+    }
 
-/* CONTENT */
-.content {
-  margin-left: 260px;
-  padding: 100px 30px 30px; /* biar gak ketimpa navbar */
-  transition: all 0.3s ease;
-}
+    /* CONTENT */
+    .content {
+      margin-left: 260px;
+      padding: 100px 30px 30px;
+      /* biar gak ketimpa navbar */
+      transition: all 0.3s ease;
+    }
 
-.content.collapsed {
-  margin-left: 80px;
-}
+    .content.collapsed {
+      margin-left: 80px;
+    }
 
     .card {
       border: none;
@@ -187,14 +190,14 @@
         <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Tambah Produk</span></a>
         <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Edit Produk</span></a>
         <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Hapus Produk</span></a>
-       
+
 
         <hr class="my-2">
       </div>
     </div>
 
     <div class="text-center mb-3">
-      <a href="/login"class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i> Logout</a>
+      <a href="/login" class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i> Logout</a>
     </div>
   </div>
 
@@ -209,7 +212,7 @@
 
     <div class="card p-4">
       {{-- Form akan dikirimkan ke controller untuk menyimpan produk --}}
-        <form action="/admin/produk" method="POST" enctype="multipart/form-data">
+      <form action="/admin/produk" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row g-4">
 

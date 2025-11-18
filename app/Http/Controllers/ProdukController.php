@@ -15,13 +15,13 @@ class ProdukController extends Controller
         ];
         return view('pages.home', $products);
     }
-   
+
     public function detailProduk(Produk $produk)
     {
         $produksLainnya = Produk::where('idProduk', '!=', $produk->idProduk)
-                                  ->inRandomOrder() // Tampilkan secara acak
-                                  ->take(4)         // Ambil 4 produk saja
-                                  ->get();
+            ->inRandomOrder() // Tampilkan secara acak
+            ->take(4)         // Ambil 4 produk saja
+            ->get();
 
         // Kirim data produk yang dipilih dan produk lainnya ke view 'pages.detail'
         return view('pages.detail_produk', [
@@ -32,41 +32,40 @@ class ProdukController extends Controller
     public function create()
     {
         // Pastikan nama view sesuai dengan lokasi file Anda (misal: 'pages.tambah_produk')
-        return view('pages.tambah_produk'); 
+        return view('pages.tambah_produk');
     }
 
 
     public function store(Request $request)
     {
-        // 1. Validasi Data
+        // VALIDASI INPUT
         $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'harga' => 'required|integer|min:0',
-            'stok' => 'required|integer|min:0',
-            'rating' => 'numeric|min:0|max:5',
-            'deskripsi_produk' => 'required|string',
-            'pilihan_jenis' => 'nullable|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+            'nama_produk'      => 'required|string|max:100',
+            'deskripsi'        => 'required|string',
+            'jenis'            => 'required|string|max:3',
+            'kategori'         => 'required|string|max:50',
+            'harga'            => 'required|numeric|min:0',
+            'stok'             => 'required|integer|min:0',
+            'gambar'           => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // 2. Upload Gambar
-        $gambarPath = null;
-        if ($request->hasFile('gambar')) {
-            $gambarPath = $request->file('gambar')->store('produk_images', 'public');
-        }
+        // UPLOAD GAMBAR
+        $gambarPath = $request->file('gambar')->store('produk_images', 'public');
 
-        // 3. Simpan Data
+        // SIMPAN DATA KE DATABASE
         Produk::create([
-            'nama_produk' => $request->nama_produk,
-            'harga' => $request->harga,
-            'stok' => $request->stok,
-            'rating' => $request->rating ?? 5.0,
-            'pilihan_jenis' => $request->pilihan_jenis,
-            'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar' => $gambarPath,
+            'namaProduk'       => $request->nama_produk,
+            'deskripsiProduk'  => $request->deskripsi,
+            'pilihanJenis'     => strtoupper($request->jenis), // contoh: "KJ", "CK"
+            'kategori'         => $request->kategori,
+            'rating'           => 5.0, // rating default
+            'harga'            => $request->harga,
+            'stok'             => $request->stok,
+            'gambar'           => $gambarPath,
         ]);
 
-        // Redirect ke dashboard atau halaman list produk (asumsi dashboard)
-        return redirect('/dashboard')->with('success', 'Produk baru berhasil ditambahkan!');
+        return redirect('/admin/lihatproduk')->with('success', 'Produk berhasil ditambahkan!');
     }
+
+    
 }
