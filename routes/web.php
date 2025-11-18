@@ -66,7 +66,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 Route::middleware('auth')->group(function () {
 
         // --- FITUR KERANJANG (Updated) ---
-    
+
     // 1. Lihat Keranjang (Menggunakan method index)
     Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
 
@@ -81,7 +81,7 @@ Route::middleware('auth')->group(function () {
 
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
-   
+
 });
 
 
@@ -104,7 +104,7 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
-// routes/web.php atau routes/admin.php 
+// routes/web.php atau routes/admin.php
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
 Route::get('/pembayaran', function () {
