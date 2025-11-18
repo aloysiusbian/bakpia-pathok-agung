@@ -131,9 +131,10 @@ Route::get('/teslihat', function () {
 Route::get('/tesriwayat', function () {
     return view('pages.riwayat');
 });
-Route::get('/teshapusadmin', function () {
-    return view('pages.hapusproduk');
+Route::get('/lihatproduk', function () {
+    return view('pages.lihatproduk');
 });
+
 Route::get('/pelanggan/profile', [CustomerController::class, 'editProfile'])->name('pelanggan.editProfile');
 Route::put('/pelanggan/profile', [CustomerController::class, 'updateProfile'])->name('pelanggan.updateProfile');
 Route::get('/pelanggan/profile', [CustomerController::class, 'showProfile'])->name('pelanggan.showProfile');
