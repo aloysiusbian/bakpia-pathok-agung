@@ -69,6 +69,15 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 */
 Route::middleware('auth')->group(function () {
 
+<<<<<<< HEAD
+=======
+        // --- FITUR KERANJANG (Updated) ---
+
+    // 1. Lihat Keranjang (Menggunakan method index)
+    Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
+
+    // 2. Tambah ke Keranjang
+>>>>>>> 835257d1b6c4864d487f2e5800217ad333f83f92
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
 
     // Route untuk logout pelanggan
@@ -81,7 +90,13 @@ Route::middleware('auth')->group(function () {
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
+<<<<<<< HEAD
    
+=======
+    // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
+    Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
+
+>>>>>>> 835257d1b6c4864d487f2e5800217ad333f83f92
 });
 
 
@@ -104,7 +119,7 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
-// routes/web.php atau routes/admin.php 
+// routes/web.php atau routes/admin.php
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
 Route::get('/pembayaran', function () {
@@ -131,9 +146,10 @@ Route::get('/teslihat', function () {
 Route::get('/tesriwayat', function () {
     return view('pages.riwayat');
 });
-Route::get('/teshapusadmin', function () {
-    return view('pages.hapusproduk');
+Route::get('/lihatproduk', function () {
+    return view('pages.lihatproduk');
 });
+
 Route::get('/pelanggan/profile', [CustomerController::class, 'editProfile'])->name('pelanggan.editProfile');
 Route::put('/pelanggan/profile', [CustomerController::class, 'updateProfile'])->name('pelanggan.updateProfile');
 Route::get('/pelanggan/profile', [CustomerController::class, 'showProfile'])->name('pelanggan.showProfile');

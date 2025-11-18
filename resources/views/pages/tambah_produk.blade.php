@@ -38,10 +38,11 @@
       gap: 10px;
       margin-bottom: 15px;
     }
-
-    .sidebar .logo img {
-      align-self;
-      : center
+    .sidebar .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
     }
 
     .sidebar .logo h5 {
@@ -183,9 +184,11 @@
         <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
-        <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
-        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Hapus Produk</span></a>
         <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Tambah Produk</span></a>
+        <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Edit Produk</span></a>
+        <a href="#" class="nav-link"><i class="bi bi-box-seam"></i> <span>Hapus Produk</span></a>
+       
+
         <hr class="my-2">
       </div>
     </div>
