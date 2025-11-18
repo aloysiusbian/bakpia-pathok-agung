@@ -65,18 +65,22 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 */
 Route::middleware('auth')->group(function () {
 
-    Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
-
-    // Route untuk logout pelanggan
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-    // Route untuk melihat keranjang
+        // --- FITUR KERANJANG (Updated) ---
+    
+    // 1. Lihat Keranjang (Menggunakan method index)
     Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
 
-    // ✅ TAMBAHKAN ROUTE INI
-    // Route untuk menghapus item dari keranjang
-    Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+    // 2. Tambah ke Keranjang
+    Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
 
+    // 3. Update Jumlah Barang (+/-) - Method PATCH
+    Route::patch('/keranjang/update/{idKeranjang}', [KeranjangController::class, 'update'])->name('keranjang.update');
+
+    // 4. Hapus Satu Item - Method DELETE
+    Route::delete('/keranjang/hapus/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+
+    // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
+    Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
    
 });
 
