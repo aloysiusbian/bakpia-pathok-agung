@@ -66,7 +66,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 Route::middleware('auth')->group(function () {
 
        // --- FITUR KERANJANG (Updated) ---
-    
+
     // 1. Lihat Keranjang (Menggunakan method index)
     Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
 
@@ -118,7 +118,7 @@ Route::get('/bank', function () {
     return view('pages.bank');
 });
 Route::get('/testes', function () {
-    return view('pages.dbPelanggan');
+    return view('pelanggan.dbPelanggan');
 });
 Route::get('/tes', function () {
     return view('pages.dashboard');
