@@ -128,6 +128,65 @@
       padding: 6px 10px;
       border-radius: 999px;
     }
+
+    /* === FILTER COMBOBOX DENGAN WARNA TEMA === */
+    .filter-select {
+      position: relative;
+    }
+
+    .filter-select i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.9rem;
+      color: #a17a29;
+      pointer-events: none;
+    }
+
+    .filter-select .form-select {
+      padding-left: 2rem;
+      border-radius: 999px;
+      border: 1px solid #d4b36c;
+      background-color: #fff7e1;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #5a4525;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .filter-select .form-select:hover {
+      background-color: #ffe9b6;
+      border-color: #c8a04a;
+    }
+
+    .filter-select .form-select:focus {
+      border-color: #f0b232;
+      background-color: #fff3cc;
+      box-shadow: 0 0 0 0.25rem rgba(240, 178, 50, 0.35);
+    }
+
+    .filter-select .form-select option {
+      padding: 5px 8px;
+      background: #fff;
+      color: #5a4525;
+    }
+
+    /* Kartu ringkasan */
+    .summary-card {
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ffe2a4, #f5c24c);
+      color: #4a3312;
+    }
+
+    .summary-card.secondary {
+      background: linear-gradient(135deg, #f7e6c9, #d1b673);
+    }
+
+    .summary-card.danger {
+      background: linear-gradient(135deg, #ffd6c7, #ff9b7a);
+    }
   </style>
 </head>
 
@@ -159,7 +218,7 @@
         <a href="/admin/pemesanan-online" class="nav-link active">
           <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="/admin/pemesanan-offline" class="nav-link">
           <i class="bi bi-telephone"></i> <span>Pemesanan Offline</span>
         </a>
 
@@ -188,31 +247,80 @@
   <!-- NAVBAR -->
   <nav class="navbar d-flex align-items-center" id="navbar">
     <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
-    <input type="text" class="form-control w-50 me-auto" placeholder="Cari pesanan...">
+    <input type="text" class="form-control w-50 me-auto" placeholder="Cari pesanan online...">
     <span class="ms-3 fw-semibold">Pemesanan Online</span>
   </nav>
 
   <!-- CONTENT -->
   <main class="content" id="content">
     <div class="container-fluid">
+
+      <!-- RINGKASAN -->
+      <div class="row g-3 mb-3">
+        <div class="col-md-4">
+          <div class="card summary-card p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-uppercase fw-semibold">Total Pesanan Hari Ini</small>
+                <h3 class="mb-0">28</h3>
+                <small>Online (website + aplikasi)</small>
+              </div>
+              <i class="bi bi-cart4 fs-1 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card summary-card secondary p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-uppercase fw-semibold">Sudah Dibayar</small>
+                <h3 class="mb-0">21</h3>
+                <small>Nilai: Rp 4.500.000</small>
+              </div>
+              <i class="bi bi-check-circle fs-1 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card summary-card danger p-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <small class="text-uppercase fw-semibold">Menunggu Pembayaran</small>
+                <h3 class="mb-0">7</h3>
+                <small>Segera follow-up pelanggan</small>
+              </div>
+              <i class="bi bi-hourglass-split fs-1 opacity-75"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER & JUDUL -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h4 class="mb-0">Daftar Pemesanan Online</h4>
           <small class="text-muted">Kelola pesanan yang masuk melalui website / aplikasi.</small>
         </div>
         <div class="d-flex gap-2">
-          <select class="form-select form-select-sm" style="width: 180px;">
-            <option>Semua Status</option>
-            <option>Menunggu Pembayaran</option>
-            <option>Sudah Dibayar</option>
-            <option>Dibatalkan</option>
-          </select>
-          <select class="form-select form-select-sm" style="width: 160px;">
-            <option>Semua Metode</option>
-            <option>Transfer Bank</option>
-            <option>COD</option>
-            <option>QRIS</option>
-          </select>
+          <div class="filter-select" style="width: 180px;">
+            <i class="bi bi-sliders"></i>
+            <select class="form-select form-select-sm">
+              <option>Semua Status</option>
+              <option>Menunggu Pembayaran</option>
+              <option>Sudah Dibayar</option>
+              <option>Dibatalkan</option>
+            </select>
+          </div>
+
+          <div class="filter-select" style="width: 160px;">
+            <i class="bi bi-credit-card"></i>
+            <select class="form-select form-select-sm">
+              <option>Semua Metode</option>
+              <option>Transfer Bank</option>
+              <option>COD</option>
+              <option>QRIS</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -243,7 +351,6 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Contoh data statis, nanti ganti dengan looping backend -->
                 <tr>
                   <td><span class="fw-semibold">ORD-20251101</span></td>
                   <td>Rina Anjani</td>
@@ -262,20 +369,18 @@
                       <button class="btn btn-outline-dark">
                         <i class="bi bi-eye"></i> Detail
                       </button>
-                      <!-- Tombol lihat bukti, kirim URL bukti lewat data-bukti -->
                       <button class="btn btn-outline-primary btn-lihat-bukti"
                               data-bs-toggle="modal"
                               data-bs-target="#modalBuktiTransfer"
                               data-bukti="{{ asset('images/bukti_transfer_rina.jpg') }}">
                         <i class="bi bi-file-earmark-image"></i> Bukti
                       </button>
-
                       <button class="btn btn-success btn-konfirmasi"
-        data-bs-toggle="modal"
-        data-bs-target="#modalKonfirmasiPembayaran"
-        data-orderid="ORD-20251101">
-  <i class="bi bi-check2-circle"></i> Konfirmasi
-</button>
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalKonfirmasiPembayaran"
+                              data-orderid="ORD-20251101">
+                        <i class="bi bi-check2-circle"></i> Konfirmasi
+                      </button>
                     </div>
                   </td>
                 </tr>
@@ -326,7 +431,6 @@
                       <button class="btn btn-outline-dark">
                         <i class="bi bi-eye"></i> Detail
                       </button>
-                      <!-- Untuk COD, tidak ada bukti transfer -->
                       <button class="btn btn-outline-secondary" disabled>
                         <i class="bi bi-file-earmark-image"></i> Tidak ada bukti
                       </button>
@@ -363,7 +467,7 @@
     </div>
   </main>
 
-  <!-- MODAL LIHAT BUKTI TRANSFER / QRIS -->
+  <!-- MODAL LIHAT BUKTI -->
   <div class="modal fade" id="modalBuktiTransfer" tabindex="-1" aria-labelledby="modalBuktiTransferLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
@@ -372,12 +476,29 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
         <div class="modal-body text-center">
-          <!-- Gambar akan di-set lewat JavaScript -->
           <img id="imgBuktiTransfer" src="" alt="Bukti Pembayaran" class="img-fluid rounded shadow-sm">
         </div>
         <div class="modal-footer">
-          {{-- Kalau nanti mau tombol download / approve tinggal tambah di sini --}}
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- (contoh modal konfirmasi kalau mau dipakai) -->
+  <div class="modal fade" id="modalKonfirmasiPembayaran" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Konfirmasi Pembayaran</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <p>Yakin ingin mengkonfirmasi pembayaran untuk pesanan <span id="orderIdSpan" class="fw-semibold"></span>?</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-success">Ya, Konfirmasi</button>
         </div>
       </div>
     </div>
@@ -386,10 +507,37 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     const toggleBtn = document.getElementById('toggle-btn');
-    const sidebar   = document.getElementById('sidebar');
-    const navbar    = document.getElementById('navbar');
-    const content   = document.getElementById('content');
+    const sidebar = document.getElementById('sidebar');
+    const navbar = document.getElementById('navbar');
+    const content = document.getElementById('content');
 
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('collapsed');
+      navbar.classList.toggle('collapsed');
+      content.classList.toggle('collapsed');
+    });
+
+    // set gambar bukti dari data-bukti
+    const buktiButtons = document.querySelectorAll('.btn-lihat-bukti');
+    const imgBuktiTransfer = document.getElementById('imgBuktiTransfer');
+
+    buktiButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const src = btn.getAttribute('data-bukti');
+        imgBuktiTransfer.src = src;
+      });
+    });
+
+    // set ID pesanan ke modal konfirmasi
+    const konfirmasiButtons = document.querySelectorAll('.btn-konfirmasi');
+    const orderIdSpan = document.getElementById('orderIdSpan');
+
+    konfirmasiButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orderId = btn.getAttribute('data-orderid');
+        orderIdSpan.textContent = orderId;
+      });
+    });
   </script>
 </body>
 
