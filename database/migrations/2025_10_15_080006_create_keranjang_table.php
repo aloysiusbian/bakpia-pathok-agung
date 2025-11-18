@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('idProduk', 7)->constrained('produk', 'idProduk')->cascadeOnDelete()->cascadeOnUpdate();;
             $table->decimal('subTotal', 10, 2);
             $table->integer('jumlahBarang');
+            $table->text('gambar');
         });
     }
 
