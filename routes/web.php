@@ -77,7 +77,7 @@ Route::middleware('auth')->group(function () {
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
-   
+
 });
 
 
@@ -100,7 +100,7 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
-// routes/web.php atau routes/admin.php 
+// routes/web.php atau routes/admin.php
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
 Route::get('/pembayaran', function () {
@@ -122,10 +122,10 @@ Route::get('/tesedit', function () {
     return view('pages.edit_profile');
 });
 Route::get('/teslihat', function () {
-    return view('pages.profile');
+    return view('pelanggan.profile');
 });
 Route::get('/tesriwayat', function () {
-    return view('pages.riwayat');
+    return view('pelanggan.riwayat');
 });
 Route::get('/teshapusadmin', function () {
     return view('pages.hapusproduk');
