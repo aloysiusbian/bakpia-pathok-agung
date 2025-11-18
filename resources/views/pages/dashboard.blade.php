@@ -151,7 +151,7 @@
 </a>
 
 
-        <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
+        <a href="{{ route('admin.pemesanan.offline') }}" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
         <a href="/lihatproduk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>

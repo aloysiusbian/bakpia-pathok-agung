@@ -36,9 +36,13 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     // Route logout khusus untuk admin
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    Route::get('/pemesanan-online', function () {
-        return view('pages.pemesanan_online');
+    Route::get('/pemesananOnline', function () {
+        return view('pages.pemesananOnline');
     })->name('pemesanan.online');
+
+    Route::get('/pemesananOffline', function () {
+        return view('pages.pemesananOffline');
+    })->name('pemesanan.offline');
 
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk

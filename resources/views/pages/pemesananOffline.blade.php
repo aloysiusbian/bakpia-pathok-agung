@@ -208,14 +208,13 @@
   <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div>
-      <a class="logo" href="#">
-        <img src="images/logo.png" alt="Logo Toko" height="40">
+      <a class="logo" href="/">
+        <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
       </a>
-      
       <div class="profile">
-  <img src="images/bian.png" alt="Admin">
-  <h6>Alberto Sahara</h6>
-</div>
+        <img src="{{ asset('images/bian.png') }}" alt="Admin">
+        <h6>Alberto Sahara</h6>
+      </div>
 
 
       <div class="menu px-2">
@@ -241,13 +240,7 @@
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
         <a href="#" class="nav-link">
-          <i class="bi bi-box-seam"></i> <span>Tambah Produk</span>
-        </a>
-        <a href="#" class="nav-link">
-          <i class="bi bi-pencil-square"></i> <span>Edit Produk</span>
-        </a>
-        <a href="#" class="nav-link">
-          <i class="bi bi-trash3"></i> <span>Hapus Produk</span>
+          <i class="bi bi-box-seam"></i> <span>Lihat Produk</span>
         </a>
         <hr class="my-2">
       </div>
