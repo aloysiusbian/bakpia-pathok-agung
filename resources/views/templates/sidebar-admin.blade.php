@@ -460,108 +460,107 @@
 </head>
 
 <body>
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+    <div>
+        <a class="logo" href="/">
+            <img class="logo-full" src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
 
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-        <div>
-            <a class="logo" href="/">
-                <img class="logo-full" src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
-
-                <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Icon" height="30">
-            </a>
-            <div class="profile d-flex align-items-center justify-content-center">
-                <div class="profile-content">
-                    <img src="{{ asset('images/bian.png') }}" alt="Admin" class="rounded-circle me-3">
-                    <span class="profile-name">Alberto Sahara</span>
-                </div>
-            </div>
-
-            <div class="menu px-2">
-                <hr class="my-2">
-                <p class="nav-section-title">Dashboard</p>
-                <ul class="nav flex-column px-3">
-                    <li class="nav-item ">
-                        <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
-                            href="/admin/dashboard" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Beranda"><i class="bi bi-speedometer2"></i>
-                            <span>Dashboard</span></a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link {{ request()->is('Analisis') ? 'active' : '' }}" href="#"
-                            data-bs-toggle="tooltip" data-bs-placement="right" title="Analisis"><i
-                                class="bi bi-graph-up"></i>
-                            <span>Analisis</span></a>
-                    </li>
-                </ul>
-                <hr class="my-2">
-                <p class="nav-section-title mt-3">Pesanan</p>
-                <ul class="nav flex-column px-3">
-                    <li class="nav-item ">
-                        <a class="nav-link {{ request()->is('admin/pemesananOnline') ? 'active' : '' }}"
-                            href="/admin/pemesananOnline" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Pemesanan Online"><i class="bi bi-cart4"></i>
-                            <span>Pemesanan Online</span></a>
-                    </li>
-                    <li class="nav-item ">
-                        <a class="nav-link {{ request()->is('admin/pemesananOffline') ? 'active' : '' }}"
-                            href="/admin/pemesananOffline" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Pemesanan Offline"><i class="bi bi-telephone"></i>
-                            <span>Pemesanan Offline</span></a>
-                    </li>
-                </ul>
-                <hr class="my-2">
-                <p class="nav-section-title mt-3">Produk</p>
-                <ul class="nav flex-column px-3">
-                    <li class="nav-item text-center mb-3">
-                        <a class="nav-link {{ request()->is('admin/lihatproduk') ? 'active' : '' }}"
-                            href="/admin/lihatproduk" data-bs-toggle="tooltip" data-bs-placement="right"
-                            title="Lihat Produk"><i class="bi bi-box-seam"></i>
-                            <span>Lihat Produk</span></a>
-                    </li>
-                </ul>
+            <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Icon" height="30">
+        </a>
+        <div class="profile d-flex align-items-center justify-content-center">
+            <div class="profile-content">
+                <img src="{{ asset('images/bian.png') }}" alt="Admin" class="rounded-circle me-3">
+                <span class="profile-name">Alberto Sahara</span>
             </div>
         </div>
 
-        <div class="text-center mb-3">
-            <a href="/" class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+        <div class="menu px-2">
+            <hr class="my-2">
+            <p class="nav-section-title">Dashboard</p>
+            <ul class="nav flex-column px-3">
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
+                       href="/admin/dashboard" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Beranda"><i class="bi bi-speedometer2"></i>
+                        <span>Dashboard</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('Analisis') ? 'active' : '' }}" href="#"
+                       data-bs-toggle="tooltip" data-bs-placement="right" title="Analisis"><i
+                            class="bi bi-graph-up"></i>
+                        <span>Analisis</span></a>
+                </li>
+            </ul>
+            <hr class="my-2">
+            <p class="nav-section-title mt-3">Pesanan</p>
+            <ul class="nav flex-column px-3">
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('admin/pemesananOnline') ? 'active' : '' }}"
+                       href="/admin/pemesananOnline" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Pemesanan Online"><i class="bi bi-cart4"></i>
+                        <span>Pemesanan Online</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('admin/pemesananOffline') ? 'active' : '' }}"
+                       href="/admin/pemesananOffline" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Pemesanan Offline"><i class="bi bi-telephone"></i>
+                        <span>Pemesanan Offline</span></a>
+                </li>
+            </ul>
+            <hr class="my-2">
+            <p class="nav-section-title mt-3">Produk</p>
+            <ul class="nav flex-column px-3">
+                <li class="nav-item text-center mb-3">
+                    <a class="nav-link {{ request()->is('admin/lihatproduk') ? 'active' : '' }}"
+                       href="/admin/lihatproduk" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Lihat Produk"><i class="bi bi-box-seam"></i>
+                        <span>Lihat Produk</span></a>
+                </li>
+            </ul>
         </div>
     </div>
 
-    <!-- NAVBAR -->
-    <nav class="navbar d-flex align-items-center" id="navbar">
-        <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
-        <input type="text" class="form-control w-50 me-auto" placeholder="Admin Dashboard">
-    </nav>
+    <div class="text-center mb-3">
+        <a href="/logout" methods="POST" class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+    </div>
+</div>
 
-    @yield('content')
+<!-- NAVBAR -->
+<nav class="navbar d-flex align-items-center" id="navbar">
+    <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
+    <input type="text" class="form-control w-50 me-auto" placeholder="Admin Dashboard">
+</nav>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@yield('content')
 
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const navbar = document.getElementById('navbar');
-        const content = document.getElementById('content');
-        const toggleBtn = document.getElementById('toggle-btn');
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-        toggleBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('collapsed');
-            navbar.classList.toggle('collapsed');
-            content.classList.toggle('collapsed');
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const navbar = document.getElementById('navbar');
+    const content = document.getElementById('content');
+    const toggleBtn = document.getElementById('toggle-btn');
+
+    toggleBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('collapsed');
+        navbar.classList.toggle('collapsed');
+        content.classList.toggle('collapsed');
+    });
+
+    /* resources/views/admin/dashboard.blade.php (Di dalam tag <script>) */
+
+    // ... kode JS yang sudah ada
+
+    // INISIALISASI TOOLTIP BOOTSTRAP
+    document.addEventListener('DOMContentLoaded', function () {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            // Hanya tampilkan tooltip jika sidebar sedang collapsed, atau gunakan konfigurasi default
+            return new bootstrap.Tooltip(tooltipTriggerEl);
         });
-
-        /* resources/views/admin/dashboard.blade.php (Di dalam tag <script>) */
-
-        // ... kode JS yang sudah ada
-
-        // INISIALISASI TOOLTIP BOOTSTRAP
-        document.addEventListener('DOMContentLoaded', function () {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                // Hanya tampilkan tooltip jika sidebar sedang collapsed, atau gunakan konfigurasi default
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
-        });
-    </script>
+    });
+</script>
 
 </body>
 

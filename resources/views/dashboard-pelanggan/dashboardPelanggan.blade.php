@@ -8,7 +8,7 @@
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card p-4 text-center">
-                    <i class="bi bi-basket-fill fs-2 text-success bg-light"></i>
+                    <i class="bi bi-basket-fill fs-2 text-success"></i>
                     <h6 class="mt-2 text-muted">Total Pembelian</h6>
                     <h3 class="fw-bold">12</h3>
                     <small class="text-success">+2 pesanan baru minggu ini</small>
@@ -16,7 +16,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card p-4 text-center">
-                    <i class="bi bi-cart-check fs-2 text-primary bg-light"></i>
+                    <i class="bi bi-cart-check fs-2 text-primary"></i>
                     <h6 class="mt-2 text-muted">Pesanan Aktif</h6>
                     <h3 class="fw-bold">3</h3>
                     <small class="text-warning">Sedang diproses</small>
@@ -24,7 +24,7 @@
             </div>
             <div class="col-md-4">
                 <div class="card p-4 text-center">
-                    <i class="bi bi-cash-stack fs-2 text-danger bg-light"></i>
+                    <i class="bi bi-cash-stack fs-2 text-danger"></i>
                     <h6 class="mt-2 text-muted">Total Pengeluaran</h6>
                     <h3 class="fw-bold">Rp 450.000</h3>
                     <small class="text-muted">Bulan ini</small>
