@@ -173,9 +173,8 @@
                 <p class="nav-section-title mt-3">Pesanan</p>
 
                 <a href="{{ route('admin.pemesanan.online') }}" class="nav-link">
-    <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
-                </a>
-                <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
+                <i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
+                  <a href="{{ route('admin.pemesanan.offline') }}" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
                 <hr class="my-2">
                 <p class="nav-section-title mt-3">Produk</p>
                 <a href="/tambah_produk" class="nav-link active"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
@@ -198,7 +197,7 @@
 
         <div class="card p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5>Data Produk Bakpia</h5>
+                <h5></h5>
                 <a href="/tambahproduk" class="btn btn-primary" style="background-color: #f5c24c; border: none; color: #3a2d1a;">
                     <i class="bi bi-plus-circle"></i> Tambah Produk Baru
                 </a>

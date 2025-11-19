@@ -236,7 +236,7 @@
 
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
-        <a href="#" class="nav-link">
+        <a href="/lihatproduk" class="nav-link">
           <i class="bi bi-box-seam"></i> <span>Lihat Produk</span>
         </a>
         <hr class="my-2">
