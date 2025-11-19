@@ -144,6 +144,9 @@ Route::get('/teslihat', function () {
 Route::get('/tesriwayat', function () {
     return view('pages.riwayat');
 });
-Route::get('/teshapusadmin', function () {
-    return view('pages.hapusproduk');
+Route::get('/lihatproduk', function () {
+    return view('pages.lihatproduk');
+});
+Route::get('/tambahproduk', function () {
+    return view('pages.tambah_produk');
 });

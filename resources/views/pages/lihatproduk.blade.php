@@ -171,8 +171,9 @@
                 <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
                 <hr class="my-2">
                 <p class="nav-section-title mt-3">Pesanan</p>
+
                 <a href="{{ route('admin.pemesanan.online') }}" class="nav-link">
-                    <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
+    <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
                 </a>
                 <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
                 <hr class="my-2">
@@ -198,7 +199,7 @@
         <div class="card p-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5>Data Produk Bakpia</h5>
-                <a href="{{ url('/admin/produk/create') }}" class="btn btn-primary" style="background-color: #f5c24c; border: none; color: #3a2d1a;">
+                <a href="/tambahproduk" class="btn btn-primary" style="background-color: #f5c24c; border: none; color: #3a2d1a;">
                     <i class="bi bi-plus-circle"></i> Tambah Produk Baru
                 </a>
             </div>
@@ -207,7 +208,7 @@
                 <table class="table table-hover table-bordered table-custom align-middle">
                     <thead>
                         <tr>
-                            <th style="width: 50px;">#</th>
+                            <th style="width: 50px;">No</th>
                             <th style="width: 80px;">Gambar</th>
                             <th>Nama Produk</th>
                             <th>Harga (Rp)</th>
@@ -235,7 +236,6 @@
                             </td>
                         </tr>
 
-                        <!-- {{-- Contoh Data Statis 2 --}} -->
                         <tr>
                             <td>2</td>
                             <td class="text-center">
@@ -260,7 +260,7 @@
                                     alt="Bakpia Durian"
                                     class="img-thumbnail-custom">
                             </td>
-                            <td class="fw-bold">Bakpia Durian Spesial</td>
+                            <td class="fw-bold">Bakpia Kacang Hijau (20 Pcs)</td>
                             <td>60.000</td>
                             <td>45</td>
                             <td>Bakpia</td>
