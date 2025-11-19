@@ -220,9 +220,7 @@
       <div class="menu px-2">
         <hr class="my-2">
         <p class="nav-section-title">Dashboard</p>
-        <a href="#" class="nav-link">
-          <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
-        </a>
+        <a href="/admin/dashboard" class="nav-link active"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
 
         <a href="#" class="nav-link">
           <i class="bi bi-graph-up"></i> <span>Analytics</span>
@@ -230,12 +228,11 @@
 
         <hr class="my-2">
         <p class="nav-section-title mt-3">Pesanan</p>
-        <a href="#" class="nav-link">
-          <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
+        <a href="{{ route('admin.pemesanan.online') }}" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
+          
         </a>
-        <a href="#" class="nav-link active">
-          <i class="bi bi-telephone"></i> <span>Pemesanan Offline</span>
-        </a>
+        <a href="{{ route('admin.pemesanan.offline') }}" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
+        
 
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
