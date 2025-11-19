@@ -268,8 +268,6 @@
                                 <button class="btn btn-sm btn-danger action-btn" title="Hapus"><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
-
-
                     </tbody>
                 </table>
             </div>
