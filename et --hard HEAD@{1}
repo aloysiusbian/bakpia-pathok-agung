@@ -1,0 +1,53 @@
+[33mc3eaecb[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: pull: Fast-forward
+[33m264733a[m HEAD@{1}: pull: Fast-forward
+[33m094abd4[m HEAD@{2}: commit: dashboard pelanggan
+[33m32c8242[m HEAD@{3}: commit: tambah_produk
+[33m37da016[m HEAD@{4}: commit: perbaikan_dashboard
+[33m09e117e[m HEAD@{5}: pull: Merge made by the 'ort' strategy.
+[33m028de42[m HEAD@{6}: commit: gantiWarna
+[33mcef5ecc[m HEAD@{7}: pull: Fast-forward
+[33m91abe55[m HEAD@{8}: commit: dashboard
+[33m319c8a5[m HEAD@{9}: pull: Fast-forward
+[33m3096fe1[m HEAD@{10}: commit: revisiDetail
+[33m5956246[m HEAD@{11}: pull: Fast-forward
+[33m5d7feee[m HEAD@{12}: commit: detail
+[33m799f358[m HEAD@{13}: pull: Fast-forward
+[33m0dc679e[m HEAD@{14}: pull: Fast-forward
+[33m96970dc[m HEAD@{15}: commit: logoLogin
+[33me6a77f7[m HEAD@{16}: commit: Header3
+[33mf8bab72[m HEAD@{17}: pull: Fast-forward
+[33m0861a7d[m HEAD@{18}: commit: header2
+[33me1a6e41[m HEAD@{19}: pull: Fast-forward
+[33m8a33fe4[m HEAD@{20}: commit: Header
+[33m69e9e3d[m HEAD@{21}: pull: Fast-forward
+[33m23b97bd[m HEAD@{22}: pull: Fast-forward
+[33mb90ac1b[m HEAD@{23}: pull: Merge made by the 'ort' strategy.
+[33mf827f6b[m HEAD@{24}: commit: tesKeranjang
+[33m71b1a52[m HEAD@{25}: pull: Fast-forward
+[33m80db7f7[m HEAD@{26}: commit (merge): bismilah bener
+[33m753261d[m HEAD@{27}: commit (merge): Merge branch 'main' of https://github.com/aloysiusbian/bakpia-pathok-agung
+[33mf0bcba1[m HEAD@{28}: commit (merge): Merge branch 'main' of https://github.com/aloysiusbian/bakpia-pathok-agung
+[33md05f47a[m HEAD@{29}: commit: updetKeranjang
+[33m29e06b4[m HEAD@{30}: pull: Fast-forward
+[33m06e67e3[m HEAD@{31}: commit (merge): alamak tabrakan
+[33m93c0df2[m HEAD@{32}: commit (merge): Merge branch 'main' of https://github.com/aloysiusbian/bakpia-pathok-agung
+[33m5c89aef[m HEAD@{33}: commit: lihatPesanan
+[33mb95c6a0[m HEAD@{34}: pull: Fast-forward
+[33m729ed6f[m HEAD@{35}: pull: Fast-forward
+[33m7a720db[m HEAD@{36}: commit: perbaikanQris
+[33me983a79[m HEAD@{37}: pull: Merge made by the 'ort' strategy.
+[33ma529d5a[m HEAD@{38}: commit: qris&bank
+[33maf738d8[m HEAD@{39}: pull: Fast-forward
+[33mf1bbf44[m HEAD@{40}: commit: hapusRoute
+[33mc1ad24c[m HEAD@{41}: commit: qris
+[33m3eced11[m HEAD@{42}: pull: Fast-forward
+[33mb98f25c[m HEAD@{43}: pull: Fast-forward
+[33ma6d585f[m HEAD@{44}: pull: Merge made by the 'ort' strategy.
+[33m8d14c44[m HEAD@{45}: commit: tesPush
+[33m5a73d23[m HEAD@{46}: pull: Merge made by the 'ort' strategy.
+[33md48d8a5[m HEAD@{47}: commit: Detail_produk
+[33m7630cb7[m HEAD@{48}: pull: Fast-forward
+[33mbdae743[m HEAD@{49}: pull: Fast-forward
+[33mf15f7fd[m HEAD@{50}: pull: Fast-forward
+[33m9218bec[m HEAD@{51}: Branch: renamed refs/heads/master to refs/heads/main
+[33m9218bec[m HEAD@{53}: commit (initial): initial commit
