@@ -225,13 +225,7 @@
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
         <a href="/tambah_produk" class="nav-link">
-          <i class="bi bi-box-seam"></i> <span>Tambah Produk</span>
-        </a>
-        <a href="#" class="nav-link">
-          <i class="bi bi-pencil-square"></i> <span>Edit Produk</span>
-        </a>
-        <a href="#" class="nav-link">
-          <i class="bi bi-trash3"></i> <span>Hapus Produk</span>
+          <i class="bi bi-box-seam"></i> <span>Lihat Produk</span>
         </a>
         <hr class="my-2">
       </div>

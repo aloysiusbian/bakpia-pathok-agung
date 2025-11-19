@@ -36,9 +36,13 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     // Route logout khusus untuk admin
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    Route::get('/pemesanan-online', function () {
-        return view('pages.pemesanan_online');
+    Route::get('/pemesananOnline', function () {
+        return view('pages.pemesananOnline');
     })->name('pemesanan.online');
+
+    Route::get('/pemesananOffline', function () {
+        return view('pages.pemesananOffline');
+    })->name('pemesanan.offline');
 
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
@@ -65,6 +69,14 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 */
 Route::middleware('auth')->group(function () {
 
+
+        // --- FITUR KERANJANG (Updated) ---
+
+    // 1. Lihat Keranjang (Menggunakan method index)
+    Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
+
+    // 2. Tambah ke Keranjang
+
     Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
 
     // Route untuk logout pelanggan
@@ -78,6 +90,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
    
+
+    // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
+    Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
+
+
 });
 
 
@@ -130,15 +147,3 @@ Route::get('/tesriwayat', function () {
 Route::get('/teshapusadmin', function () {
     return view('pages.hapusproduk');
 });
-Route::get('/teslihatproduk', function () {
-    return view('pages.lihat_produk');
-});
-Route::get('/testambahakun', function () {
-    return view('pages.tambah_admin');
-});
-Route::get('/teskelolaadmin', function () {
-    return view('pages.kelola_admin');
-});
-Route::get('/pelanggan/profile', [CustomerController::class, 'editProfile'])->name('pelanggan.editProfile');
-Route::put('/pelanggan/profile', [CustomerController::class, 'updateProfile'])->name('pelanggan.updateProfile');
-Route::get('/pelanggan/profile', [CustomerController::class, 'showProfile'])->name('pelanggan.showProfile');

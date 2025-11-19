@@ -16,7 +16,8 @@ class Keranjang extends Model
         'idPelanggan',
         'idProduk',
         'subTotal',
-        'jumlahBarang'
+        'jumlahBarang',
+        'gambar'
     ];
     
     public static function tambahKeKeranjang($data)

@@ -6,40 +6,112 @@
 <main class="flex-grow-1">
   <div class="container py-4">
 
+    {{-- Flash Message --}}
+    @if(session('success'))
+      <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+
     {{-- Grid utama: kiri keranjang, kanan ringkasan --}}
     <div class="row g-4">
       {{-- Kiri --}}
       <div class="col-lg-8">
         <h2 class="h4 fw-bold mb-3">Keranjang</h2>
 
-        {{-- Pilih semua --}}
-        <div class="border rounded-3 p-3 bg-white">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="checkAll" disabled>
-            <label class="form-check-label" for="checkAll">Pilih Semua</label>
-          </div>
-        </div>
-
-        {{-- Empty state --}}
-        <div class="border rounded-3 p-4 mt-3 bg-white">
-          <div class="d-flex align-items-center gap-3 py-3">
-            <i class="bi bi-cart fs-1 text-secondary"></i>
-            <div class="flex-grow-1">
-              <div class="fw-semibold">Keranjang belanjamu kosong!</div>
+        @if($items->isEmpty())
+            {{-- Empty state (Sesuai kode Anda) --}}
+            <div class="border rounded-3 p-4 mt-3 bg-white">
+              <div class="d-flex align-items-center gap-3 py-3">
+                <i class="bi bi-cart fs-1 text-secondary"></i>
+                <div class="flex-grow-1">
+                  <div class="fw-semibold">Keranjang belanjamu kosong!</div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+        @else
+            {{-- Pilih semua & Hapus --}}
+            <div class="border rounded-3 p-3 bg-white mb-3 d-flex justify-content-between align-items-center">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="checkAll" checked>
+                <label class="form-check-label" for="checkAll">Pilih Semua</label>
+              </div>
+              {{-- Tombol Kosongkan --}}
+              <form action="{{ route('keranjang.clear') }}" method="POST" onsubmit="return confirm('Kosongkan keranjang?');">
+                  @csrf
+                  <button type="submit" class="btn btn-link text-danger text-decoration-none fw-bold p-0 small">Hapus Semua</button>
+              </form>
+            </div>
+
+            {{-- List Items (Looping) --}}
+            <div class="d-flex flex-column gap-3">
+                @foreach($items as $item)
+                <div class="border rounded-3 p-3 bg-white shadow-sm">
+                    <div class="row align-items-center">
+                        {{-- Checkbox & Gambar --}}
+                        <div class="col-3 col-md-2 d-flex align-items-center gap-2">
+                            <input class="form-check-input item-checkbox" type="checkbox" checked>
+                            <img src="{{ asset('images/' . $item->produk->gambar) }}" 
+                                 alt="{{ $item->produk->namaProduk }}" 
+                                 class="rounded border"
+                                 style="width: 100%; aspect-ratio: 1/1; object-fit: cover;"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/100x100?text=Produk';">
+                        </div>
+
+                        {{-- Info Produk --}}
+                        <div class="col-9 col-md-6">
+                            <h6 class="fw-semibold mb-1 text-truncate">{{ $item->produk->namaProduk }}</h6>
+                            <div class="text-muted small">Rp{{ number_format($item->produk->harga, 0, ',', '.') }}</div>
+                            <div class="fw-bold text-dark mt-1">Subtotal: Rp{{ number_format($item->subTotal, 0, ',', '.') }}</div>
+                        </div>
+
+                        {{-- Actions (Qty & Delete) --}}
+                        <div class="col-12 col-md-4 mt-3 mt-md-0 d-flex justify-content-between justify-content-md-end align-items-center gap-3">
+                            {{-- Update Quantity --}}
+                            <form action="{{ route('keranjang.update', $item->idKeranjang) }}" method="POST" class="d-flex align-items-center border rounded px-2" style="height: 32px;">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" name="jumlahBarang" value="{{ $item->jumlahBarang - 1 }}" 
+                                        class="btn btn-sm btn-link text-dark text-decoration-none p-0 px-1" {{ $item->jumlahBarang <= 1 ? 'disabled' : '' }}>-</button>
+                                
+                                <input type="text" value="{{ $item->jumlahBarang }}" readonly 
+                                       class="border-0 text-center bg-transparent fw-bold" style="width: 30px; font-size: 0.9rem;">
+                                
+                                <button type="submit" name="jumlahBarang" value="{{ $item->jumlahBarang + 1 }}" 
+                                        class="btn btn-sm btn-link text-dark text-decoration-none p-0 px-1">+</button>
+                            </form>
+
+                            {{-- Delete Button --}}
+                            <form action="{{ route('keranjang.destroy', $item->idKeranjang) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-link text-secondary p-0">
+                                    <i class="bi bi-trash fs-5"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        @endif
+
       </div>
 
       {{-- Kanan: Ringkasan --}}
       <div class="col-lg-4">
-        <div class="border rounded-3 p-3 bg-white">
+        <div class="border rounded-3 p-3 bg-white position-sticky" style="top: 2rem;">
           <h5 class="fw-bold mb-3">Ringkasan Belanja</h5>
           <div class="d-flex justify-content-between align-items-center mb-3">
             <span>Total</span>
-            <span>—</span>
+            <span class="fw-bold">Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
           </div>
-          <button class="btn w-100 text-white fw-bold" style="background-color: #000; border-color: #000;">Beli</button>
+          <button class="btn w-100 text-white fw-bold" 
+                  style="background-color: #000; border-color: #000;"
+                  {{ $items->isEmpty() ? 'disabled' : '' }}>
+              Beli ({{ $items->sum('jumlahBarang') }})
+          </button>
         </div>
       </div>
     </div>
@@ -63,19 +135,20 @@
               alt="{{ $product->namaProduk }}"
               class="w-100"
               style="height:180px; object-fit:cover;"
-              onerror="this.onerror=null;this.src='https://placehold.co/300x180/A0522D/FFFFFF?text=Bakpia';"
+              onerror="this.onerror=null;this.src='https://placehold.co/300x180/A0522D/FFFFFF?text=Produk';"
             >
             <div class="product-info p-3">
-              <div class="product-name fw-semibold mb-1">{{ $product->namaProduk }}</div>
+              <div class="product-name fw-semibold mb-1 text-truncate">{{ $product->namaProduk }}</div>
               <div class="product-stock text-muted small">Stok : {{ $product->stok }}</div>
-              <div class="product-rating text-muted small">Rating : {{ number_format($product->rating,1) }} ⭐</div>
+              <div class="product-rating text-muted small">Rating : {{ number_format($product->rating ?? 0, 1) }} ⭐</div>
               <div class="product-price mt-2 fw-bold">Rp{{ number_format($product->harga, 0, ',', '.') }}</div>
 
               {{-- Tombol + Keranjang --}}
               <form action="{{ route('keranjang.store') }}" method="POST" class="mt-3">
                 @csrf
                 <input type="hidden" name="idProduk" value="{{ $product->idProduk }}">
-                <input type="hidden" name="kuantitas" value="1">
+                {{-- PERBAIKAN PENTING: Ubah name='kuantitas' jadi 'jumlahBarang' agar sesuai Controller --}}
+                <input type="hidden" name="jumlahBarang" value="1">
                 <button type="submit"
                         class="btn btn-add-cart w-100 fw-semibold"
                         {{ $product->stok < 1 ? 'disabled' : '' }}>
@@ -135,8 +208,11 @@
     const master = document.getElementById('checkAll');
     if (!master) return;
     master.removeAttribute('disabled');
+    
+    // Perbaikan selector agar sesuai dengan checkbox item yang baru ditambahkan
     const getItemChecks = () =>
-      Array.from(document.querySelectorAll('input[type="checkbox"]:not(#checkAll)'));
+      Array.from(document.querySelectorAll('.item-checkbox')); // Menggunakan class spesifik
+      
     function syncMaster() {
       const items = getItemChecks();
       if (items.length === 0) { master.checked = false; master.indeterminate = false; return; }
@@ -151,7 +227,7 @@
     });
     document.body.addEventListener('change', function (e) {
       const tgt = e.target;
-      if (tgt.matches('input[type="checkbox"]') && tgt.id !== 'checkAll') {
+      if (tgt.classList.contains('item-checkbox')) {
         syncMaster();
       }
     });

@@ -2,72 +2,107 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Keranjang;
+use App\Models\Produk; // Pastikan model Produk di-import
 use Illuminate\Http\Request;
-use App\Models\Produk;
-use App\Models\Keranjang; // <-- GANTI: Gunakan model Keranjang dari database
-use Illuminate\Support\Facades\Auth; // <-- BARU: Diperlukan untuk mendapatkan info user yang login
+use Illuminate\Support\Facades\Auth;
 
 class KeranjangController extends Controller
 {
     /**
-     * Menambahkan atau memperbarui produk di keranjang database.
+     * Menampilkan daftar isi keranjang belanja user saat ini.
+     */
+    public function tampilKeranjang()
+    {
+        // Ambil ID user yang sedang login
+        $idPelanggan = Auth::id();
+
+        // Panggil method static dari Model Keranjang
+        $items = Keranjang::getKeranjang($idPelanggan);
+
+        // Hitung Grand Total (Total belanja keseluruhan)
+        $grandTotal = $items->sum('subTotal');
+
+        return view('pages.keranjang', compact('items', 'grandTotal'));
+    }
+
+    /**
+     * Menambahkan produk ke keranjang.
      */
     public function store(Request $request)
     {
-        // 1. Validasi input dari form
+        // 1. Validasi Input
         $request->validate([
-            'idProduk' => 'required|exists:produk,idProduk',
-            'kuantitas' => 'required|integer|min:1',
+            'idProduk' => 'required|exists:produk,idProduk', // Pastikan tabel produk & kolom ID sesuai
+            'jumlahBarang' => 'required|integer|min:1',
         ]);
 
-        // BARU: Pastikan pengguna sudah login sebelum menambahkan ke keranjang
-        if (!Auth::check()) {
-            // Jika belum login, arahkan ke halaman login
-            return redirect()->route('login')->with('error', 'Anda harus login untuk menambahkan produk ke keranjang.');
-        }
+        // 2. Ambil data user dan produk
+        $idPelanggan = Auth::id();
+        $produk = Produk::findOrFail($request->idProduk);
 
-        $idProduk = $request->input('idProduk');
-        $kuantitas = $request->input('kuantitas');
-        $produk = Produk::find($idProduk);
-        $userId = Auth::id(); // Dapatkan ID dari pengguna yang sedang login
+        // 3. Hitung Subtotal (Harga x Jumlah)
+        // Penting: Hitung di server, jangan ambil harga dari input form untuk keamanan
+        $subTotal = $produk->harga * $request->jumlahBarang;
 
-        // 2. Validasi stok di server (SANGAT PENTING)
-        if ($produk->stok < $kuantitas) {
-            // Jika stok tidak mencukupi, kembalikan ke halaman sebelumnya dengan error
-            return back()->with('error', 'Stok produk tidak mencukupi.');
-        }
+        // 4. Siapkan array data sesuai $fillable di Model
+        $data = [
+            'idPelanggan'  => $idPelanggan,
+            'idProduk'     => $produk->idProduk,
+            'jumlahBarang' => $request->jumlahBarang,
+            'subTotal'     => $subTotal,
+            'gambar'       => $produk->gambar, // Asumsi kolom gambar ada di tabel produk
+        ];
 
-        // 3. GANTI: Logika untuk menyimpan ke database, bukan session
-        // Cek apakah produk ini sudah ada di keranjang milik user ini
-        $itemKeranjang = Keranjang::where('idPelanggan', $userId)
-                                  ->where('idProduk', $idProduk)
-                                  ->first();
+        // 5. Panggil fungsi static custom Anda
+        Keranjang::tambahKeKeranjang($data);
 
-        if ($itemKeranjang) {
-            // Jika produk sudah ada di keranjang, cukup tambahkan kuantitasnya
-            $itemKeranjang->kuantitas += $kuantitas;
-            $itemKeranjang->save();
-        } else {
-            // Jika produk belum ada, buat baris data baru di tabel 'keranjangs'
-            Keranjang::create([
-                'user_id' => $userId,
-                'idProduk' => $idProduk,
-                'kuantitas' => $kuantitas,
-            ]);
-        }
-        
-        // 4. Redirect kembali dengan pesan sukses
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        return redirect()->route('keranjang.index')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
-    public function tampilKeranjang()
+    /**
+     * Menghapus satu item spesifik dari keranjang.
+     */
+    public function destroy($idKeranjang)
     {
-        $idPelanggan = Auth::user()->idPelanggan;
+        // Panggil fungsi static hapusDariKeranjang
+        Keranjang::hapusDariKeranjang($idKeranjang);
 
-        // Ambil item keranjang, dan sertakan data produk terkait (Eager Loading)
-        $items = Keranjang::where('idPelanggan', $idPelanggan)->with('produk')->get();
+        return redirect()->back()->with('success', 'Item berhasil dihapus.');
+    }
 
-        return view('pages.keranjang', compact('items'));
+    /**
+     * Mengosongkan seluruh keranjang belanja user.
+     */
+    public function clear()
+    {
+        $idPelanggan = Auth::id();
+        
+        // Panggil fungsi static hapusKeranjang
+        Keranjang::hapusKeranjang($idPelanggan);
+
+        return redirect()->back()->with('success', 'Keranjang berhasil dikosongkan.');
+    }
+    
+    /**
+     * (Opsional) Update jumlah barang langsung dari halaman keranjang
+     * Misal: Tombol (+) atau (-)
+     */
+    public function update(Request $request, $idKeranjang)
+    {
+        $request->validate([
+            'jumlahBarang' => 'required|integer|min:1'
+        ]);
+
+        $item = Keranjang::where('idKeranjang', $idKeranjang)->firstOrFail();
+        
+        // Ambil harga terbaru produk untuk update subtotal
+        $hargaProduk = $item->produk->harga; 
+
+        $item->jumlahBarang = $request->jumlahBarang;
+        $item->subTotal = $hargaProduk * $request->jumlahBarang;
+        $item->save();
+
+        return redirect()->back()->with('success', 'Jumlah barang diperbarui.');
     }
 }
-
