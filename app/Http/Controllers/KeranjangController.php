@@ -118,5 +118,5 @@ class KeranjangController extends Controller
     ]);
 
     return redirect()->back()->with('success', 'Keranjang diperbarui.');
- }
+}
 }
