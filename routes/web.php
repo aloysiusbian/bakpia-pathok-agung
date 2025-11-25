@@ -94,6 +94,8 @@ Route::middleware('auth')->group(function () {
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
 
+    Route::patch('/keranjang/{id}', [KeranjangController::class, 'update'])->name('keranjang.update');
+
 
 });
 
