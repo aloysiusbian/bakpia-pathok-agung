@@ -130,7 +130,7 @@ Route::get('/bank', function () {
     return view('pages.bank');
 });
 Route::get('/testes', function () {
-    return view('pages.dbPelanggan');
+    return view('pelanggan.dbPelanggan');
 });
 Route::get('/tes', function () {
     return view('pages.dashboard');
@@ -142,11 +142,20 @@ Route::get('/teslihat', function () {
     return view('pages.profile');
 });
 Route::get('/tesriwayat', function () {
-    return view('pages.riwayat');
+    return view('pelanggan.riwayat');
 });
 Route::get('/lihatproduk', function () {
     return view('pages.lihatproduk');
 });
 Route::get('/tambahproduk', function () {
     return view('pages.tambah_produk');
+});
+Route::get('/pemesananoffline', function () {
+    return view('pages.pemesananOffline');
+});
+Route::get('/testambahakun', function () {
+    return view('pages.tambah_admin');
+});
+Route::get('/teskelolaadmin', function () {
+    return view('pages.kelola_admin');
 });

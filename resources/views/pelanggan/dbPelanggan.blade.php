@@ -136,7 +136,7 @@
       </a>
       <div class="profile">
         <img src="{{ asset('images/bian.png') }}" alt="Pelanggan">
-        <h6>{{ Auth::user()->name ?? 'Bian anjg' }}</h6>
+        <h6>{{ Auth::user()->name ?? 'Reza Saputra' }}</h6>
       </div>
 
       <div class="menu px-2">
