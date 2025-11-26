@@ -220,28 +220,21 @@
       <div class="menu px-2">
         <hr class="my-2">
         <p class="nav-section-title">Dashboard</p>
-        <a href="#" class="nav-link">
-          <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
-        </a>
-
-        <a href="#" class="nav-link">
-          <i class="bi bi-graph-up"></i> <span>Analytics</span>
-        </a>
-
+        <a href="/admin/dashboard" class="nav-link"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
+        <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Pesanan</p>
-        <a href="#" class="nav-link">
-          <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
-        </a>
-        <a href="#" class="nav-link active">
-          <i class="bi bi-telephone"></i> <span>Pemesanan Offline</span>
-        </a>
+        <a href="{{ route('admin.pemesanan.online') }}" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
 
+
+        <a href="{{ route('admin.pemesanan.offline') }}" class="nav-link active"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
-        <a href="#" class="nav-link">
-          <i class="bi bi-box-seam"></i> <span>Lihat Produk</span>
-        </a>
+        <a href="/lihatproduk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
+        <hr class="my-2">
+        <p class="nav-section-title mt-3">Admin</p>
+        <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>        
+        <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Admin</p>
         <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun Admin</span></a>
@@ -251,9 +244,7 @@
     </div>
 
     <div class="text-center mb-3">
-      <a href="#" class="btn offline-btn w-75">
-        <i class="bi bi-box-arrow-right"></i> Logout
-      </a>
+      <a href="/"class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i>Logout</a>
     </div>
   </div>
 
@@ -319,7 +310,7 @@
                   <option>Telepon</option>
                   <option>WhatsApp</option>
                   <option>Datang Langsung</option>
-                  <option>Reseller / Agen</option>
+                  
                 </select>
               </div>
             </div>
@@ -392,7 +383,7 @@
                   <option>Tunai</option>
                   <option>Transfer Bank</option>
                   <option>QRIS</option>
-                  <option>Tempo / Bon</option>
+                  
                 </select>
               </div>
 
@@ -407,7 +398,7 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label">Nama Kasir / Admin</label>
-                <input type="text" class="form-control" placeholder="Contoh: Sari">
+                <input type="text" class="form-control" placeholder="Contoh: Berto">
               </div>
             </div>
 

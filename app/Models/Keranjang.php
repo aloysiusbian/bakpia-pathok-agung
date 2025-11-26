@@ -19,38 +19,49 @@ class Keranjang extends Model
         'jumlahBarang',
         'gambar'
     ];
-    
-    public static function tambahKeKeranjang($data)
-{
-    // Cek apakah produk sudah ada di keranjang untuk pelanggan INI
-    $existing = static::where('idProduk', $data['idProduk'])
-                      ->where('idPelanggan', $data['idPelanggan'])
-                      ->first();
 
-    if ($existing) {
-        // Update jumlah dan total (Gunakan nama kolom yang benar)
-        $existing->jumlahBarang += $data['jumlahBarang'];
-        $existing->subTotal += $data['subTotal'];
-        return $existing->save(); // Cara Eloquent untuk update
-    } else {
-        // Tambah baru (Cara Eloquent untuk insert)
-        return static::create($data);
+    // --- RELASI (WAJIB DITAMBAHKAN) ---
+
+    public function produk()
+    {
+        return $this->belongsTo(Produk::class, 'idProduk', 'idProduk');
     }
-}
+
+    public function pelanggan()
+    {
+        return $this->belongsTo(Pelanggan::class, 'idPelanggan', 'idPelanggan');
+    }
+
+    // --- METHOD STATIC ---
+
+    public static function tambahKeKeranjang($data)
+    {
+        $existing = static::where('idProduk', $data['idProduk'])
+                          ->where('idPelanggan', $data['idPelanggan'])
+                          ->first();
+
+        if ($existing) {
+            $existing->jumlahBarang += $data['jumlahBarang'];
+            $existing->subTotal += $data['subTotal'];
+            return $existing->save();
+        } else {
+            return static::create($data);
+        }
+    }
 
     public static function getKeranjang($idPelanggan)
-{
-    // Mengambil semua item keranjang untuk pelanggan tertentu
-    return static::where('idPelanggan', $idPelanggan)->get();
-}
+    {
+        // Pakai 'with' agar lebih cepat saat diloop di view
+        return static::with('produk')->where('idPelanggan', $idPelanggan)->get();
+    }
+
     public static function hapusDariKeranjang($idKeranjang)
-{
-    return static::destroy($idKeranjang);
-}
+    {
+        return static::destroy($idKeranjang);
+    }
 
     public static function hapusKeranjang($idPelanggan)
-{
-    // Menghapus semua item keranjang untuk pelanggan tertentu
-    return static::where('idPelanggan', $idPelanggan)->delete();
-}
+    {
+        return static::where('idPelanggan', $idPelanggan)->delete();
+    }
 }

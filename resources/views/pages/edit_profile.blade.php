@@ -152,7 +152,7 @@
       </a>
       <div class="profile">
         <img src="{{ asset('images/bian.png') }}" alt="Pelanggan">
-        <h6>{{ Auth::user()->name ?? 'Delulu' }}</h6>
+        <h6>{{ Auth::user()->name ?? 'Reza Saputra' }}</h6>
       </div>
 
       <div class="menu px-2">
@@ -182,7 +182,7 @@
       <div class="card p-4">
         <h4 class="fw-bold mb-4"><i class="bi bi-person-lines-fill me-2"></i>Edit Profil</h4>
 
-        <form action="{{ route('pelanggan.updateProfile') }}" method="POST" enctype="multipart/form-data">
+        <form action="/tesedit" method="POST" enctype="multipart/form-data">
           @csrf
           @method('PUT')
 

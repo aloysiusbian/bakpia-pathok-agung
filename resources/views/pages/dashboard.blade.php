@@ -146,9 +146,7 @@
         <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Pesanan</p>
-        <a href="{{ route('admin.pemesanan.online') }}" class="nav-link">
-    <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
-</a>
+        <a href="{{ route('admin.pemesanan.online') }}" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
 
 
         <a href="{{ route('admin.pemesanan.offline') }}" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
@@ -157,8 +155,8 @@
         <a href="/lihatproduk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Admin</p>
-        <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun Admin</span></a>
         <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>        
+        <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun</span></a>
         <hr class="my-2">
       </div>
     </div>
