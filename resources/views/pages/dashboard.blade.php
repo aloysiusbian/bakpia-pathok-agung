@@ -156,6 +156,10 @@
         <p class="nav-section-title mt-3">Produk</p>
         <a href="/lihatproduk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
         <hr class="my-2">
+        <p class="nav-section-title mt-3">Admin</p>
+        <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun Admin</span></a>
+        <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>        
+        <hr class="my-2">
       </div>
     </div>
 
