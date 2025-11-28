@@ -153,6 +153,9 @@ Route::get('/tambahproduk', function () {
 Route::get('/pemesananoffline', function () {
     return view('pages.pemesananOffline');
 });
+Route::get('/pemesananonline', function () {
+    return view('pages.pemesananOnline');
+});
 Route::get('/testambahakun', function () {
     return view('pages.tambah_admin');
 });

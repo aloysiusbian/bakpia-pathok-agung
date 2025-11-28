@@ -14,6 +14,24 @@
       overflow-x: hidden;
     }
 
+    /* Samakan tinggi cell pada kolom aksi */
+.table td.text-center {
+  vertical-align: middle !important;
+}
+
+/* Pastikan tombol tidak merenggangkan baris */
+.btn-group.btn-aksi {
+  display: inline-flex;
+  align-items: center;
+}
+
+/* Agar baris memiliki tinggi minimum */
+.table > tbody > tr > td {
+  height: 60px;               /* boleh ubah sesuai selera */
+  vertical-align: middle;
+}
+
+
     .sidebar {
       width: 260px;
       background-color: #e3d3ad;
@@ -129,7 +147,6 @@
       border-radius: 999px;
     }
 
-    /* === FILTER COMBOBOX DENGAN WARNA TEMA === */
     .filter-select {
       position: relative;
     }
@@ -173,7 +190,6 @@
       color: #5a4525;
     }
 
-    /* Kartu ringkasan */
     .summary-card {
       border-radius: 14px;
       background: linear-gradient(135deg, #ffe2a4, #f5c24c);
@@ -227,9 +243,10 @@
         <a href="/tambah_produk" class="nav-link">
           <i class="bi bi-box-seam"></i> <span>Lihat Produk</span>
         </a>
+
         <hr class="my-2">
         <p class="nav-section-title mt-3">Admin</p>
-        <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>        
+        <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>
         <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun</span></a>
         <hr class="my-2">
       </div>
@@ -333,30 +350,20 @@
             <small class="text-muted">Menampilkan 1–10 pesanan</small>
           </div>
 
+          <!-- TABEL: HANYA ID + STATUS + AKSI -->
           <div class="table-responsive">
             <table class="table align-middle">
               <thead>
                 <tr>
                   <th>Id Pemesanan</th>
-                  <th>Nama</th>
-                  <th>Alamat</th>
-                  <th>No. HP</th>
-                  <th>Metode</th>
-                  <th>Total</th>
-                  <th>Tgl Pesan</th>
                   <th>Status Pembayaran</th>
                   <th class="text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody>
+                <!-- Rina -->
                 <tr>
                   <td><span class="fw-semibold">ORD-20251101</span></td>
-                  <td>Rina Anjani</td>
-                  <td>Jl. Malioboro No. 10, Yogyakarta</td>
-                  <td>0812-3456-7890</td>
-                  <td>Transfer Bank</td>
-                  <td>Rp 250.000</td>
-                  <td>13 Nov 2025</td>
                   <td>
                     <span class="badge bg-warning text-dark badge-status">
                       <i class="bi bi-hourglass-split me-1"></i>Menunggu Pembayaran
@@ -364,7 +371,17 @@
                   </td>
                   <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group">
-                      <button class="btn btn-outline-dark">
+                      <button class="btn btn-outline-dark btn-detail"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalDetailPesanan"
+                              data-orderid="ORD-20251101"
+                              data-nama="Rina Anjani"
+                              data-alamat="Jl. Malioboro No. 10, Yogyakarta"
+                              data-hp="0812-3456-7890"
+                              data-metode="Transfer Bank"
+                              data-total="Rp 250.000"
+                              data-tgl="13 Nov 2025"
+                              data-status="Menunggu Pembayaran">
                         <i class="bi bi-eye"></i> Detail
                       </button>
                       <button class="btn btn-outline-primary btn-lihat-bukti"
@@ -383,14 +400,9 @@
                   </td>
                 </tr>
 
+                <!-- Budi -->
                 <tr>
                   <td><span class="fw-semibold">ORD-20251098</span></td>
-                  <td>Budi Santoso</td>
-                  <td>Jl. Kaliurang Km 7, Sleman</td>
-                  <td>0821-1234-5678</td>
-                  <td>QRIS</td>
-                  <td>Rp 150.000</td>
-                  <td>12 Nov 2025</td>
                   <td>
                     <span class="badge bg-success badge-status">
                       <i class="bi bi-check-circle me-1"></i>Sudah Dibayar
@@ -398,7 +410,17 @@
                   </td>
                   <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group">
-                      <button class="btn btn-outline-dark">
+                      <button class="btn btn-outline-dark btn-detail"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalDetailPesanan"
+                              data-orderid="ORD-20251098"
+                              data-nama="Budi Santoso"
+                              data-alamat="Jl. Kaliurang Km 7, Sleman"
+                              data-hp="0821-1234-5678"
+                              data-metode="QRIS"
+                              data-total="Rp 150.000"
+                              data-tgl="12 Nov 2025"
+                              data-status="Sudah Dibayar">
                         <i class="bi bi-eye"></i> Detail
                       </button>
                       <button class="btn btn-outline-primary btn-lihat-bukti"
@@ -411,14 +433,9 @@
                   </td>
                 </tr>
 
+                <!-- Sari -->
                 <tr>
                   <td><span class="fw-semibold">ORD-20251090</span></td>
-                  <td>Sari Wulandari</td>
-                  <td>Jl. Solo Km 5, Yogyakarta</td>
-                  <td>0857-9876-1234</td>
-                  <td>COD</td>
-                  <td>Rp 300.000</td>
-                  <td>10 Nov 2025</td>
                   <td>
                     <span class="badge bg-danger badge-status">
                       <i class="bi bi-x-circle me-1"></i>Dibatalkan
@@ -426,7 +443,17 @@
                   </td>
                   <td class="text-center">
                     <div class="btn-group btn-group-sm" role="group">
-                      <button class="btn btn-outline-dark">
+                      <button class="btn btn-outline-dark btn-detail"
+                              data-bs-toggle="modal"
+                              data-bs-target="#modalDetailPesanan"
+                              data-orderid="ORD-20251090"
+                              data-nama="Sari Wulandari"
+                              data-alamat="Jl. Solo Km 5, Yogyakarta"
+                              data-hp="0857-9876-1234"
+                              data-metode="COD"
+                              data-total="Rp 300.000"
+                              data-tgl="10 Nov 2025"
+                              data-status="Dibatalkan">
                         <i class="bi bi-eye"></i> Detail
                       </button>
                       <button class="btn btn-outline-secondary" disabled>
@@ -483,7 +510,7 @@
     </div>
   </div>
 
-  <!-- (contoh modal konfirmasi kalau mau dipakai) -->
+  <!-- MODAL KONFIRMASI -->
   <div class="modal fade" id="modalKonfirmasiPembayaran" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -497,6 +524,37 @@
         <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
           <button class="btn btn-success">Ya, Konfirmasi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DETAIL PESANAN -->
+  <div class="modal fade" id="modalDetailPesanan" tabindex="-1" aria-labelledby="modalDetailPesananLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalDetailPesananLabel">Detail Pesanan</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row mb-2">
+            <div class="col-md-6">
+              <p class="mb-1"><strong>ID Pemesanan:</strong> <span id="detailOrderId"></span></p>
+              <p class="mb-1"><strong>Nama Pelanggan:</strong> <span id="detailNama"></span></p>
+              <p class="mb-1"><strong>No. HP:</strong> <span id="detailHp"></span></p>
+              <p class="mb-1"><strong>Tanggal Pesan:</strong> <span id="detailTgl"></span></p>
+            </div>
+            <div class="col-md-6">
+              <p class="mb-1"><strong>Alamat:</strong><br><span id="detailAlamat"></span></p>
+              <p class="mb-1"><strong>Metode Pembayaran:</strong> <span id="detailMetode"></span></p>
+              <p class="mb-1"><strong>Total:</strong> <span id="detailTotal"></span></p>
+              <p class="mb-1"><strong>Status Pembayaran:</strong> <span id="detailStatus"></span></p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
         </div>
       </div>
     </div>
@@ -534,6 +592,31 @@
       btn.addEventListener('click', () => {
         const orderId = btn.getAttribute('data-orderid');
         orderIdSpan.textContent = orderId;
+      });
+    });
+
+    // set detail pesanan ke modal detail
+    const detailButtons = document.querySelectorAll('.btn-detail');
+
+    const detailOrderId = document.getElementById('detailOrderId');
+    const detailNama = document.getElementById('detailNama');
+    const detailAlamat = document.getElementById('detailAlamat');
+    const detailHp = document.getElementById('detailHp');
+    const detailMetode = document.getElementById('detailMetode');
+    const detailTotal = document.getElementById('detailTotal');
+    const detailTgl = document.getElementById('detailTgl');
+    const detailStatus = document.getElementById('detailStatus');
+
+    detailButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        detailOrderId.textContent = btn.dataset.orderid;
+        detailNama.textContent = btn.dataset.nama;
+        detailAlamat.textContent = btn.dataset.alamat;
+        detailHp.textContent = btn.dataset.hp;
+        detailMetode.textContent = btn.dataset.metode;
+        detailTotal.textContent = btn.dataset.total;
+        detailTgl.textContent = btn.dataset.tgl;
+        detailStatus.textContent = btn.dataset.status;
       });
     });
   </script>

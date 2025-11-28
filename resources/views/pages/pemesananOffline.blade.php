@@ -200,6 +200,87 @@
       padding: 10px;
       margin-bottom: 10px;
     }
+
+    /* =========== CUSTOM DROPDOWN PRODUK =========== */
+
+    .product-dropdown {
+      position: relative;
+    }
+
+    .product-dropdown-toggle {
+      border-radius: 10px;
+      border: 1px solid #e0c78b;
+      background-color: #fff;
+      padding: 8px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .product-dropdown-toggle:focus {
+      outline: none;
+      box-shadow: 0 0 0 0.15rem rgba(240, 178, 50, 0.35);
+    }
+
+    .product-dropdown-toggle .selected-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .product-dropdown-toggle img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .product-dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 2000;
+      background-color: #fff;
+      border-radius: 10px;
+      margin-top: 4px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      max-height: 260px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+
+    .product-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
+
+    .product-option:hover {
+      background-color: #fff7e5;
+    }
+
+    .product-option img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .product-option-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .product-option-stock {
+      font-size: 0.8rem;
+      color: #777;
+    }
   </style>
 </head>
 
@@ -216,7 +297,6 @@
         <h6>Alberto Sahara</h6>
       </div>
 
-
       <div class="menu px-2">
         <hr class="my-2">
         <p class="nav-section-title">Dashboard</p>
@@ -225,22 +305,20 @@
         <hr class="my-2">
         <p class="nav-section-title mt-3">Pesanan</p>
         <a href="{{ route('admin.pemesanan.online') }}" class="nav-link"><i class="bi bi-cart4"></i> <span>Pemesanan Online</span></a>
-
-
         <a href="{{ route('admin.pemesanan.offline') }}" class="nav-link active"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Produk</p>
         <a href="/lihatproduk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
         <hr class="my-2">
         <p class="nav-section-title mt-3">Admin</p>
-        <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>        
+        <a href="/testambahakun" class="nav-link"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>
         <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun</span></a>
         <hr class="my-2">
       </div>
     </div>
 
     <div class="text-center mb-3">
-      <a href="/"class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i>Logout</a>
+      <a href="/" class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i>Logout</a>
     </div>
   </div>
 
@@ -282,8 +360,9 @@
 
         <div class="card-body">
 
-          <!-- FORM PEMESANAN OFFLINE (TANPA LOGIC) -->
           <form action="#" method="POST">
+            @csrf
+
             <!-- DATA PELANGGAN -->
             <div class="mb-3">
               <div class="section-title">Data Pelanggan</div>
@@ -306,7 +385,6 @@
                   <option>Telepon</option>
                   <option>WhatsApp</option>
                   <option>Datang Langsung</option>
-                  
                 </select>
               </div>
             </div>
@@ -331,23 +409,35 @@
             </div>
 
             <div id="produkWrapper" class="mb-3">
+              <!-- ROW PRODUK PERTAMA -->
               <div class="produk-row row g-2 align-items-end">
                 <div class="col-md-5">
                   <label class="form-label mb-1">Produk</label>
-                  <select class="form-select">
-                    <option value="">-- Pilih Produk --</option>
-                    <option>Bakpia Kacang Hijau (Stok: 50)</option>
-                    <option>Bakpia Coklat (Stok: 30)</option>
-                    <option>Bakpia Keju (Stok: 20)</option>
-                  </select>
+
+                  <!-- DROPDOWN CUSTOM -->
+                  <div class="product-dropdown">
+                    <button type="button" class="product-dropdown-toggle">
+                      <div class="selected-info">
+                        <span class="placeholder-text">-- Pilih Produk --</span>
+                      </div>
+                      <span><i class="bi bi-chevron-down"></i></span>
+                    </button>
+
+                    <!-- nilai untuk backend -->
+                    <input type="hidden" name="produk[]" class="input-produk">
+
+                    <!-- list produk, diisi via JS -->
+                    <div class="product-dropdown-menu d-none"></div>
+                  </div>
                 </div>
+
                 <div class="col-md-2">
                   <label class="form-label mb-1">Jumlah</label>
-                  <input type="number" min="1" class="form-control" value="1">
+                  <input type="number" min="1" class="form-control" value="1" name="jumlah[]">
                 </div>
                 <div class="col-md-3">
                   <label class="form-label mb-1">Harga Satuan (Rp)</label>
-                  <input type="number" min="0" class="form-control" placeholder="Contoh: 35000">
+                  <input type="number" min="0" class="form-control" name="harga_satuan[]">
                 </div>
                 <div class="col-md-2 text-md-end">
                   <button type="button" class="btn btn-outline-theme btn-sm mt-1" id="btnTambahProduk">
@@ -366,35 +456,35 @@
             <div class="row g-3 mb-3">
               <div class="col-md-3">
                 <label class="form-label">Tanggal Pesan <span class="text-danger">*</span></label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" name="tanggal_pesan">
               </div>
               <div class="col-md-3">
                 <label class="form-label">Tanggal Ambil / Kirim</label>
-                <input type="date" class="form-control">
+                <input type="date" class="form-control" name="tanggal_ambil">
               </div>
               <div class="col-md-3">
                 <label class="form-label">Metode Pembayaran <span class="text-danger">*</span></label>
-                <select class="form-select">
+                <select class="form-select" name="metode_pembayaran">
                   <option value="">-- Pilih Metode --</option>
-                  <option>Tunai</option>
-                  <option>Transfer Bank</option>
-                  <option>QRIS</option>
-                  
+                  <option value="tunai">Tunai</option>
+                  <option value="transfer">Transfer Bank</option>
+                  <option value="qris">QRIS</option>
                 </select>
               </div>
+            </div>
 
             <div class="row g-3 mb-4">
               <div class="col-md-4">
                 <label class="form-label">Total Tagihan (Rp)</label>
-                <input type="number" min="0" class="form-control" placeholder="Contoh: 250000">
+                <input type="number" min="0" class="form-control" name="total_tagihan">
               </div>
               <div class="col-md-4">
                 <label class="form-label">Uang Diterima (Rp)</label>
-                <input type="number" min="0" class="form-control" placeholder="Isi jika sudah bayar/DP">
+                <input type="number" min="0" class="form-control" name="uang_diterima">
               </div>
               <div class="col-md-4">
                 <label class="form-label">Nama Kasir / Admin</label>
-                <input type="text" class="form-control" placeholder="Contoh: Berto">
+                <input type="text" class="form-control" placeholder="Contoh: Berto" name="nama_kasir">
               </div>
             </div>
 
@@ -420,7 +510,6 @@
 
     </div>
   </main>
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     const toggleBtn = document.getElementById('toggle-btn');
@@ -434,11 +523,95 @@
       content.classList.toggle('collapsed');
     });
 
-    // Tambah baris produk dinamis (front-end saja, tanpa logic backend)
-    const btnTambahProduk = document.getElementById('btnTambahProduk');
-    const produkWrapper = document.getElementById('produkWrapper');
-    let produkIndex = 1;
+ 
+    const dataProduk = {
+      kacang: {
+        nama: 'Bakpia Kacang Hijau',
+        stok: 50,
+        gambar: "{{ asset('images/bakpia-kacang-hijau.jpg') }}"
+      },
+      coklat: {
+        nama: 'Bakpia Coklat',
+        stok: 30,
+        gambar: "{{ asset('images/bakpia-cokelat.jpg') }}"
+      },
+      keju: {
+        nama: 'Bakpia Keju',
+        stok: 20,
+        gambar: "{{ asset('images/bakpia-keju.jpg') }}"
+      }
+    };
 
+    // buat HTML list option dari dataProduk
+    function buildOptionsHtml() {
+      let html = '';
+      Object.keys(dataProduk).forEach(key => {
+        const p = dataProduk[key];
+        html += `
+          <div class="product-option" data-value="${key}">
+            <img src="${p.gambar}" alt="${p.nama}">
+            <div>
+              <div class="product-option-name">${p.nama}</div>
+              <div class="product-option-stock">Stok: ${p.stok}</div>
+            </div>
+          </div>
+        `;
+      });
+      return html;
+    }
+
+    // inisialisasi 1 dropdown produk
+    function initProductDropdown(wrapper) {
+      const toggle = wrapper.querySelector('.product-dropdown-toggle');
+      const menu = wrapper.querySelector('.product-dropdown-menu');
+      const hiddenInput = wrapper.querySelector('.input-produk');
+      const selectedInfo = toggle.querySelector('.selected-info');
+
+      // isi menu
+      menu.innerHTML = buildOptionsHtml();
+
+      // buka / tutup menu saat tombol diklik
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        // tutup dropdown lain
+        document.querySelectorAll('.product-dropdown-menu').forEach(m => {
+          if (m !== menu) m.classList.add('d-none');
+        });
+        menu.classList.toggle('d-none');
+      });
+
+      // klik salah satu produk
+      menu.querySelectorAll('.product-option').forEach(opt => {
+        opt.addEventListener('click', () => {
+          const value = opt.getAttribute('data-value');
+          const produk = dataProduk[value];
+
+          hiddenInput.value = value;
+          menu.classList.add('d-none');
+
+          selectedInfo.innerHTML = `
+            <img src="${produk.gambar}" alt="${produk.nama}">
+            <div>
+              <div class="product-option-name">${produk.nama}</div>
+              <div class="product-option-stock">Stok: ${produk.stok}</div>
+            </div>
+          `;
+        });
+      });
+    }
+
+    // tutup semua dropdown jika klik di luar
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.product-dropdown-menu').forEach(m => m.classList.add('d-none'));
+    });
+
+    const produkWrapper = document.getElementById('produkWrapper');
+    const firstDropdown = produkWrapper.querySelector('.product-dropdown');
+    initProductDropdown(firstDropdown);
+
+    const btnTambahProduk = document.getElementById('btnTambahProduk');
+
+    // Tambah baris produk baru
     btnTambahProduk.addEventListener('click', () => {
       const row = document.createElement('div');
       row.classList.add('produk-row', 'row', 'g-2', 'align-items-end');
@@ -446,36 +619,41 @@
       row.innerHTML = `
         <div class="col-md-5">
           <label class="form-label mb-1">Produk</label>
-          <select class="form-select">
-            <option value="">-- Pilih Produk --</option>
-            <option>Bakpia Kacang Hijau (Stok: 50)</option>
-            <option>Bakpia Coklat (Stok: 30)</option>
-            <option>Bakpia Keju (Stok: 20)</option>
-          </select>
+          <div class="product-dropdown">
+            <button type="button" class="product-dropdown-toggle">
+              <div class="selected-info">
+                <span class="placeholder-text">-- Pilih Produk --</span>
+              </div>
+              <span><i class="bi bi-chevron-down"></i></span>
+            </button>
+            <input type="hidden" name="produk[]" class="input-produk">
+            <div class="product-dropdown-menu d-none"></div>
+          </div>
         </div>
         <div class="col-md-2">
           <label class="form-label mb-1">Jumlah</label>
-          <input type="number" min="1" class="form-control" value="1">
+          <input type="number" min="1" class="form-control" value="1" name="jumlah[]">
         </div>
         <div class="col-md-3">
           <label class="form-label mb-1">Harga Satuan (Rp)</label>
-          <input type="number" min="0" class="form-control">
+          <input type="number" min="0" class="form-control" name="harga_satuan[]">
         </div>
         <div class="col-md-2 text-md-end">
-          <button type="button" class="btn btn-outline-danger btn-sm btnHapusProduk">
+          <button type="button" class="btn btn-outline-danger btn-sm btnHapusProduk mt-1">
             <i class="bi bi-trash"></i>
           </button>
         </div>
       `;
 
       produkWrapper.appendChild(row);
-      produkIndex++;
 
-      row.querySelector('.btnHapusProduk').addEventListener('click', () => {
-        row.remove();
-      });
+      // tombol hapus baris
+      row.querySelector('.btnHapusProduk').addEventListener('click', () => row.remove());
+
+      // inisialisasi dropdown di row baru
+      const dropdownBaru = row.querySelector('.product-dropdown');
+      initProductDropdown(dropdownBaru);
     });
   </script>
 </body>
-
 </html>
