@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('keranjang', function (Blueprint $table) {
             $table->uuid('idKeranjang')->primary()->default(DB::raw('UUID()'));
-            $table->foreignUuid('idPelanggan')->constrained('pelanggan', 'idPelanggan')->cascadeOnDelete()->cascadeOnUpdate();;
+            $table->foreignId('idPelanggan')->constrained('pelanggan', 'idPelanggan')->cascadeOnDelete()->cascadeOnUpdate();;
             $table->foreignId('idProduk', 7)->constrained('produk', 'idProduk')->cascadeOnDelete()->cascadeOnUpdate();;
             $table->decimal('subTotal', 10, 2);
             $table->integer('jumlahBarang');

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('pemesananonline', function (Blueprint $table) {
             $table->uuid('nomorPemesanan')->primary()->default(DB::raw('UUID()'));
-            $table->foreignUuid('idPelanggan')->constrained('pelanggan', 'idPelanggan')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('idPelanggan')->constrained('pelanggan', 'idPelanggan')->cascadeOnDelete()->cascadeOnUpdate();
             $table->date('tanggalPemesanan');
             $table->double('totalNota', 10, 2);
             $table->string('metodePembayaran', 10);
