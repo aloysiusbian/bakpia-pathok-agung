@@ -40,7 +40,12 @@
                                     <i class="bi bi-person"></i> Profil Akun
                                 </a>
                             </li>
-
+                             <li>
+                                {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
+                                <a class="dropdown-item" href="/tespesanan">
+                                    <i class="bi bi-person"></i> Pesanan Saya
+                                </a>
+                            </li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
