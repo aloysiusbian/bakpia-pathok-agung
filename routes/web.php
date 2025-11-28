@@ -173,3 +173,7 @@ Route::get('/teskelolaadmin', function () {
 Route::get('/lihatproduk', function () {
     return view('pages.lihatproduk');
 });
+Route::get('/tespesanan', function () {
+    return view('pages.pesanansaya');
+});
+
