@@ -21,7 +21,7 @@
         <h2 class="h4 fw-bold mb-3">Keranjang</h2>
 
         @if($items->isEmpty())
-            {{-- Empty state (Sesuai kode Anda) --}}
+            {{-- Empty state --}}
             <div class="border rounded-3 p-4 mt-3 bg-white">
               <div class="d-flex align-items-center gap-3 py-3">
                 <i class="bi bi-cart fs-1 text-secondary"></i>
@@ -52,8 +52,10 @@
                         {{-- Checkbox & Gambar --}}
                         <div class="col-3 col-md-2 d-flex align-items-center gap-2">
                             <input class="form-check-input item-checkbox" type="checkbox" checked>
-                            <img src="{{ asset('images/' . $item->produk->gambar) }}" 
-                                 alt="{{ $item->produk->namaProduk }}" 
+                            
+                            {{-- PERUBAHAN DISINI: Mengambil gambar langsung dari tabel keranjang --}}
+                            <img src="{{ asset('images/' . $item->gambar) }}" 
+                                 alt="{{ $item->produk->namaProduk ?? 'Produk' }}" 
                                  class="rounded border"
                                  style="width: 100%; aspect-ratio: 1/1; object-fit: cover;"
                                  onerror="this.onerror=null;this.src='https://placehold.co/100x100?text=Produk';">
@@ -61,6 +63,7 @@
 
                         {{-- Info Produk --}}
                         <div class="col-9 col-md-6">
+                            {{-- Nama & Harga tetap ambil dari relasi produk (kecuali jika di keranjang juga ada kolom nama) --}}
                             <h6 class="fw-semibold mb-1 text-truncate">{{ $item->produk->namaProduk }}</h6>
                             <div class="text-muted small">Rp{{ number_format($item->produk->harga, 0, ',', '.') }}</div>
                             <div class="fw-bold text-dark mt-1">Subtotal: Rp{{ number_format($item->subTotal, 0, ',', '.') }}</div>
@@ -125,11 +128,11 @@
       $produksLainnya = $produksLainnya ?? \App\Models\Produk::orderBy('idProduk','asc')->take(8)->get();
     @endphp
 
-    {{-- Baris horizontal --}}
     <div class="d-flex flex-row overflow-auto gap-3 pb-2">
       @forelse ($produksLainnya as $product)
         <a href="{{ route('produk.show', $product->idProduk) }}" class="text-decoration-none text-dark flex-shrink-0" style="width: 220px;">
           <div class="product-card shadow-sm rounded-4 border overflow-hidden bg-white" style="transition:.2s;">
+            {{-- Bagian ini tetap $product->gambar karena mengambil dari Model Produk --}}
             <img
               src="{{ asset('images/' . $product->gambar) }}"
               alt="{{ $product->namaProduk }}"
@@ -143,11 +146,9 @@
               <div class="product-rating text-muted small">Rating : {{ number_format($product->rating ?? 0, 1) }} ⭐</div>
               <div class="product-price mt-2 fw-bold">Rp{{ number_format($product->harga, 0, ',', '.') }}</div>
 
-              {{-- Tombol + Keranjang --}}
               <form action="{{ route('keranjang.store') }}" method="POST" class="mt-3">
                 @csrf
                 <input type="hidden" name="idProduk" value="{{ $product->idProduk }}">
-                {{-- PERBAIKAN PENTING: Ubah name='kuantitas' jadi 'jumlahBarang' agar sesuai Controller --}}
                 <input type="hidden" name="jumlahBarang" value="1">
                 <button type="submit"
                         class="btn btn-add-cart w-100 fw-semibold"
@@ -166,14 +167,11 @@
   </div>
 </main>
 
-{{-- STYLE TAMBAHAN --}}
 <style>
   .product-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0,0,0,.08);
   }
-
-  /* Tombol + Keranjang */
   .btn-add-cart{
     background:#FFC107;
     color:#000;
@@ -188,8 +186,6 @@
     color:#888;
     cursor:not-allowed;
   }
-
-  /* Scrollbar halus */
   .overflow-auto::-webkit-scrollbar {
     height: 8px;
   }
@@ -202,16 +198,13 @@
   }
 </style>
 
-{{-- SCRIPT PILIH SEMUA --}}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const master = document.getElementById('checkAll');
     if (!master) return;
     master.removeAttribute('disabled');
     
-    // Perbaikan selector agar sesuai dengan checkbox item yang baru ditambahkan
-    const getItemChecks = () =>
-      Array.from(document.querySelectorAll('.item-checkbox')); // Menggunakan class spesifik
+    const getItemChecks = () => Array.from(document.querySelectorAll('.item-checkbox'));
       
     function syncMaster() {
       const items = getItemChecks();

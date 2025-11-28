@@ -88,21 +88,35 @@ class KeranjangController extends Controller
      * (Opsional) Update jumlah barang langsung dari halaman keranjang
      * Misal: Tombol (+) atau (-)
      */
-    public function update(Request $request, $idKeranjang)
-    {
-        $request->validate([
-            'jumlahBarang' => 'required|integer|min:1'
-        ]);
+    public function update(Request $request, $id)
+{
+    // Cari item keranjang berdasarkan ID
+    $keranjang = Keranjang::find($id);
 
-        $item = Keranjang::where('idKeranjang', $idKeranjang)->firstOrFail();
-        
-        // Ambil harga terbaru produk untuk update subtotal
-        $hargaProduk = $item->produk->harga; 
-
-        $item->jumlahBarang = $request->jumlahBarang;
-        $item->subTotal = $hargaProduk * $request->jumlahBarang;
-        $item->save();
-
-        return redirect()->back()->with('success', 'Jumlah barang diperbarui.');
+    // Validasi sederhana
+    if (!$keranjang) {
+        return redirect()->back()->with('error', 'Item tidak ditemukan.');
     }
+
+    // Ambil input jumlahBarang dari tombol + atau -
+    $jumlahBarang = $request->input('jumlahBarang');
+
+    // Pastikan tidak kurang dari 1
+    if ($jumlahBarang < 1) {
+        return redirect()->back()->with('error', 'Jumlah minimal 1.');
+    }
+
+    // Hitung subtotal baru (misal: harga produk x jumlah baru)
+    // Asumsi: Kita perlu relasi produk untuk tahu harganya
+    $hargaProduk = $keranjang->produk->harga; 
+    $subTotalBaru = $hargaProduk * $jumlahBarang;
+
+    // Update data
+    $keranjang->update([
+        'jumlahBarang' => $jumlahBarang,
+        'subTotal'     => $subTotalBaru
+    ]);
+
+    return redirect()->back()->with('success', 'Keranjang diperbarui.');
+ }
 }

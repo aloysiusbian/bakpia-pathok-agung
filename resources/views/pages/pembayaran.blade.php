@@ -254,13 +254,18 @@
                     <h3 class="box-title payment-title">Pilih Metode Pembayaran:</h3>
                     <div class="payment-options">
                         
-                       <a href="/qris" class="payment-option-btn">
-    <img src="images/qris2.png" alt="QRIS" class="payment-option-img">
-</a>
+                       <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
 
-<a href="/bank" class="payment-option-btn">
-    <img src="images/Bank2.png" alt="Bank Transfer" class="payment-option-img">
-</a>
+<div class="payment-options">
+    <button type="button" class="payment-option-btn" onclick="selectPayment('qris')">
+        <img src="images/qris2.png" alt="QRIS" class="payment-option-img">
+    </button>
+
+    <button type="button" class="payment-option-btn" onclick="selectPayment('bank')">
+        <img src="images/Bank2.png" alt="Bank Transfer" class="payment-option-img">
+    </button>
+</div>
+
                         
                         </button>
                     </div>
@@ -284,9 +289,10 @@
                         <span>Total</span>
                         <span>Rp{{ number_format($product['price'], 0, ',', '.') }}</span>
                     </div>
-                    <button class="pay-button">
-                        Bayar Sekarang
-                    </button>
+                    <button class="pay-button" onclick="payNow()">
+    Bayar Sekarang
+</button>
+
                 </div>
             </div>
 
@@ -294,3 +300,30 @@
 </div>
 
 @endsection
+<script>
+    function selectPayment(method) {
+        document.getElementById('paymentMethod').value = method;
+
+        // Styling perubahan saat dipilih
+        document.querySelectorAll('.payment-option-btn').forEach(btn => {
+            btn.style.borderColor = '#9CA3AF';
+        });
+
+        event.target.closest('.payment-option-btn').style.borderColor = '#FBBF24';
+    }
+
+    function payNow() {
+        const method = document.getElementById('paymentMethod').value;
+        
+        if (!method) {
+            alert('Silahkan pilih metode pembayaran terlebih dahulu!');
+            return;
+        }
+
+        if (method === 'qris') {
+            window.location.href = "/qris";
+        } else if (method === 'bank') {
+            window.location.href = "/bank";
+        }
+    }
+</script>

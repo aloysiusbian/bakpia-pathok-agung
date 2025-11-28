@@ -94,6 +94,8 @@ Route::middleware('auth')->group(function () {
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
 
+    Route::patch('/keranjang/{id}', [KeranjangController::class, 'update'])->name('keranjang.update');
+
 
 });
 
@@ -161,4 +163,13 @@ Route::get('/testambahakun', function () {
 });
 Route::get('/teskelolaadmin', function () {
     return view('pages.kelola_admin');
+});
+Route::get('/testambahakun', function () {
+    return view('pages.tambah_admin');
+});
+Route::get('/teskelolaadmin', function () {
+    return view('pages.kelola_admin');
+});
+Route::get('/lihatproduk', function () {
+    return view('pages.lihatproduk');
 });
