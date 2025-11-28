@@ -161,11 +161,11 @@
                 <a href="/pemesananoffline" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
                 <hr class="my-2">
                 <p class="nav-section-title mt-3">Produk</p>
-                <a href="/tambah_produk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
+                <a href="/lihatproduk" class="nav-link"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
                 <hr class="my-2">
                 <p class="nav-section-title mt-3">Admin</p>
                 <a href="/testambahakun" class="nav-link active"><i class="bi bi-person-fill-add"></i> <span>Tambah Akun Admin</span></a>
-                <a href="/teskelolaadmin" class="nav-link"><i class="bi bi-people-fill"></i> <span>Kelola Akun</span></a>
+                
                 <hr class="my-2">
             </div>
         </div>
@@ -196,12 +196,12 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                        <input type="text" class="form-control" id="nama_lengkap" name="name" required placeholder="Contoh: Budi Santoso">
+                        <input type="text" class="form-control" id="nama_lengkap" name="name" required placeholder="Contoh: Reza Kakap">
                     </div>
                     
                     <div class="col-md-6">
                         <label for="email" class="form-label">Alamat Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required placeholder="Contoh: budi.admin@bakpia.com">
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="Contoh: reza.k@bakpia.com">
                     </div>
 
                     <div class="col-md-6">
@@ -214,17 +214,6 @@
                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" required minlength="8" placeholder="Ulangi kata sandi">
                     </div>
                     
-                    <div class="col-12">
-                        <label for="peran" class="form-label">Peran Akun</label>
-                        <select class="form-select" id="peran" name="role" required>
-                            <option selected disabled value="">Pilih Peran...</option>
-                            <option value="admin">Administrator Penuh</option>
-                            <option value="manager">Manager Produk & Stok</option>
-                            <option value="finance">Finance/Keuangan</option>
-                        </select>
-                        <div class="form-text">Pastikan peran yang dipilih sesuai dengan tanggung jawab pengguna.</div>
-                    </div>
-
                     <div class="col-12 mt-4 text-end">
                         <button type="reset" class="btn btn-outline-secondary me-2">Reset Formulir</button>
                         <button type="submit" class="btn btn-primary-custom">
