@@ -42,7 +42,7 @@
                             </li>
                              <li>
                                 {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
-                                <a class="dropdown-item" href="/tesriwayat">
+                                <a class="dropdown-item" href="/tespesanan">
                                     <i class="bi-clock-history"></i> Pesanan Saya
                                 </a>
                             </li>
