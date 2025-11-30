@@ -37,11 +37,11 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
     Route::get('/pemesananOnline', function () {
-        return view('pages.pemesananOnline');
+        return view('dashboard-admin.pemesananOnline');
     })->name('pemesanan.online');
 
     Route::get('/pemesananOffline', function () {
-        return view('pages.pemesananOffline');
+        return view('dashboard-admin.pemesananOffline');
     })->name('pemesanan.offline');
 
     /*
@@ -89,7 +89,7 @@ Route::middleware('auth')->group(function () {
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
-   
+
 
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
@@ -119,7 +119,7 @@ Route::middleware('guest')->group(function () {
     // Route untuk memproses register
     Route::post('/register', [RegisterController::class, 'register']);
 });
-// routes/web.php atau routes/admin.php 
+// routes/web.php atau routes/admin.php
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
 Route::get('/pembayaran', function () {
@@ -132,10 +132,10 @@ Route::get('/bank', function () {
     return view('pages.bank');
 });
 Route::get('/testes', function () {
-    return view('pelanggan.dbPelanggan');
+    return view('dashboard-pelanggan.dashboardPelanggan');
 });
 Route::get('/tes', function () {
-    return view('pages.dashboard');
+    return view('dashboard-admin.dashboard');
 });
 Route::get('/tesedit', function () {
     return view('pages.edit_profile');
@@ -144,34 +144,34 @@ Route::get('/teslihat', function () {
     return view('pages.profile');
 });
 Route::get('/tesriwayat', function () {
-    return view('pelanggan.riwayat');
+    return view('dashboard-pelanggan.riwayat');
 });
 Route::get('/lihatproduk', function () {
-    return view('pages.lihatproduk');
+    return view('dashboard-admin.lihatproduk');
 });
 Route::get('/tambahproduk', function () {
-    return view('pages.tambah_produk');
+    return view('dashboard-admin.tambah_produk');
 });
 Route::get('/pemesananoffline', function () {
-    return view('pages.pemesananOffline');
+    return view('dashboard-admin.pemesananOffline');
 });
 Route::get('/pemesananonline', function () {
-    return view('pages.pemesananOnline');
+    return view('dashboard-admin.pemesananOnline');
 });
 Route::get('/testambahakun', function () {
-    return view('pages.tambah_admin');
+    return view('dashboard-admin.tambah_admin');
 });
 Route::get('/teskelolaadmin', function () {
-    return view('pages.kelola_admin');
+    return view('dashboard-admin.kelola_admin');
 });
 Route::get('/testambahakun', function () {
-    return view('pages.tambah_admin');
+    return view('dashboard-admin.tambah_admin');
 });
 Route::get('/teskelolaadmin', function () {
-    return view('pages.kelola_admin');
+    return view('dashboard-admin.kelola_admin');
 });
 Route::get('/lihatproduk', function () {
-    return view('pages.lihatproduk');
+    return view('dashboard-admin.lihatproduk');
 });
 Route::get('/tespesanan', function () {
     return view('pages.pesanansaya');

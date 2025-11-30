@@ -43,7 +43,7 @@
                              <li>
                                 {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
                                 <a class="dropdown-item" href="/tespesanan">
-                                    <i class="bi bi-person"></i> Pesanan Saya
+                                    <i class="bi-clock-history"></i> Pesanan Saya
                                 </a>
                             </li>
                             <li>
@@ -58,7 +58,7 @@
                                 </form>
 
                                 {{-- Tautan yang memanggil konfirmasi --}}
-                                <a class="dropdown-item" href="/logout" onclick="event.preventDefault(); 
+                                <a class="dropdown-item" href="/logout" onclick="event.preventDefault();
                                 if (confirm('Apakah Anda yakin ingin mengakhiri sesi Anda?')) {
                                     document.getElementById('logout-form').submit();
                                 }">
