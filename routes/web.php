@@ -184,3 +184,10 @@ Route::get('/tespesanan', function () {
     return view('pages.pesanansaya');
 });
 
+Route::get('/detailpesanan', function () {
+    return view('pages.detailpesanan');
+});
+Route::get('/batalkanpesanan', function () {
+    return view('pages.batalkanpesanan');
+});
+

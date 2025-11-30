@@ -1,6 +1,6 @@
 @extends('templates.app')
 
-@section('title', 'Pesanan Saya')
+@section('title', 'Batalkan Pesanan')
 
 @section('content')
 
@@ -75,7 +75,7 @@
 
     .status-badge {
         font-weight: bold;
-        color: #34e820ff; /* hijau untuk selesai */
+        color: #d9534f; /* Merah untuk dibatalkan */
     }
 
     .product-item {
@@ -176,7 +176,7 @@
         [
             'id_pesanan' => 'ORD-001',
             'tanggal' => '21-5-2025 15:30',
-            'status' => 'Selesai',
+            'status' => 'Dibatalkan',
             'total' => 250000,
             'link_detail' => '/detailpesanan',
             'produk' => [
@@ -191,7 +191,7 @@
         [
             'id_pesanan' => 'ORD-002',
             'tanggal' => '19-5-2025 12:30',
-            'status' => 'Selesai',
+            'status' => 'Dibatalkan',
             'total' => 275000,
             'link_detail' => '/detail-pesanan-2',
             'produk' => [
@@ -200,28 +200,6 @@
                     'gambar' => 'images/bakpia-cokelat.jpg',
                     'variasi' => '1 box isi 15',
                     'jumlah' => 5
-                ]
-            ]
-        ],
-        // Contoh jika ada pesanan dengan lebih dari 1 produk
-        [
-            'id_pesanan' => 'ORD-003',
-            'tanggal' => '18-5-2025 09:00',
-            'status' => 'Selesai',
-            'total' => 150000,
-            'link_detail' => '/detail-pesanan-3',
-            'produk' => [
-                [ 
-                    'nama' => 'Bakpia Kumbu Hitam',
-                    'gambar' => 'images/bakpia-kumbu-hitam.jpg',
-                    'variasi' => '1 box isi 15',
-                    'jumlah' => 2
-                ],
-                [
-                    'nama' => 'Bakpia Kacang Hijau',
-                    'gambar' => 'images/bakpia-kacang-hijau.jpg',
-                    'variasi' => '1 box isi 15',
-                    'jumlah' => 1
                 ]
             ]
         ]
@@ -234,29 +212,29 @@
         <!-- Contoh penggunaan route() jika di Laravel -->
         <a href="#" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
         <a href="#" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
-        <a href="batalkanpesanan" class="nav-item-custom " onclick="setActive(this)">Dibatalkan</a>
+        <a href="#" class="nav-item-custom active" onclick="setActive(this)">Dibatalkan</a>
         <a href="#" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
-        <a href="tespesanan" class="nav-item-custom active" onclick="setActive(this)">Selesai</a>
+        <a href="tespesanan" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
     </div>
 
-   
+    <!-- 2. Container Utama List Pesanan -->
     <div class="orders-container-box">
 
         @if(count($cancelledOrders) > 0)
             @foreach($cancelledOrders as $order)
                 <!-- Kartu Transaksi -->
-                <div class="transaction-card" onclick="window.location.href='detailpesanan'">
+                <div class="transaction-card" onclick="window.location.href=''">
                     
-                    <!-- KEMBALI SEPERTI SEMULA: Menampilkan Tanggal dan Status -->
+                    <!-- Hanya menampilkan Status saja -->
                     <div class="transaction-date">
-                        {{ $order['tanggal'] }} | <span class="status-badge">{{ $order['status'] }}</span>
+                        <span class="status-badge">{{ $order['status'] }}</span>
                     </div>
 
                     <!-- Loop Produk dalam satu pesanan -->
                     @foreach($order['produk'] as $item)
                         <div class="product-item">
                             <img src="{{ asset($item['gambar']) }}" 
-                                 onerror="this.src='lihatproduk'"
+                                 onerror="this.src='https://via.placeholder.com/100x100?text=Produk'"
                                  alt="{{ $item['nama'] }}" 
                                  class="product-img">
                             <div class="product-info">
@@ -275,14 +253,13 @@
 
                     <!-- Tombol Aksi -->
                     <div class="action-buttons">
-                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beri Ratting</button>
                         <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beli Lagi</button>
                     </div>
                 </div>
             @endforeach
         @else
             <div class="text-center py-5">
-                <h5 class="text-muted">Belum Ada Riwayat Pesanan.</h5>
+                <h5 class="text-muted">Tidak ada pesanan yang dibatalkan.</h5>
             </div>
         @endif
 
