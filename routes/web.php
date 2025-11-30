@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\PemesananOnlineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeranjangController;
 
@@ -96,6 +97,20 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/keranjang/{id}', [KeranjangController::class, 'update'])->name('keranjang.update');
 
+    Route::post('/pembayaran', [PemesananOnlineController::class, 'checkout'])
+        ->name('pembayaran.checkout');
+
+    // 2) Dari halaman checkout -> simpan ke PemesananOnline
+    Route::post('/pembayaran/process', [PemesananOnlineController::class, 'process'])
+        ->name('pembayaran.process');
+
+    // 3) Halaman pembayaran QRIS (setelah process)
+    Route::get('/pembayaran/qris/{nomorPesanan}', [PemesananOnlineController::class, 'qris'])
+        ->name('pembayaran.qris');
+
+    // 4) Halaman pembayaran Transfer Bank (setelah process)
+    Route::get('/pembayaran/bank/{nomorPesanan}', [PemesananOnlineController::class, 'transfer'])
+        ->name('pembayaran.bank');
 
 });
 
@@ -122,15 +137,7 @@ Route::middleware('guest')->group(function () {
 // routes/web.php atau routes/admin.php
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
-Route::get('/pembayaran', function () {
-    return view('pages.pembayaran');
-});
-Route::get('/qris', function () {
-    return view('pages.qris');
-});
-Route::get('/bank', function () {
-    return view('pages.bank');
-});
+
 Route::get('/testes', function () {
     return view('dashboard-pelanggan.dashboardPelanggan');
 });

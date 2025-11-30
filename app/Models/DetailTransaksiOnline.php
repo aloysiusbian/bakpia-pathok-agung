@@ -10,9 +10,10 @@ class DetailTransaksiOnline extends Model
     use HasFactory;
 
     protected $table = 'detailtransaksi_online';
+
     protected $primaryKey = null;
-    public $incrementing = false;
-    public $timestamps = false;
+    public $incrementing  = false;
+    public $timestamps    = false;
 
     protected $fillable = [
         'nomorPemesanan',
@@ -23,9 +24,13 @@ class DetailTransaksiOnline extends Model
         'subTotal',
     ];
 
-    public function pemesananOnline()
+    public function pemesanan()
     {
-        return $this->belongsTo(PemesananOnline::class, 'nomorPemesanan', 'nomorPesanan');
+        return $this->belongsTo(
+            PemesananOnline::class,
+            'nomorPemesanan',
+            'nomorPemesanan'
+        );
     }
 
     public function produk()

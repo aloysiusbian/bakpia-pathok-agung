@@ -37,13 +37,10 @@
         gap: 2rem; 
     }
 
-    .checkout-sidebar {
-    
-    }
+    .checkout-sidebar {}
 
     @media (min-width: 1024px) {
         .checkout-grid {
-         
             grid-template-columns: repeat(3, 1fr);
         }
         .checkout-main {
@@ -72,6 +69,7 @@
         display: flex;
         align-items: center;
         gap: 1.5rem; 
+        margin-bottom: 1rem;
     }
 
     @media (max-width: 640px) {
@@ -105,12 +103,12 @@
 
     .product-description {
         color: #374151;
-        margin-bottom: 2rem;
+        margin-bottom: 0.5rem;
     }
 
     .product-price {
         font-weight: 700;
-        font-size: 1.25rem;
+        font-size: 1.05rem;
         text-align: right;
         color: #1F2937;
     }
@@ -160,10 +158,10 @@
     }
 
     .payment-option-img {
-    width: 8rem;          
-    height: auto;          
-    object-fit: contain;   
-    display: block;
+        width: 8rem;          
+        height: auto;          
+        object-fit: contain;   
+        display: block;
     }
 
     .total-box {
@@ -210,120 +208,130 @@
     }
 </style>
 
-@php
-    $product = [
-        'name' => 'Bakpia Durian',
-        'image_url' => 'images/bakpiadurian.png', 
-        'quantity_text' => '10, Bakpia Durian',
-        'price' => 250000,
-    ];
-    $shippingCost = 10000;
-@endphp
-
 <div class="page-container">
     <div class="checkout-container">
         
-        <div class="checkout-grid">
+        {{-- FORM PEMBAYARAN --}}
+        <form id="form-pembayaran" action="{{ route('pembayaran.process') }}" method="POST">
+            @csrf
 
-            <div class="checkout-main">
+            <div class="checkout-grid">
 
-                <div class="checkout-box product-box">
-                    <div class="product-box-inner">
+                {{-- KIRI: Produk + alamat + metode pembayaran --}}
+                <div class="checkout-main">
+
+                    {{-- BOX PRODUK --}}
+                    <div class="checkout-box product-box">
+                        <h2 class="product-title mb-3">Pembelian Barang</h2>
+
+                        @foreach($items as $item)
+                            <div class="product-box-inner">
+                                <img src="{{ asset('images/' . $item->gambar) }}"
+                                     alt="{{ $item->produk->namaProduk }}"
+                                     class="product-image"
+                                     onerror="this.onerror=null;this.src='https://placehold.co/160x160?text=Produk';">
+
+                                <div class="product-details">
+                                    <div class="product-title" style="margin-bottom: .25rem;">
+                                        {{ $item->produk->namaProduk }}
+                                    </div>
+                                    <p class="product-description">
+                                        {{ $item->jumlahBarang }} x Rp{{ number_format($item->produk->harga, 0, ',', '.') }}
+                                    </p>
+                                    <p class="product-price">
+                                        Subtotal: Rp{{ number_format($item->subTotal, 0, ',', '.') }}
+                                    </p>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    {{-- BOX ALAMAT + METODE PEMBAYARAN --}}
+                    <div class="checkout-box address-box">
+                        <h3 class="box-title">Alamat Pengiriman:</h3>
+                        <div class="address-line">
+                            <img src="{{ asset('images/lokasi.png') }}" alt="Lokasi" class="address-icon">
+                            <textarea name="alamatPengirim"
+                                      rows="3"
+                                      class="form-control"
+                                      required
+                                      style="width:100%; resize: vertical;">Kampus III Universitas Sanata Dharma, Jl. Paingan, Krodan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</textarea>
+                        </div>
                         
-                        <img src="{{ $product['image_url'] }}" alt="{{ $product['name'] }}" class="product-image">
-                        
-                        <div class="product-details">
-                            <h2 class="product-title">Pembelian Barang</h2>
-                            <p class="product-description">{{ $product['quantity_text'] }}</p>
-                            <p class="product-price">
-                                Rp{{ number_format($product['price'], 0, ',', '.') }}
-                            </p>
+                        <h3 class="box-title payment-title">Pilih Metode Pembayaran:</h3>
+
+                        {{-- Hidden untuk metode pembayaran --}}
+                        <input type="hidden" id="metode_pembayaran" name="metode_pembayaran" value="">
+
+                        <div class="payment-options">
+                            <button type="button"
+                                    class="payment-option-btn"
+                                    onclick="selectPayment('qris', this)">
+                                <img src="{{ asset('images/qris2.png') }}" alt="QRIS" class="payment-option-img">
+                            </button>
+
+                            <button type="button"
+                                    class="payment-option-btn"
+                                    onclick="selectPayment('bank', this)">
+                                <img src="{{ asset('images/Bank2.png') }}" alt="Bank Transfer" class="payment-option-img">
+                            </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="checkout-box address-box">
-                    <h3 class="box-title">Alamat Pengiriman:</h3>
-                    <div class="address-line">
+                {{-- KANAN: Ringkasan --}}
+                <div class="checkout-sidebar">
+                    <div class="checkout-box total-box">
+                        <div class="total-summary">
+                            <div class="summary-line">
+                                <span>Total Pesanan ({{ $totalQty }} Barang)</span>
+                                <span>Rp{{ number_format($subTotal, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="summary-line">
+                                <span>Total Biaya Pengiriman</span>
+                                <span>Rp{{ number_format($shippingCost, 0, ',', '.') }}</span>
+                            </div>
+                        </div>
                         
-                        <img src="images/lokasi.png" alt="Lokasi" class="address-icon">
-                        
-                        <p>Kampus III Universitas Sanata Dharma, Jl. Paingan, Krodan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</p>
-                    </div>
-                    
-                    <h3 class="box-title payment-title">Pilih Metode Pembayaran:</h3>
-                    <div class="payment-options">
-                        
-                       <input type="hidden" id="paymentMethod" name="paymentMethod" value="">
+                        <div class="total-final-line">
+                            <span>Total</span>
+                            <span>Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
+                        </div>
 
-<div class="payment-options">
-    <button type="button" class="payment-option-btn" onclick="selectPayment('qris')">
-        <img src="images/qris2.png" alt="QRIS" class="payment-option-img">
-    </button>
-
-    <button type="button" class="payment-option-btn" onclick="selectPayment('bank')">
-        <img src="images/Bank2.png" alt="Bank Transfer" class="payment-option-img">
-    </button>
-</div>
-
-                        
+                        <button type="button" class="pay-button" onclick="payNow()">
+                            Bayar Sekarang
                         </button>
                     </div>
                 </div>
+
             </div>
+        </form>
 
-            <div class="checkout-sidebar">
-                <div class="checkout-box total-box">
-                    <div class="total-summary">
-                        <div class="summary-line">
-                            <span>Total Pesanan (1 Menu)</span>
-                            <span>Rp{{ number_format($product['price'], 0, ',', '.') }}</span>
-                        </div>
-                        <div class="summary-line">
-                            <span>Total Biaya Pengiriman</span>
-                            <span>Rp{{ number_format($shippingCost, 0, ',', '.') }}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="total-final-line">
-                        <span>Total</span>
-                        <span>Rp{{ number_format($product['price'], 0, ',', '.') }}</span>
-                    </div>
-                    <button class="pay-button" onclick="payNow()">
-    Bayar Sekarang
-</button>
-
-                </div>
-            </div>
-
-        </div> </div>
+    </div>
 </div>
 
 @endsection
-<script>
-    function selectPayment(method) {
-        document.getElementById('paymentMethod').value = method;
 
-        // Styling perubahan saat dipilih
+<script>
+    function selectPayment(method, el) {
+        const input = document.getElementById('metode_pembayaran');
+        input.value = method;
+
         document.querySelectorAll('.payment-option-btn').forEach(btn => {
             btn.style.borderColor = '#9CA3AF';
         });
 
-        event.target.closest('.payment-option-btn').style.borderColor = '#FBBF24';
+        el.style.borderColor = '#FBBF24';
     }
 
     function payNow() {
-        const method = document.getElementById('paymentMethod').value;
+        const method = document.getElementById('metode_pembayaran').value;
         
         if (!method) {
-            alert('Silahkan pilih metode pembayaran terlebih dahulu!');
+            alert('Silakan pilih metode pembayaran terlebih dahulu!');
             return;
         }
 
-        if (method === 'qris') {
-            window.location.href = "/qris";
-        } else if (method === 'bank') {
-            window.location.href = "/bank";
-        }
+        document.getElementById('form-pembayaran').submit();
     }
 </script>

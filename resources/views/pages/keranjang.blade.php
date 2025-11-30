@@ -14,6 +14,13 @@
       </div>
     @endif
 
+    @if(session('error'))
+      <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+        {{ session('error') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    @endif
+
     {{-- Grid utama: kiri keranjang, kanan ringkasan --}}
     <div class="row g-4">
       {{-- Kiri --}}
@@ -51,9 +58,13 @@
                     <div class="row align-items-center">
                         {{-- Checkbox & Gambar --}}
                         <div class="col-3 col-md-2 d-flex align-items-center gap-2">
-                            <input class="form-check-input item-checkbox" type="checkbox" checked>
+                            <input
+                              class="form-check-input item-checkbox"
+                              type="checkbox"
+                              data-id="{{ $item->idKeranjang }}"
+                              checked
+                            >
                             
-                            {{-- PERUBAHAN DISINI: Mengambil gambar langsung dari tabel keranjang --}}
                             <img src="{{ asset('images/' . $item->gambar) }}" 
                                  alt="{{ $item->produk->namaProduk ?? 'Produk' }}" 
                                  class="rounded border"
@@ -63,7 +74,6 @@
 
                         {{-- Info Produk --}}
                         <div class="col-9 col-md-6">
-                            {{-- Nama & Harga tetap ambil dari relasi produk (kecuali jika di keranjang juga ada kolom nama) --}}
                             <h6 class="fw-semibold mb-1 text-truncate">{{ $item->produk->namaProduk }}</h6>
                             <div class="text-muted small">Rp{{ number_format($item->produk->harga, 0, ',', '.') }}</div>
                             <div class="fw-bold text-dark mt-1">Subtotal: Rp{{ number_format($item->subTotal, 0, ',', '.') }}</div>
@@ -104,18 +114,23 @@
 
       {{-- Kanan: Ringkasan --}}
       <div class="col-lg-4">
-        <div class="border rounded-3 p-3 bg-white position-sticky" style="top: 2rem;">
-          <h5 class="fw-bold mb-3">Ringkasan Belanja</h5>
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <span>Total</span>
-            <span class="fw-bold">Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
-          </div>
-          <button class="btn w-100 text-white fw-bold" 
-                  style="background-color: #000; border-color: #000;"
-                  {{ $items->isEmpty() ? 'disabled' : '' }}>
+        <form id="checkout-form" action="{{ route('pembayaran.checkout') }}" method="POST">
+          @csrf
+          <div class="border rounded-3 p-3 bg-white position-sticky" style="top: 2rem;">
+            <h5 class="fw-bold mb-3">Ringkasan Belanja</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <span>Total</span>
+              <span class="fw-bold">Rp{{ number_format($grandTotal, 0, ',', '.') }}</span>
+            </div>
+
+            <button type="submit"
+                    class="btn w-100 text-white fw-bold"
+                    style="background-color:#000; border-color:#000;"
+                    {{ $items->isEmpty() ? 'disabled' : '' }}>
               Beli ({{ $items->sum('jumlahBarang') }})
-          </button>
-        </div>
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -132,7 +147,6 @@
       @forelse ($produksLainnya as $product)
         <a href="{{ route('produk.show', $product->idProduk) }}" class="text-decoration-none text-dark flex-shrink-0" style="width: 220px;">
           <div class="product-card shadow-sm rounded-4 border overflow-hidden bg-white" style="transition:.2s;">
-            {{-- Bagian ini tetap $product->gambar karena mengambil dari Model Produk --}}
             <img
               src="{{ asset('images/' . $product->gambar) }}"
               alt="{{ $product->namaProduk }}"
@@ -201,30 +215,65 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const master = document.getElementById('checkAll');
-    if (!master) return;
-    master.removeAttribute('disabled');
-    
+    const checkoutForm = document.getElementById('checkout-form');
+
+    if (master) {
+      master.removeAttribute('disabled');
+    }
+
     const getItemChecks = () => Array.from(document.querySelectorAll('.item-checkbox'));
       
     function syncMaster() {
+      if (!master) return;
       const items = getItemChecks();
       if (items.length === 0) { master.checked = false; master.indeterminate = false; return; }
       const checkedCount = items.filter(i => i.checked).length;
       master.checked = checkedCount === items.length;
       master.indeterminate = checkedCount > 0 && checkedCount < items.length;
     }
-    master.addEventListener('change', function () {
-      const items = getItemChecks();
-      items.forEach(i => i.checked = master.checked);
-      master.indeterminate = false;
-    });
+
+    if (master) {
+      master.addEventListener('change', function () {
+        const items = getItemChecks();
+        items.forEach(i => i.checked = master.checked);
+        master.indeterminate = false;
+      });
+    }
+
     document.body.addEventListener('change', function (e) {
       const tgt = e.target;
       if (tgt.classList.contains('item-checkbox')) {
         syncMaster();
       }
     });
+
     syncMaster();
+
+    // Saat form checkout disubmit, kumpulkan id item yang dicentang ke items[]
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', function (e) {
+        const checked = getItemChecks().filter(i => i.checked);
+
+        if (checked.length === 0) {
+          e.preventDefault();
+          alert('Pilih minimal satu produk yang akan dibeli.');
+          return;
+        }
+
+        // hapus hidden items[] sebelumnya (kalau ada)
+        checkoutForm.querySelectorAll('input[name="items[]"]').forEach(el => el.remove());
+
+        checked.forEach(cb => {
+          const id = cb.dataset.id;
+          if (!id) return;
+          const hidden = document.createElement('input');
+          hidden.type = 'hidden';
+          hidden.name = 'items[]';
+          hidden.value = id;
+          checkoutForm.appendChild(hidden);
+        });
+      });
+    }
   });
 </script>
 @endsection
