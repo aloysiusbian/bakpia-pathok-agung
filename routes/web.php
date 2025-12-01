@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\PemesananOnlineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeranjangController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +70,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 |
 */
 Route::middleware('auth')->group(function () {
+
+    Route::get('/tesedit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/tesedit', [ProfileController::class, 'update'])->name('profile.update');
+
+    // API untuk dropdown kabupaten
+    Route::get('/api/regencies', [ProfileController::class, 'getRegencies'])->name('api.regencies');
 
 
         // --- FITUR KERANJANG (Updated) ---
@@ -144,9 +151,7 @@ Route::get('/testes', function () {
 Route::get('/tes', function () {
     return view('dashboard-admin.dashboard');
 });
-Route::get('/tesedit', function () {
-    return view('pages.edit_profile');
-});
+
 Route::get('/teslihat', function () {
     return view('pages.profile');
 });

@@ -4,91 +4,108 @@
 
 @section('content')
 
-<!-- CONTENT -->
 <div class="content" id="content">
     <div class="container">
         <div class="card p-4">
+
             <h4 class="fw-bold mb-4" style="color:#3a2d1a;">
                 <i class="bi bi-person-lines-fill me-2"></i>Edit Profil
             </h4>
 
+            {{-- Pesan sukses --}}
+            @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+
             @php
-            // opsional: kirim $primaryAddress dari controller (hasil decode JSON alamat utama)
-            $primaryAddress = $primaryAddress ?? null;
-            $label = $primaryAddress['labelAlamat'] ?? 'Rumah';
+                $primaryAddress = $primaryAddress ?? null;
+                $label = $primaryAddress['labelAlamat'] ?? 'Rumah';
             @endphp
 
-            <form action="/tesedit" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('profile.update') }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                <!-- DATA PROFIL -->
+                {{-- DATA AKUN --}}
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nama Lengkap</label>
-                    <input type="text" class="form-control" id="name" name="name"
-                           value="{{ Auth::user()->name ?? '' }}" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="email" class="form-label">Alamat Email</label>
-                    <input type="email" class="form-control" id="email" name="email"
+                    <label class="form-label">Alamat Email</label>
+                    <input type="email" class="form-control" name="email"
                            value="{{ Auth::user()->email ?? '' }}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="phone" class="form-label">Nomor Telepon Akun</label>
-                    <input type="text" class="form-control" id="phone" name="phone"
-                           value="{{ Auth::user()->phone ?? '' }}">
+                    <label class="form-label">Nomor Telepon Akun</label>
+                    <input type="text" class="form-control" name="noTelp"
+                           value="{{ Auth::user()->noTelp ?? '' }}">
                 </div>
 
                 <hr class="my-4">
 
-                <!-- ALAMAT PENGIRIMAN UTAMA (MODEL TOKOPEDIA) -->
                 <h5 class="fw-bold mb-3" style="color:#3a2d1a;">Alamat Pengiriman Utama</h5>
 
+                {{-- NAMA PENERIMA --}}
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Nama Penerima</label>
                         <input type="text" class="form-control"
                                name="address[namaPenerima]"
-                               value="{{ $primaryAddress['namaPenerima'] ?? Auth::user()->name ?? '' }}"
+                               value="{{ $primaryAddress['namaPenerima'] ?? '' }}"
                                required>
                     </div>
+
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Nomor Telepon Penerima</label>
                         <input type="text" class="form-control"
                                name="address[noTelp]"
-                               value="{{ $primaryAddress['noTelp'] ?? Auth::user()->phone ?? '' }}"
+                               value="{{ $primaryAddress['noTelp'] ?? Auth::user()->noTelp ?? '' }}"
                                required>
                     </div>
                 </div>
 
+                {{-- LABEL ALAMAT + PROVINSI + KOTA --}}
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Label Alamat</label>
                         <select class="form-select" name="address[labelAlamat]">
-                            <option value="Rumah" {{ $label==
-                            'Rumah' ? 'selected' : '' }}>Rumah</option>
-                            <option value="Kantor" {{ $label==
-                            'Kantor' ? 'selected' : '' }}>Kantor</option>
-                            <option value="Lainnya" {{ $label==
-                            'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                            <option value="Rumah"  {{ $label=='Rumah' ? 'selected' : '' }}>Rumah</option>
+                            <option value="Kantor" {{ $label=='Kantor' ? 'selected' : '' }}>Kantor</option>
+                            <option value="Lainnya" {{ $label=='Lainnya' ? 'selected' : '' }}>Lainnya</option>
                         </select>
                     </div>
+
+                    {{-- PROVINSI --}}
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Provinsi</label>
-                        <input type="text" class="form-control"
-                               name="address[provinsi]"
-                               value="{{ $primaryAddress['provinsi'] ?? '' }}" required>
+                        <select class="form-select" id="provinsiSelect"
+                                name="address[provinsi_id]" required>
+                            <option value="">-- Pilih Provinsi --</option>
+                            @foreach($provinces as $prov)
+                                <option value="{{ $prov['id'] }}"
+                                    @if(($primaryAddress['provinsi_id'] ?? null) == $prov['id']) selected @endif>
+                                    {{ $prov['name'] }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <input type="hidden" id="provinsiNama"
+                               name="address[provinsi_nama]"
+                               value="{{ $primaryAddress['provinsi_nama'] ?? '' }}">
                     </div>
+
+                    {{-- KABUPATEN / KOTA --}}
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Kota / Kabupaten</label>
-                        <input type="text" class="form-control"
-                               name="address[kota]"
-                               value="{{ $primaryAddress['kota'] ?? '' }}" required>
+                        <select class="form-select" id="regencySelect"
+                                name="address[kota_id]" required>
+                            <option value="">-- Pilih Kabupaten/Kota --</option>
+                        </select>
+
+                        <input type="hidden" id="kotaNama"
+                               name="address[kota_nama]"
+                               value="{{ $primaryAddress['kota_nama'] ?? '' }}">
                     </div>
                 </div>
 
+                {{-- KECAMATAN + KODE POS --}}
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Kecamatan</label>
@@ -104,24 +121,22 @@
                     </div>
                 </div>
 
+                {{-- ALAMAT LENGKAP --}}
                 <div class="mb-3">
                     <label class="form-label">Alamat Lengkap</label>
                     <textarea class="form-control" rows="3"
-                              name="address[alamatLengkap]"
-                              required>{{ $primaryAddress['alamatLengkap'] ?? '' }}</textarea>
-                    <small class="text-muted">
-                        Contoh: Jl. Mawar No. 1, RT 02 RW 03, dekat minimarket, warna rumah hijau.
-                    </small>
+                              name="address[alamatLengkap]" required>{{ $primaryAddress['alamatLengkap'] ?? '' }}</textarea>
                 </div>
 
+                {{-- CATATAN --}}
                 <div class="mb-3">
                     <label class="form-label">Catatan untuk Kurir (Opsional)</label>
                     <input type="text" class="form-control"
                            name="address[catatanKurir]"
-                           value="{{ $primaryAddress['catatanKurir'] ?? '' }}"
-                           placeholder="Contoh: Tolong hubungi dulu sebelum kirim">
+                           value="{{ $primaryAddress['catatanKurir'] ?? '' }}">
                 </div>
 
+                {{-- DEFAULT --}}
                 <div class="form-check mb-4">
                     <input class="form-check-input" type="checkbox"
                            id="isDefault" name="address[isDefault]"
@@ -131,33 +146,70 @@
                     </label>
                 </div>
 
-                <!-- FOTO PROFIL -->
-                <div class="mb-3">
-                    <label for="profile_image" class="form-label">Foto Profil</label>
-                    <input type="file" class="form-control" id="profile_image" name="profile_image">
-                </div>
-
                 <div class="text-end">
                     <button type="submit" class="btn btn-save px-4">
                         <i class="bi bi-save me-1"></i> Simpan Perubahan
                     </button>
                 </div>
+
             </form>
         </div>
     </div>
 </div>
 
+{{-- ===================== --}}
+{{-- SCRIPT PROVINSI / KOTA --}}
+{{-- ===================== --}}
 <script>
-    const sidebar = document.getElementById('sidebar');
-    const navbar = document.getElementById('navbar');
-    const content = document.getElementById('content');
-    const toggleBtn = document.getElementById('toggle-btn');
+document.addEventListener('DOMContentLoaded', function () {
+    const provinsiSelect = document.getElementById('provinsiSelect');
+    const regencySelect  = document.getElementById('regencySelect');
+    const provinsiNama   = document.getElementById('provinsiNama');
+    const kotaNama       = document.getElementById('kotaNama');
 
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        navbar.classList.toggle('collapsed');
-        content.classList.toggle('collapsed');
+    const selectedProvinceId = provinsiSelect.value;
+    const selectedRegencyId  = "{{ $primaryAddress['kota_id'] ?? '' }}";
+
+    function loadRegencies(provinceId) {
+        regencySelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+
+        if (!provinceId) return;
+
+        fetch(`{{ route('api.regencies') }}?province_id=${provinceId}`)
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(function (reg) {
+                    const opt = document.createElement('option');
+                    opt.value = reg.id;
+                    opt.textContent = reg.name;
+
+                    if (selectedRegencyId && selectedRegencyId == reg.id) {
+                        opt.selected = true;
+                        kotaNama.value = reg.name;
+                    }
+
+                    regencySelect.appendChild(opt);
+                });
+            });
+    }
+
+    if (selectedProvinceId) {
+        loadRegencies(selectedProvinceId);
+    }
+
+    provinsiSelect.addEventListener('change', function () {
+        const provinceId = this.value;
+        const selectedText = this.options[this.selectedIndex].text;
+        provinsiNama.value = selectedText;
+        kotaNama.value = '';
+        loadRegencies(provinceId);
     });
+
+    regencySelect.addEventListener('change', function () {
+        const selectedText = this.options[this.selectedIndex].text;
+        kotaNama.value = selectedText;
+    });
+});
 </script>
 
 @endsection
