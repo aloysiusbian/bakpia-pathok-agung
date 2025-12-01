@@ -604,15 +604,15 @@
             <ul class="nav flex-column px-3">
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('testambahakun') ? 'active' : '' }}"
-                       href="/testambahakun" data-bs-toggle="tooltip" data-bs-placement="right"
+                       href="/tambah-admin" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Tambah Admin"><i class="bi bi-person-fill-add"></i>
                         <span>Tambah Admin</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('teskelolaadmin') ? 'active' : '' }}"
-                       href="/teskelolaadmin" data-bs-toggle="tooltip" data-bs-placement="right"
-                       title="Kelola Akun"><i class="bi bi-people-fill"></i>
-                        <span>Kelola Akun</span></a>
+                       href="/kelola-admin" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Kelola Admin"><i class="bi bi-people-fill"></i>
+                        <span>Kelola Admin</span></a>
                 </li>
             </ul>
         </div>

@@ -36,13 +36,13 @@
                             {{-- 1. Link ke Profil Akun --}}
                             <li>
                                 {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
-                                <a class="dropdown-item" href="/testes">
+                                <a class="dropdown-item" href="/dashboard-pelanggan">
                                     <i class="bi bi-person"></i> Profil Akun
                                 </a>
                             </li>
                              <li>
                                 {{-- Gunakan href="#" karena halaman profil belum dibuat, seperti permintaan sebelumnya --}}
-                                <a class="dropdown-item" href="/tespesanan">
+                                <a class="dropdown-item" href="/pesanan-saya">
                                     <i class="bi-clock-history"></i> Pesanan Saya
                                 </a>
                             </li>

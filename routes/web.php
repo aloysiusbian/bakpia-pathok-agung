@@ -71,8 +71,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 */
 Route::middleware('auth')->group(function () {
 
-    Route::get('/tesedit', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::put('/tesedit', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/edit-profil', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/edit-profil', [ProfileController::class, 'update'])->name('profile.update');
 
     // API untuk dropdown kabupaten
     Route::get('/api/regencies', [ProfileController::class, 'getRegencies'])->name('api.regencies');
@@ -152,17 +152,17 @@ Route::middleware('guest')->group(function () {
 Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
 Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
 
-Route::get('/testes', function () {
+Route::get('/dashboard-pelanggan', function () {
     return view('dashboard-pelanggan.dashboardPelanggan');
 });
 Route::get('/tes', function () {
     return view('dashboard-admin.dashboard');
 });
 
-Route::get('/teslihat', function () {
+Route::get('/lihat-profil', function () {
     return view('pages.profile');
 });
-Route::get('/tesriwayat', function () {
+Route::get('/riwayat', function () {
     return view('dashboard-pelanggan.riwayat');
 });
 Route::get('/lihatproduk', function () {
@@ -183,16 +183,16 @@ Route::get('/testambahakun', function () {
 Route::get('/teskelolaadmin', function () {
     return view('dashboard-admin.kelola_admin');
 });
-Route::get('/testambahakun', function () {
+Route::get('/tambah-admin', function () {
     return view('dashboard-admin.tambah_admin');
 });
-Route::get('/teskelolaadmin', function () {
+Route::get('/kelola-admin', function () {
     return view('dashboard-admin.kelola_admin');
 });
 Route::get('/lihatproduk', function () {
     return view('dashboard-admin.lihatproduk');
 });
-Route::get('/tespesanan', function () {
+Route::get('/pesanan-saya', function () {
     return view('pages.pesanansaya');
 });
 

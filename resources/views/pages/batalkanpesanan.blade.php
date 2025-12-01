@@ -215,7 +215,7 @@
         <a href="dalamproses" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
         <a href="#" class="nav-item-custom active" onclick="setActive(this)">Dibatalkan</a>
         <a href="kirimpesanan" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
-        <a href="tespesanan" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
+        <a href="pesanan-saya" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
     </div>
 
     <!-- 2. Container Utama List Pesanan -->
@@ -225,7 +225,7 @@
             @foreach($cancelledOrders as $order)
                 <!-- Kartu Transaksi -->
                 <div class="transaction-card" onclick="window.location.href=''">
-                    
+
                     <!-- Hanya menampilkan Status saja -->
                     <div class="transaction-date">
                         <span class="status-badge">{{ $order['status'] }}</span>
@@ -234,9 +234,9 @@
                     <!-- Loop Produk dalam satu pesanan -->
                     @foreach($order['produk'] as $item)
                         <div class="product-item">
-                            <img src="{{ asset($item['gambar']) }}" 
+                            <img src="{{ asset($item['gambar']) }}"
                                  onerror="this.src='https://via.placeholder.com/100x100?text=Produk'"
-                                 alt="{{ $item['nama'] }}" 
+                                 alt="{{ $item['nama'] }}"
                                  class="product-img">
                             <div class="product-info">
                                 <div class="product-name">{{ $item['nama'] }}</div>

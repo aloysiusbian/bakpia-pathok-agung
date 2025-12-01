@@ -27,7 +27,7 @@ $customer = [
             </div>
         </div>
         <div class="mt-4">
-            <a href="/tesedit" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Profil</a>
+            <a href="/edit-profil" class="btn btn-warning"><i class="bi bi-pencil-square"></i> Edit Profil</a>
         </div>
     </div>
 </div>

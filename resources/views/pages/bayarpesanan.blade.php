@@ -162,7 +162,7 @@
         background-color: #f5c042;
         color: #000;
     }
-    
+
     .btn-outline-danger-custom {
         border: 1px solid #dc3545;
         color: #dc3545;
@@ -173,7 +173,7 @@
         border-radius: 6px;
         transition: all 0.2s;
     }
-    
+
     .btn-outline-danger-custom:hover {
         background-color: #dc3545;
         color: white;
@@ -244,7 +244,7 @@
         <a href="dalamproses" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
         <a href="batalkanpesanan" class="nav-item-custom" onclick="setActive(this)">Dibatalkan</a>
         <a href="kirimpesanan" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
-        <a href="tespesanan" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
+        <a href="pesanan-saya" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
     </div>
 
     <!-- 2. Container Utama List Pesanan -->
@@ -254,7 +254,7 @@
             @foreach($unpaidOrders as $order)
                 <!-- Kartu Transaksi -->
                 <div class="transaction-card" onclick="window.location.href=''">
-                    
+
                     <div class="transaction-header">
                         <div class="text-muted">{{ $order['tanggal'] }}</div>
                         <div>
@@ -267,9 +267,9 @@
                     <!-- Loop Produk -->
                     @foreach($order['produk'] as $item)
                         <div class="product-item">
-                            <img src="{{ asset($item['gambar']) }}" 
+                            <img src="{{ asset($item['gambar']) }}"
                                  onerror="this.src='https://via.placeholder.com/100x100?text=Produk'"
-                                 alt="{{ $item['nama'] }}" 
+                                 alt="{{ $item['nama'] }}"
                                  class="product-img">
                             <div class="product-info">
                                 <div class="product-name">{{ $item['nama'] }}</div>
@@ -289,7 +289,7 @@
                     <div class="action-buttons">
                         <!-- Opsional: Tombol Batalkan -->
                         <!-- <button class="btn btn-outline-danger-custom" onclick="event.stopPropagation()">Batalkan</button> -->
-                        
+
                         <!-- Tombol Utama: Bayar Sekarang -->
                         <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Bayar Sekarang</button>
                     </div>
