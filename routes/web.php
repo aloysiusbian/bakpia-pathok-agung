@@ -195,4 +195,13 @@ Route::get('/detailpesanan', function () {
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
 });
+Route::get('/kirimpesanan', function () {
+    return view('pages.kirimpesanan');
+});
+Route::get('/dalamproses', function () {
+    return view('pages.prosespesanan');
+});
+Route::get('/bayarpesanan', function () {
+    return view('pages.bayarpesanan');
+});
 

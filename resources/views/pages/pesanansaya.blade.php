@@ -232,10 +232,10 @@
     <!-- 1. Navigasi Status Pesanan -->
     <div class="order-status-nav">
         <!-- Contoh penggunaan route() jika di Laravel -->
-        <a href="#" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
-        <a href="#" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
+        <a href="bayarpesanan" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
+        <a href="dalamproses" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
         <a href="batalkanpesanan" class="nav-item-custom " onclick="setActive(this)">Dibatalkan</a>
-        <a href="#" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
+        <a href="kirimpesanan" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
         <a href="tespesanan" class="nav-item-custom active" onclick="setActive(this)">Selesai</a>
     </div>
 

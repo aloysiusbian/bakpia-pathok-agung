@@ -1,6 +1,6 @@
 @extends('templates.app')
 
-@section('title', 'Batalkan Pesanan')
+@section('title', 'Kirim Pesanan')
 
 @section('content')
 
@@ -67,15 +67,23 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
-    .transaction-date {
-        font-size: 0.95rem; /* Sedikit diperbesar agar jelas */
-        text-align: right;
-        margin-bottom: 10px;
+    .transaction-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
     }
 
     .status-badge {
         font-weight: bold;
-        color: #d9534f; /* Merah untuk dibatalkan */
+        color: #0d6efd; /* Biru untuk status dikirim */
+    }
+
+    .estimasi-text {
+        font-size: 0.8rem;
+        color: #28a745; /* Hijau untuk estimasi */
+        margin-left: 5px;
     }
 
     .product-item {
@@ -155,13 +163,31 @@
         color: #000;
     }
 
+    .btn-outline-custom {
+        border: 1px solid #555;
+        background-color: transparent;
+        color: #555;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 8px 20px;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+    .btn-outline-custom:hover {
+        background-color: #eee;
+        color: #000;
+    }
+
     @media (max-width: 576px) {
         .product-item {
             flex-direction: column;
             align-items: center;
             text-align: center;
         }
-        .transaction-date {
+        .transaction-header {
+            flex-direction: column;
+            gap: 5px;
             text-align: center;
         }
         .total-section,
@@ -171,35 +197,44 @@
     }
 </style>
 
+{{-- Data Simulasi untuk Pesanan Dikirim --}}
 @php
-    $cancelledOrders = [
+    $shippedOrders = [
         [
-            'id_pesanan' => 'ORD-001',
-            'tanggal' => '21-5-2025 15:30',
-            'status' => 'Dibatalkan',
+            'id_pesanan' => 'ORD-SHIP-001',
+            'tanggal' => '22-5-2025 09:00',
+            'status' => 'Sedang Dikirim',
+            'estimasi' => 'Estimasi tiba: 23 Mei',
             'total' => 250000,
             'link_detail' => '/detailpesanan',
             'produk' => [
                 [
-                    'nama' => 'Bakpia Keju',
-                    'gambar' => 'images/bakpia-keju.jpg',
+                    'nama' => 'Bakpia Kacang Hijau',
+                    'gambar' => 'images/bakpia-kacang-hijau.jpg',
                     'variasi' => '1 box isi 15',
                     'jumlah' => 4
                 ]
             ]
         ],
         [
-            'id_pesanan' => 'ORD-002',
-            'tanggal' => '19-5-2025 12:30',
-            'status' => 'Dibatalkan',
-            'total' => 275000,
-            'link_detail' => '/detail-pesanan-2',
+            'id_pesanan' => 'ORD-SHIP-002',
+            'tanggal' => '22-5-2025 08:30',
+            'status' => 'Sedang Dikirim',
+            'estimasi' => 'Estimasi tiba: 24 Mei',
+            'total' => 405000,
+            'link_detail' => '/detail-pesanan-multi',
             'produk' => [
                 [
                     'nama' => 'Bakpia Cokelat',
                     'gambar' => 'images/bakpia-cokelat.jpg',
                     'variasi' => '1 box isi 15',
-                    'jumlah' => 5
+                    'jumlah' => 2
+                ],
+                [
+                    'nama' => 'Bakpia Keju',
+                    'gambar' => 'images/bakpia-keju.jpg',
+                    'variasi' => '1 box isi 15',
+                    'jumlah' => 3
                 ]
             ]
         ]
@@ -209,29 +244,30 @@
 
     <!-- 1. Navigasi Status Pesanan -->
     <div class="order-status-nav">
-        <!-- Contoh penggunaan route() jika di Laravel -->
-
         <a href="bayarpesanan" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
         <a href="dalamproses" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
-        <a href="#" class="nav-item-custom active" onclick="setActive(this)">Dibatalkan</a>
-        <a href="kirimpesanan" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
+        <a href="batalkanpesanan" class="nav-item-custom" onclick="setActive(this)">Dibatalkan</a>
+        <a href="kirimpesanan" class="nav-item-custom active" onclick="setActive(this)">Dikirim</a>
         <a href="tespesanan" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
     </div>
 
     <!-- 2. Container Utama List Pesanan -->
     <div class="orders-container-box">
 
-        @if(count($cancelledOrders) > 0)
-            @foreach($cancelledOrders as $order)
+        @if(count($shippedOrders) > 0)
+            @foreach($shippedOrders as $order)
                 <!-- Kartu Transaksi -->
                 <div class="transaction-card" onclick="window.location.href=''">
                     
-                    <!-- Hanya menampilkan Status saja -->
-                    <div class="transaction-date">
-                        <span class="status-badge">{{ $order['status'] }}</span>
+                    <div class="transaction-header">
+                        <div class="text-muted">{{ $order['tanggal'] }}</div>
+                        <div>
+                            <span class="status-badge">{{ $order['status'] }}</span>
+                            <span class="estimasi-text">({{ $order['estimasi'] }})</span>
+                        </div>
                     </div>
 
-                    <!-- Loop Produk dalam satu pesanan -->
+                    <!-- Loop Produk -->
                     @foreach($order['produk'] as $item)
                         <div class="product-item">
                             <img src="{{ asset($item['gambar']) }}" 
@@ -252,15 +288,16 @@
                         <span class="total-amount">Rp {{ number_format($order['total'], 0, ',', '.') }}</span>
                     </div>
 
-                    <!-- Tombol Aksi -->
+                    <!-- Tombol Aksi Khusus Dikirim -->
                     <div class="action-buttons">
-                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beli Lagi</button>
+                        <button class="btn btn-outline-custom" onclick="event.stopPropagation()">Lacak Pesanan</button>
+                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Pesanan Diterima</button>
                     </div>
                 </div>
             @endforeach
         @else
             <div class="text-center py-5">
-                <h5 class="text-muted">Tidak ada pesanan yang dibatalkan.</h5>
+                <h5 class="text-muted">Tidak ada pesanan yang sedang dikirim.</h5>
             </div>
         @endif
 
