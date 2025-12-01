@@ -30,7 +30,7 @@
         <!-- Kartu 1: Info Pengiriman -->
         <div class="info-card">
             <h5 class="fw-bold">Info pengiriman</h5>
-            <div class="delivery-status">Pesanan akan tiba dalam 30 menit</div>
+            <div class="delivery-status">Pesanan telah diterima</div>
             <div class="text-muted small">21-5-2025 15:30</div>
         </div>
 
