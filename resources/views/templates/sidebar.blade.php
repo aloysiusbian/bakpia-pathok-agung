@@ -479,20 +479,20 @@
             <p class="nav-section-title">Menu Utama</p>
             <ul class="nav flex-column px-3">
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->is('testes') ? 'active' : '' }}"
-                       href="/testes" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a class="nav-link {{ request()->is('dashboard-pelanggan') ? 'active' : '' }}"
+                       href="/dashboard-pelanggan" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Beranda"><i class="bi bi-house-door"></i>
                         <span>Beranda</span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->is('teslihat') ? 'active' : '' }}"
-                       href="/teslihat" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a class="nav-link {{ request()->is('lihat-profil') ? 'active' : '' }}"
+                       href="/lihat-profil" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Beranda"><i class="bi bi-person-circle"></i>
                         <span>Lihat Profil</span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->is('tesriwayat') ? 'active' : '' }}"
-                       href="/tesriwayat" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a class="nav-link {{ request()->is('riwayat') ? 'active' : '' }}"
+                       href="/riwayat" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Riwayat Pembelian"><i class="bi bi-clock-history"></i>
                         <span>Riwayat Pembelian</span></a>
                 </li>

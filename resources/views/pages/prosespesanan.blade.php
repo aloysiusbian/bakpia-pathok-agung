@@ -1,6 +1,6 @@
 @extends('templates.app')
 
-@section('title', 'Batalkan Pesanan')
+@section('title', 'Pesanan Dalam Proses')
 
 @section('content')
 
@@ -67,15 +67,24 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
-    .transaction-date {
-        font-size: 0.95rem; /* Sedikit diperbesar agar jelas */
-        text-align: right;
-        margin-bottom: 10px;
+    .transaction-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        font-size: 0.9rem;
     }
 
     .status-badge {
         font-weight: bold;
-        color: #d9534f; /* Merah untuk dibatalkan */
+        color: #ff9800; /* Oranye untuk Dalam Proses */
+    }
+
+    .estimasi-text {
+        font-size: 0.8rem;
+        color: #666;
+        margin-left: 5px;
+        font-style: italic;
     }
 
     .product-item {
@@ -161,7 +170,9 @@
             align-items: center;
             text-align: center;
         }
-        .transaction-date {
+        .transaction-header {
+            flex-direction: column;
+            gap: 5px;
             text-align: center;
         }
         .total-section,
@@ -171,35 +182,44 @@
     }
 </style>
 
+{{-- Data Simulasi untuk Pesanan Dalam Proses --}}
 @php
-    $cancelledOrders = [
+    $processOrders = [
         [
-            'id_pesanan' => 'ORD-001',
-            'tanggal' => '21-5-2025 15:30',
-            'status' => 'Dibatalkan',
-            'total' => 250000,
+            'id_pesanan' => 'ORD-PRO-001',
+            'tanggal' => '23-5-2025 08:15',
+            'status' => 'Sedang Dikemas',
+            'estimasi' => 'Akan dikirim sebelum 24 Mei',
+            'total' => 150000,
             'link_detail' => '/detailpesanan',
+            'produk' => [
+                [
+                    'nama' => 'Bakpia Kumbu Hitam',
+                    'gambar' => 'images/bakpia-kumbu-hitam.jpg',
+                    'variasi' => '1 box isi 15',
+                    'jumlah' => 2
+                ]
+            ]
+        ],
+        [
+            'id_pesanan' => 'ORD-PRO-002',
+            'tanggal' => '23-5-2025 10:00',
+            'status' => 'Menunggu Kurir',
+            'estimasi' => 'Kurir sedang menuju toko',
+            'total' => 300000,
+            'link_detail' => '/detail-pesanan-multi',
             'produk' => [
                 [
                     'nama' => 'Bakpia Keju',
                     'gambar' => 'images/bakpia-keju.jpg',
                     'variasi' => '1 box isi 15',
-                    'jumlah' => 4
-                ]
-            ]
-        ],
-        [
-            'id_pesanan' => 'ORD-002',
-            'tanggal' => '19-5-2025 12:30',
-            'status' => 'Dibatalkan',
-            'total' => 275000,
-            'link_detail' => '/detail-pesanan-2',
-            'produk' => [
+                    'jumlah' => 2
+                ],
                 [
                     'nama' => 'Bakpia Cokelat',
                     'gambar' => 'images/bakpia-cokelat.jpg',
                     'variasi' => '1 box isi 15',
-                    'jumlah' => 5
+                    'jumlah' => 2
                 ]
             ]
         ]
@@ -209,11 +229,9 @@
 
     <!-- 1. Navigasi Status Pesanan -->
     <div class="order-status-nav">
-        <!-- Contoh penggunaan route() jika di Laravel -->
-
         <a href="bayarpesanan" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
-        <a href="dalamproses" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
-        <a href="#" class="nav-item-custom active" onclick="setActive(this)">Dibatalkan</a>
+        <a href="dalamproses" class="nav-item-custom active" onclick="setActive(this)">Dalam Proses</a>
+        <a href="batalkanpesanan" class="nav-item-custom" onclick="setActive(this)">Dibatalkan</a>
         <a href="kirimpesanan" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
         <a href="pesanan-saya" class="nav-item-custom" onclick="setActive(this)">Selesai</a>
     </div>
@@ -221,17 +239,20 @@
     <!-- 2. Container Utama List Pesanan -->
     <div class="orders-container-box">
 
-        @if(count($cancelledOrders) > 0)
-            @foreach($cancelledOrders as $order)
+        @if(count($processOrders) > 0)
+            @foreach($processOrders as $order)
                 <!-- Kartu Transaksi -->
                 <div class="transaction-card" onclick="window.location.href=''">
 
-                    <!-- Hanya menampilkan Status saja -->
-                    <div class="transaction-date">
-                        <span class="status-badge">{{ $order['status'] }}</span>
+                    <div class="transaction-header">
+                        <div class="text-muted">{{ $order['tanggal'] }}</div>
+                        <div>
+                            <span class="status-badge">{{ $order['status'] }}</span>
+                            <span class="estimasi-text">({{ $order['estimasi'] }})</span>
+                        </div>
                     </div>
 
-                    <!-- Loop Produk dalam satu pesanan -->
+                    <!-- Loop Produk -->
                     @foreach($order['produk'] as $item)
                         <div class="product-item">
                             <img src="{{ asset($item['gambar']) }}"
@@ -252,15 +273,15 @@
                         <span class="total-amount">Rp {{ number_format($order['total'], 0, ',', '.') }}</span>
                     </div>
 
-                    <!-- Tombol Aksi -->
+                    <!-- Tombol Aksi Khusus Dalam Proses -->
                     <div class="action-buttons">
-                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beli Lagi</button>
+                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Hubungi Penjual</button>
                     </div>
                 </div>
             @endforeach
         @else
             <div class="text-center py-5">
-                <h5 class="text-muted">Tidak ada pesanan yang dibatalkan.</h5>
+                <h5 class="text-muted">Tidak ada pesanan yang sedang diproses.</h5>
             </div>
         @endif
 

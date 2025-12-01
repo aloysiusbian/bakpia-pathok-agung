@@ -211,7 +211,7 @@
             'total' => 150000,
             'link_detail' => '/detail-pesanan-3',
             'produk' => [
-                [ 
+                [
                     'nama' => 'Bakpia Kumbu Hitam',
                     'gambar' => 'images/bakpia-kumbu-hitam.jpg',
                     'variasi' => '1 box isi 15',
@@ -232,21 +232,21 @@
     <!-- 1. Navigasi Status Pesanan -->
     <div class="order-status-nav">
         <!-- Contoh penggunaan route() jika di Laravel -->
-        <a href="#" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
-        <a href="#" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
+        <a href="bayarpesanan" class="nav-item-custom" onclick="setActive(this)">Belum Bayar</a>
+        <a href="dalamproses" class="nav-item-custom" onclick="setActive(this)">Dalam Proses</a>
         <a href="batalkanpesanan" class="nav-item-custom " onclick="setActive(this)">Dibatalkan</a>
-        <a href="#" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
-        <a href="tespesanan" class="nav-item-custom active" onclick="setActive(this)">Selesai</a>
+        <a href="kirimpesanan" class="nav-item-custom" onclick="setActive(this)">Dikirim</a>
+        <a href="pesanan-saya" class="nav-item-custom active" onclick="setActive(this)">Selesai</a>
     </div>
 
-   
+
     <div class="orders-container-box">
 
         @if(count($cancelledOrders) > 0)
             @foreach($cancelledOrders as $order)
                 <!-- Kartu Transaksi -->
                 <div class="transaction-card" onclick="window.location.href='detailpesanan'">
-                    
+
                     <!-- KEMBALI SEPERTI SEMULA: Menampilkan Tanggal dan Status -->
                     <div class="transaction-date">
                         {{ $order['tanggal'] }} | <span class="status-badge">{{ $order['status'] }}</span>
@@ -255,9 +255,9 @@
                     <!-- Loop Produk dalam satu pesanan -->
                     @foreach($order['produk'] as $item)
                         <div class="product-item">
-                            <img src="{{ asset($item['gambar']) }}" 
+                            <img src="{{ asset($item['gambar']) }}"
                                  onerror="this.src='lihatproduk'"
-                                 alt="{{ $item['nama'] }}" 
+                                 alt="{{ $item['nama'] }}"
                                  class="product-img">
                             <div class="product-info">
                                 <div class="product-name">{{ $item['nama'] }}</div>
@@ -275,7 +275,7 @@
 
                     <!-- Tombol Aksi -->
                     <div class="action-buttons">
-                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beri Ratting</button>
+                        <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beri Rating</button>
                         <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beli Lagi</button>
                     </div>
                 </div>
