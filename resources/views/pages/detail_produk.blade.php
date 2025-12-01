@@ -26,6 +26,11 @@
                 <div class="row g-3">
                     <div class="col-md-5 text-center">
                         <img src="{{ asset('images/' . $produk->gambar) }}" alt="{{ $produk->namaProduk }}" class="img-fluid rounded" onerror="this.onerror=null;this.src='https://placehold.co/400x400/A0522D/FFFFFF?text=Gambar+Tidak+Ada';">
+                    <div class="d-flex justify-content-center mt-3 gap-2 thumbnail-scroll">
+ {{-- Ganti dengan Looping data gambar produk lain jika tersedia, contoh statis: --}}
+ {{-- Gambar Utama --}}
+ <img src="{{ asset('images/' . $produk->gambar) }}" alt="Thumbnail 1" class="img-thumbnail rounded thumbnail-item active" style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;"data-bs-toggle="modal" data-bs-target="#imageZoomModal">
+ </div>
                     </div>
                     <div class="col-md-7">
                         <h4>{{ $produk->namaProduk }}</h4>
@@ -49,6 +54,21 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="imageZoomModal" tabindex="-1" aria-labelledby="imageZoomModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header">
+ <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body text-center">
+<img id="zoomedImage" src="" class="img-fluid rounded" alt="Gambar Diperbesar">
+</div>
+ <div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+</div>
+ </div>
+</div>
+</div>
 
         
         <div class="col-lg-4">
@@ -175,9 +195,32 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    
+    const mainImage = document.querySelector('.col-md-5 img:first-child');
+    const thumbnails = document.querySelectorAll('.thumbnail-item');
+    const zoomedImage = document.getElementById('zoomedImage'); // Elemen <img> di dalam modal
+
+    thumbnails.forEach(thumbnail => {
+        thumbnail.addEventListener('click', function() {
+            // 1. Logika untuk mengubah gambar utama di halaman
+            thumbnails.forEach(item => item.classList.remove('active'));
+            this.classList.add('active');
+
+            // Gunakan 'src' dari thumbnail untuk gambar utama di detail produk
+            const newDetailSrc = this.src; 
+            mainImage.src = newDetailSrc;
+            mainImage.alt = this.alt;
+
+            // 2. Logika untuk menampilkan gambar yang diperbesar di modal
+            // Mengambil sumber gambar full dari atribut data-full-src
+            const fullSrc = this.getAttribute('data-full-src') || this.src; 
+            zoomedImage.src = fullSrc;
+        });
+    });
+
+
     updateSubtotal();
 });
+
 </script>
 @endpush
  

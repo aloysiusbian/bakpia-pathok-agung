@@ -78,6 +78,27 @@
       transform: translateY(-5px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
+    .section-header {
+    font-size: 22px;
+    font-weight: 700;
+    color: #3e2a1a;
+    margin-bottom: 20px;
+}
+.thumb-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.thumb-img:hover {
+    border-color: #c49a6c;
+    transform: scale(1.05);
+}
+
   </style>
 
 </head>

@@ -4,7 +4,7 @@
 
 @section('content')
 <body  style="background-color: #fbf3df">
-    <div class="jumbotron-container py-5">
+    <div class="jumbotron-container py-4">
         <div class="container-fluid overflow-hidden" style="border-radius: 20px;">
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-indicators">
@@ -83,8 +83,57 @@
                 ],
             ];
         @endphp --}}
+        
+        {{-- DATA DUMMY PRODUK TERLARIS --}}
+@php
+    $bestSeller = [
+        [
+            'idProduk' => 4,
+            'namaProduk' => 'Bakpia Keju',
+            'harga' => 300000,
+            'rating' => 5.0,
+            'gambar' => 'bakpia-keju.jpg',
+        ],
+        [
+            'idProduk' => 1,
+            'namaProduk' => 'Bakpia Cokelat',
+            'harga' => 200000,
+            'rating' => 4.9,
+            'gambar' => 'bakpia-cokelat.jpg',
+        ],
+    ];
+@endphp
+
+{{-- SECTION PRODUK TERLARIS --}}
+<div class="container py-3">
+
+    <div class="section-header">
+        Best Seller 
+    </div>
+
+    <div class="products">
+        @foreach ($bestSeller as $product)
+            <a href="{{ route('produk.show', $product['idProduk']) }}" class="product-link">
+                <div class="product-card">
+                    <img src="{{ !empty($product['gambar']) ? asset('images/'.$product['gambar']) : 'https://via.placeholder.com/300x200/A0522D/FFFFFF?text=Best+Seller' }}"
+                        alt="{{ $product['namaProduk'] }}">
+                    <div class="product-info">
+                        <div class="product-name">{{ $product['namaProduk'] }}</div>
+                        <div class="product-rating">⭐ {{ $product['rating'] }}</div>
+                        <div class="product-price">Rp{{ number_format($product['harga'], 0, ',', '.') }}</div>
+                    </div>
+                </div>
+            </a>
+        @endforeach
+    </div>
+
+</div>
+
 
         <div class="container py-4">
+            <div class="section-header">
+        Produk Lainnya
+    </div>
             <div class="products">
                 @foreach ($products as $product)
                     {{-- Menambahkan anchor tag untuk membuat produk dapat diklik --}}
