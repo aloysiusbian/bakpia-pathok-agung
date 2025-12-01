@@ -226,10 +226,18 @@
 
                         @foreach($items as $item)
                             <div class="product-box-inner">
-                                <img src="{{ asset('images/' . $item->gambar) }}"
-                                     alt="{{ $item->produk->namaProduk }}"
-                                     class="product-image"
-                                     onerror="this.onerror=null;this.src='https://placehold.co/160x160?text=Produk';">
+                                {{-- 
+                                    Struktur data dari controller:
+                                    - dari keranjang  : $item adalah model Keranjang dengan relasi 'produk'
+                                    - dari detail     : $item adalah object biasa dengan property:
+                                          gambar, produk (instance Produk), jumlahBarang, subTotal
+                                    Di sini kita dukung dua-duanya:
+                                --}}
+                                <img
+                                    src="{{ asset('images/' . ($item->gambar ?? $item->produk->gambar)) }}"
+                                    alt="{{ $item->produk->namaProduk }}"
+                                    class="product-image"
+                                    onerror="this.onerror=null;this.src='https://placehold.co/160x160?text=Produk';">
 
                                 <div class="product-details">
                                     <div class="product-title" style="margin-bottom: .25rem;">

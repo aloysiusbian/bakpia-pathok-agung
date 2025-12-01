@@ -111,6 +111,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran/process', [PemesananOnlineController::class, 'process'])
         ->name('pembayaran.process');
 
+        // ========== BARU: CHECKOUT LANGSUNG DARI DETAIL PRODUK ==========
+    Route::post('/pembayaran/produk', [PemesananOnlineController::class, 'checkoutProduk'])
+        ->name('pembayaran.checkout.produk');
+
+    Route::post('/pembayaran/produk/process', [PemesananOnlineController::class, 'processProduk'])
+        ->name('pembayaran.process.produk');
+
     // 3) Halaman pembayaran QRIS (setelah process)
     Route::get('/pembayaran/qris/{nomorPesanan}', [PemesananOnlineController::class, 'qris'])
         ->name('pembayaran.qris');
@@ -194,14 +201,5 @@ Route::get('/detailpesanan', function () {
 });
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
-});
-Route::get('/kirimpesanan', function () {
-    return view('pages.kirimpesanan');
-});
-Route::get('/dalamproses', function () {
-    return view('pages.prosespesanan');
-});
-Route::get('/bayarpesanan', function () {
-    return view('pages.bayarpesanan');
 });
 

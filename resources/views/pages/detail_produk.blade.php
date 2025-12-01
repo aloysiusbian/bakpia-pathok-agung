@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Toko Bakpia Agung')</title>
 
-    {{-- Link CSS Bootstrap (atau CSS framework lain yang Anda gunakan) --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    {{-- Anda bisa menambahkan link ke file CSS kustom Anda di sini --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/style.css') }}"> --}}
 </head>
 <body  style="background-color: #fbf3df">
 @extends('templates.app')
@@ -50,10 +46,11 @@
             </div>
         </div>
 
-        
+        {{-- KOLOM KANAN: FORM PEMBELIAN --}}
         <div class="col-lg-4">
             <div class="sticky-purchase">
-                <form action="{{ route('keranjang.store') }}" method="POST">
+                {{-- SATU FORM, ACTION DITENTUKAN PER TOMBOL --}}
+                <form method="POST">
                     @csrf
                     <input type="hidden" name="idProduk" value="{{ $produk->idProduk }}">
                     
@@ -82,10 +79,19 @@
                         </div>
 
                         <div class="d-grid gap-2 mt-3">
-                            <button type="submit" class="btn btn-warning fw-bold">+ Keranjang</button>
-                            <a href="/pembayaran" class="btn btn-outline-dark" role="button">
-    Beli Sekarang
-</a>
+                            {{-- + KERANJANG (kalau tetap ingin pakai keranjang) --}}
+                            <button type="submit"
+                                    formaction="{{ route('keranjang.store') }}"
+                                    class="btn btn-warning fw-bold">
+                                + Keranjang
+                            </button>
+
+                            {{-- BELI SEKARANG: LANGSUNG KE PEMBAYARAN (PemesananOnlineController@checkoutProduk) --}}
+                            <button type="submit"
+                                    formaction="{{ route('pembayaran.checkout.produk') }}"
+                                    class="btn btn-outline-dark">
+                                Beli Sekarang
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -116,34 +122,23 @@
 </div>
 
 <style>
-/* ... (Style Anda tetap di sini, tidak perlu diubah) ... */
+/* ... style-mu tetap di sini ... */
 </style>
 @endsection
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    console.log('Script Dijalankan!'); // <-- DEBUG 1
-
     const purchaseCard = document.getElementById('purchase-card');
-    console.log('Purchase Card ditemukan?', purchaseCard); // <-- DEBUG 2
-
-    if (!purchaseCard) {
-        console.error('ERROR: Element dengan ID "purchase-card" tidak ditemukan. Script berhenti.');
-        return;
-    }
+    if (!purchaseCard) return;
 
     const btnMinus = document.getElementById('btn-minus');
     const btnPlus = document.getElementById('btn-plus');
     const kuantitasInput = document.getElementById('kuantitas-input');
-    console.log('Tombol Plus ditemukan?', btnPlus); // <-- DEBUG 3
-    console.log('Tombol Minus ditemukan?', btnMinus); // <-- DEBUG 4
-
     const subtotalElement = document.getElementById('subtotal');
     
     const hargaSatuan = parseFloat(purchaseCard.dataset.harga);
     const stokTersedia = parseInt(purchaseCard.dataset.stok);
-    console.log('Harga Satuan:', hargaSatuan, 'Stok:', stokTersedia); // <-- DEBUG 5
 
     function updateSubtotal() {
         let kuantitas = parseInt(kuantitasInput.value);
@@ -158,7 +153,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if(btnPlus && btnMinus) {
         btnPlus.addEventListener('click', function () {
-            console.log('Tombol Plus diklik!'); // <-- DEBUG 6
             let currentValue = parseInt(kuantitasInput.value);
             if (currentValue < stokTersedia) {
                 kuantitasInput.value = currentValue + 1;
@@ -167,7 +161,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         btnMinus.addEventListener('click', function () {
-            console.log('Tombol Minus diklik!'); // <-- DEBUG 7
             let currentValue = parseInt(kuantitasInput.value);
             if (currentValue > 1) {
                 kuantitasInput.value = currentValue - 1;
@@ -181,9 +174,8 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 @endpush
  
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    @stack('scripts')
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+@stack('scripts')
 
 </body>
 </html>
