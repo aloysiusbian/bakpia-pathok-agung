@@ -195,11 +195,18 @@ Route::get('/lihatproduk', function () {
 Route::get('/pesanan-saya', function () {
     return view('pages.pesanansaya');
 });
-
 Route::get('/detailpesanan', function () {
     return view('pages.detailpesanan');
 });
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
 });
-
+Route::get('/bayarpesanan', function () {
+    return view('pages.bayarpesanan');
+});
+Route::get('/dalamproses', function () {
+    return view('pages.prosespesanan');
+});
+Route::get('/kirimpesanan', function () {
+    return view('pages.kirimpesanan');
+});
