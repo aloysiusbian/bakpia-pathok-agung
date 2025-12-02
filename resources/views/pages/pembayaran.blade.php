@@ -212,7 +212,7 @@
     <div class="checkout-container">
         
         {{-- FORM PEMBAYARAN --}}
-        <form id="form-pembayaran" action="{{ route('pembayaran.process') }}" method="POST">
+        <form id="form-pembayaran" action="{{ $formAction ?? route('pembayaran.process') }}" method="POST">
             @csrf
 
             <div class="checkout-grid">
