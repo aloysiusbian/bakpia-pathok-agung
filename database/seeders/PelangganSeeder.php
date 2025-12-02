@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Hash;
 class PelangganSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Run the database seeds. tes
      */
     public function run(): void
     {

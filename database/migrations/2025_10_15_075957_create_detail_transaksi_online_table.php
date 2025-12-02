@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('discountPerProduk', 3, 2);
             $table->integer('subTotal');
 
-            // Foreign Keys
+            // Foreign Keys tes
 //             $table->foreign('nomorPemesanan')->references('nomorPemesanan')->on('pemesananonline');
 //             $table->foreign('idProduk')->references('idProduk')->on('produk');
         });

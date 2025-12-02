@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // app/database/migrations/xxxx_xx_xx_create_pelanggan_alamat_table.php
+        // app/database/migrations/xxxx_xx_xx_create_pelanggan_alamat_table.php tes
 
         Schema::create('alamat', function (Blueprint $table) {
             $table->id(); // Kunci utama untuk tabel alamat

@@ -13,7 +13,7 @@ class AlamatSeeder extends Seeder
      */
     public function run(): void
     {
-        // Masukkan data ke tabel 'alamat_pelanggan'
+        // Masukkan data ke tabel 'alamat_pelanggan' tes
         DB::table('alamat')->insert([
             // Alamat untuk Pelanggan ID 1
             [
