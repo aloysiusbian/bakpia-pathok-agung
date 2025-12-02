@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PemesananOfflineController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -42,9 +43,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
         return view('dashboard-admin.pemesananOnline');
     })->name('pemesanan.online');
 
-    Route::get('/pemesananOffline', function () {
-        return view('dashboard-admin.pemesananOffline');
-    })->name('pemesanan.offline');
+      Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])
+        ->name('pemesanan.offline');
 
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
@@ -96,6 +96,8 @@ Route::middleware('auth')->group(function () {
     // ✅ TAMBAHKAN ROUTE INI
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+
+
 
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
@@ -153,10 +155,10 @@ Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.s
 Route::get('/dashboard-pelanggan', function () {
     return view('dashboard-pelanggan.dashboardPelanggan');
 });
+Route::get('/tes', function () {
+    return view('dashboard-admin.dashboard');
+});
 
-//Route::get('/tes', function () {
-//    return view('dashboard-admin.dashboard');
-//});
 Route::get('/lihat-profil', function () {
     return view('pages.profile');
 });
@@ -168,9 +170,6 @@ Route::get('/lihatproduk', function () {
 });
 Route::get('/tambahproduk', function () {
     return view('dashboard-admin.tambah_produk');
-});
-Route::get('/pemesananoffline', function () {
-    return view('dashboard-admin.pemesananOffline');
 });
 Route::get('/pemesananonline', function () {
     return view('dashboard-admin.pemesananOnline');
@@ -193,18 +192,11 @@ Route::get('/lihatproduk', function () {
 Route::get('/pesanan-saya', function () {
     return view('pages.pesanansaya');
 });
+
 Route::get('/detailpesanan', function () {
     return view('pages.detailpesanan');
 });
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
 });
-Route::get('/bayarpesanan', function () {
-    return view('pages.bayarpesanan');
-});
-Route::get('/dalamproses', function () {
-    return view('pages.prosespesanan');
-});
-Route::get('/kirimpesanan', function () {
-    return view('pages.kirimpesanan');
-});
+
