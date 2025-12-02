@@ -619,8 +619,12 @@
     </div>
 
     <div class="text-center mb-3">
-        <a href="/logout" methods="POST" class="btn offline-btn w-75"><i
-                class="bi bi-box-arrow-right"></i><span>Logout</span></a>
+        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn offline-btn w-75">
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+            </button>
+        </form>
     </div>
 </div>
 
