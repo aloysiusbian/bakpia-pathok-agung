@@ -27,6 +27,7 @@
   <style>
     body {
       font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji';
+      background-color: #fbf3df;
     }
 
     .payment-box {
