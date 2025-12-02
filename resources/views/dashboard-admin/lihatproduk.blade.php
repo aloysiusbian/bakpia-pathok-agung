@@ -43,8 +43,11 @@
                     <td>
                         <a href="{{ url('/admin/produk/1/edit') }}" class="btn btn-sm btn-warning action-btn"
                            title="Edit"><i class="bi bi-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger action-btn" title="Hapus"><i
-                                class="bi bi-trash"></i></button>
+                        <!-- MODIFIKASI: Tombol ini sekarang memicu modal hapus -->
+                        <button class="btn btn-sm btn-danger action-btn" title="Hapus" 
+                                data-bs-toggle="modal" data-bs-target="#modalHapusProduk">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>
                 </tr>
 
@@ -61,8 +64,11 @@
                     <td>
                         <a href="{{ url('/admin/produk/2/edit') }}" class="btn btn-sm btn-warning action-btn"
                            title="Edit"><i class="bi bi-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger action-btn" title="Hapus"><i
-                                class="bi bi-trash"></i></button>
+                        <!-- MODIFIKASI: Tombol ini sekarang memicu modal hapus -->
+                        <button class="btn btn-sm btn-danger action-btn" title="Hapus" 
+                                data-bs-toggle="modal" data-bs-target="#modalHapusProduk">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>
                 </tr>
 
@@ -78,8 +84,11 @@
                     <td>
                         <a href="{{ url('/admin/produk/3/edit') }}" class="btn btn-sm btn-warning action-btn"
                            title="Edit"><i class="bi bi-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger action-btn" title="Hapus"><i
-                                class="bi bi-trash"></i></button>
+                        <!-- MODIFIKASI: Tombol ini sekarang memicu modal hapus -->
+                        <button class="btn btn-sm btn-danger action-btn" title="Hapus" 
+                                data-bs-toggle="modal" data-bs-target="#modalHapusProduk">
+                            <i class="bi bi-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -88,7 +97,7 @@
     </div>
 </div>
 
-<!-- MODAL TAMBAH PRODUK -->
+<!-- MODAL TAMBAH PRODUK (SAMA SEPERTI SEBELUMNYA) -->
 <div class="modal fade" id="modalTambahProduk" tabindex="-1" aria-labelledby="modalTambahProdukLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -166,6 +175,37 @@
     </div>
 </div>
 
+<!-- TAMBAHAN: MODAL HAPUS PRODUK -->
+<div class="modal fade" id="modalHapusProduk" tabindex="-1" aria-labelledby="modalHapusProdukLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 14px;">
+            <div class="modal-header" style="background: #dc3545; color: white;">
+                <h5 class="modal-title" id="modalHapusProdukLabel" style="font-weight:700;">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> Hapus Produk
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center py-4">
+                <h5 class="mb-3">Apakah Anda yakin ingin menghapus produk ini?</h5>
+                <p class="text-muted mb-0">Tindakan ini tidak dapat dibatalkan. Data produk akan hilang secara permanen.</p>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+                    Batal
+                </button>
+                <!-- Form Hapus (Contoh Action) -->
+                <form action="{{ url('/admin/produk/delete') }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger px-4">
+                        Ya, Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
@@ -175,11 +215,14 @@
     const content = document.getElementById('content');
     const toggleBtn = document.getElementById('toggle-btn');
 
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        navbar.classList.toggle('collapsed');
-        content.classList.toggle('collapsed');
-    });
+    // Tambahkan pengecekan apakah toggleBtn ada sebelum menambahkan event listener
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+            if(sidebar) sidebar.classList.toggle('collapsed');
+            if(navbar) navbar.classList.toggle('collapsed');
+            if(content) content.classList.toggle('collapsed');
+        });
+    }
 </script>
 
 @endsection
