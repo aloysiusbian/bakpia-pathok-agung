@@ -73,14 +73,14 @@
                         </div>
 
                         {{-- Info Produk --}}
-                        <div class="col-9 col-md-6">
+                        <div class="col-9 col-md-6" style="margin-left : 20px">
                             <h6 class="fw-semibold mb-1 text-truncate">{{ $item->produk->namaProduk }}</h6>
                             <div class="text-muted small">Rp{{ number_format($item->produk->harga, 0, ',', '.') }}</div>
                             <div class="fw-bold text-dark mt-1">Subtotal: Rp{{ number_format($item->subTotal, 0, ',', '.') }}</div>
                         </div>
 
                         {{-- Actions (Qty & Delete) --}}
-                        <div class="col-12 col-md-4 mt-3 mt-md-0 d-flex justify-content-between justify-content-md-end align-items-center gap-3">
+                        <div class="col-12 col-md-4 mt-3 mt-md-0 d-flex justify-content-between justify-content-md-end align-items-center gap-3" style="margin-left: 28px;">
                             {{-- Update Quantity --}}
                             <form action="{{ route('keranjang.update', $item->idKeranjang) }}" method="POST" class="d-flex align-items-center border rounded px-2" style="height: 32px;">
                                 @csrf

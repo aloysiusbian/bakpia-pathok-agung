@@ -1,6 +1,6 @@
 @extends('templates.app')
 
-@section('title', 'qris ')
+@section('title', 'Pembayaran QRIS Pesanan ' . $order->nomorPesanan)
 
 @section('content')
 <style>
@@ -44,31 +44,54 @@
       cursor: default;
     }
 </style>
-  <div class="payment-box">
+{{-- Tidak perlu memuat Tailwind CSS di sini karena kita menggunakan custom CSS --}}
+
+<div class="payment-box">
+    
+    <h3>Pembayaran QRIS Pesanan{{ $order->nomorPesanan }}</h3>
+
     <!-- QR CODE -->
-    <img src="{{ asset('images/qris_sample.png') }}" alt="QRIS QR Code" width="180" height="180">
+    <div class="qris-qr-code">
+        <img src="{{ asset('images/qris_sample.png') }}" alt="QRIS QR Code" width="200" height="200">
+    </div>
 
     <!-- QRIS Logo -->
-    <div>
-      <img src="{{ asset('images/qris2.png') }}" alt="Pembayaran 1" class="h-8" height="50">
+    <div class="qris-logo-container">
+        {{-- Mengganti class menjadi qris-logo sesuai CSS di atas --}}
+        <img src="{{ asset('images/qris2.png') }}" alt="QRIS Logo" class="qris-logo" height="35" >
     </div>
+
     <!-- Detail pembayaran -->
     <table>
-      <tr>
-        <td><strong>Total Pesanan (1 Menu)</strong></td>
-        <td class="text-end">Rp 250.000</td>
-      </tr>
-      <tr>
-        <td><strong>Total Biaya Pengiriman</strong></td>
-        <td class="text-end">Rp 10.000</td>
-      </tr>
-      <tr>
-        <td><strong>Total</strong></td>
-        <td class="text-end fw-bold">Rp 260.000</td>
-      </tr>
+        @php
+            // Asumsi biaya kirim tetap Rp 10.000 (dari controller sebelumnya)
+            $shippingCost = 10000;
+            // Menghitung subTotal: Total Akhir - Biaya Kirim
+            $subTotal = $order->totalNota - $shippingCost; 
+        @endphp
+        
+        <tr>
+            {{-- Menggunakan data dinamis: jumlah item dari relasi --}}
+            <td><strong>Total Pesanan ({{ $order->detailTransaksiOnline->count() }} Menu)</strong></td>
+            {{-- Menggunakan data dinamis: subTotal --}}
+            <td class="text-end">Rp {{ number_format($subTotal, 0, ',', '.') }}</td>
+        </tr>
+        <tr>
+            <td><strong>Total Biaya Pengiriman</strong></td>
+            {{-- Menggunakan data dinamis: Biaya Kirim --}}
+            <td class="text-end">Rp {{ number_format($shippingCost, 0, ',', '.') }}</td>
+        </tr>
+        <tr>
+            {{-- Baris Total Akhir --}}
+            <td><strong>Total Bayar</strong></td>
+            {{-- Menggunakan data dinamis: TotalNota/GrandTotal --}}
+            <td class="text-end fw-bold">Rp {{ number_format($order->totalNota, 0, ',', '.') }}</td>
+        </tr>
     </table>
 
-    <!-- Tombol Status -->
-    <button class="btn-status">Menunggu Konfirmasi Pembayaran</button>
-  </div>
+    <!-- Tombol Status (Hanya satu tombol aksi yang dipertahankan) -->
+    <a href="#" class="btn-status">Kirim bukti pembayaran!</a>
+    
+    <p style="margin-top: 20px; font-size: 0.8rem; color: #888;">Pesanan akan dibatalkan otomatis jika belum ada bukti pembayaran dalam 24 jam.</p>
+</div>
 @endsection
