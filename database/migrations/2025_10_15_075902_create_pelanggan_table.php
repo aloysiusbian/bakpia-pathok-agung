@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id('idPelanggan')->primary();
             $table->string('password');
             $table->string('email', 20);
-            $table->text('alamat');
             $table->string('noTelp');
         });
     }

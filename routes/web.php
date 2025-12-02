@@ -97,8 +97,6 @@ Route::middleware('auth')->group(function () {
     // Route untuk menghapus item dari keranjang
     Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
-
-
     // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
     Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
 
@@ -155,10 +153,10 @@ Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.s
 Route::get('/dashboard-pelanggan', function () {
     return view('dashboard-pelanggan.dashboardPelanggan');
 });
-Route::get('/tes', function () {
-    return view('dashboard-admin.dashboard');
-});
 
+//Route::get('/tes', function () {
+//    return view('dashboard-admin.dashboard');
+//});
 Route::get('/lihat-profil', function () {
     return view('pages.profile');
 });

@@ -17,7 +17,6 @@ class PelangganSeeder extends Seeder
             'idPelanggan' => 1,
             'password' => Hash::make('4444'),
             'email' => 'alberto@gmail.com',
-            'alamat' => 'jalan kanigoro, kost rafi, paingan, Depok, Sleman, Yogyakarta',
             'noTelp' => '6282289183719',
         ]);
     }
