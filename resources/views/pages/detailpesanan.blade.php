@@ -1,10 +1,9 @@
 @extends('templates.app')
 
-@section('title', 'detail pesanan')
+@section('title', 'Detail Pesanan')
 
 @section('content')
 <style>
-   
     .main-order-container {
         border: 1px solid #7a7a7a;
         border-radius: 20px;
@@ -18,58 +17,77 @@
         margin-bottom: 20px;
     }
     .delivery-status { color: #4caf50; font-weight: 600; }
-    /* ... sisa style lainnya ... */
 </style>
 
 <div class="container py-5">
-    <h2 class="fw-bold mb-4">Detail Pesanan </h2>
+    <h2 class="fw-bold mb-4">Detail Pesanan</h2>
 
-    <!-- Container Utama -->
     <div class="main-order-container">
-        
-        <!-- Kartu 1: Info Pengiriman -->
+
+        {{-- Kartu 1: Info Pengiriman --}}
         <div class="info-card">
             <h5 class="fw-bold">Info pengiriman</h5>
-            <div class="delivery-status">Pesanan telah diterima</div>
-            <div class="text-muted small">21-5-2025 15:30</div>
+            <div class="delivery-status">
+                {{-- bisa disesuaikan kalau ada status lain --}}
+                {{ $order->statusPesanan === 'selesai' ? 'Pesanan telah diterima' : ucfirst($order->statusPesanan) }}
+            </div>
+            <div class="text-muted small">
+                {{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('d-m-Y H:i') }}
+            </div>
         </div>
 
-        <!-- Kartu 2: Alamat -->
+        {{-- Kartu 2: Alamat --}}
         <div class="info-card">
             <h5 class="fw-bold">Alamat Pengiriman</h5>
             <div class="d-flex gap-2">
                 <i class="fas fa-map-marker-alt mt-1"></i>
                 <p class="mb-0 small">
-                    Kampus III Universitas Sanata Dharma, Jl. Paingan, Krodan,<br>
-                    Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281
+                    {{ $order->alamatPengirim }}
                 </p>
             </div>
         </div>
 
-        <!-- Kartu 3: Produk -->
+        {{-- Kartu 3: Produk --}}
         <div class="info-card">
-            <h5 class="fw-bold">Bakpia Cokelat</h5>
-          <div class="row">
-                    <!-- Kolom 1: Gambar -->
+            @foreach($order->detailTransaksiOnline as $detail)
+                <h5 class="fw-bold">{{ $detail->produk->namaProduk ?? 'Produk' }}</h5>
+
+                <div class="row mb-3">
                     <div class="col-auto">
-                        <img src="images/bakpia-cokelat.jpg" 
-                             class="rounded border" 
-                             style="width: 120px; height: 120px; object-fit: cover;" 
-                             alt="Bakpia Cokelat">
+                        <img src="{{ asset('images/' . ($detail->produk->gambar ?? '')) }}"
+                             class="rounded border"
+                             style="width: 120px; height: 120px; object-fit: cover;"
+                             alt="{{ $detail->produk->namaProduk ?? 'Produk' }}"
+                             onerror="this.src='{{ asset('images/bakpia-default.jpg') }}'">
                     </div>
 
-                    <!-- Kolom 2: Deskripsi (Di samping gambar) -->
                     <div class="col">
                         <div class="product-desc">
-                            <p class="mb-1"><strong>Rasa:</strong> Cokelat asli yang manis dan lembut di mulut.</p>
-                            <p class="mb-1 text-muted small">Tekstur kulit tipis berlapis dengan isian padat tanpa pengawet buatan.</p>
-                           
+                            {{-- kalau punya field khusus, tinggal ganti --}}
+                            <p class="mb-1">
+                                <strong>Jumlah:</strong> x{{ $detail->jumlahBarang }}
+                            </p>
+                            <p class="mb-1">
+                                <strong>Harga:</strong>
+                                Rp {{ number_format($detail->harga, 0, ',', '.') }}
+                            </p>
+                            <p class="mb-1 text-muted small">
+                                Subtotal:
+                                Rp {{ number_format($detail->subTotal, 0, ',', '.') }}
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="col text-end">
-                    <h5 class="fw-bold text-secondary">Total Pesanan : 250.000</h5>
-                </div>
+
+                @if(!$loop->last)
+                    <hr>
+                @endif
+            @endforeach
+
+            <div class="col text-end mt-2">
+                <h5 class="fw-bold text-secondary">
+                    Total Pesanan : Rp {{ number_format($order->totalNota, 0, ',', '.') }}
+                </h5>
             </div>
         </div>
 

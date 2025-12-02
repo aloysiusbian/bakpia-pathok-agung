@@ -1,123 +1,78 @@
 @extends('templates.daftar-pesanan')
 
-@section('title', 'Pesanan Selesai')
+@section('title', 'Pesanan Saya')
 
 @section('content-pesanan')
-
-@php
-$finishOrders = [
-[
-'id_pesanan' => 'ORD-001',
-'tanggal' => '21-5-2025 15:30',
-'status' => 'Selesai',
-'total' => 250000,
-'link_detail' => '/detailpesanan',
-'produk' => [
-[
-'nama' => 'Bakpia Keju',
-'gambar' => 'images/bakpia-keju.jpg',
-'variasi' => '1 box isi 15',
-'jumlah' => 4
-]
-]
-],
-[
-'id_pesanan' => 'ORD-002',
-'tanggal' => '19-5-2025 12:30',
-'status' => 'Selesai',
-'total' => 275000,
-'link_detail' => '/detail-pesanan-2',
-'produk' => [
-[
-'nama' => 'Bakpia Cokelat',
-'gambar' => 'images/bakpia-cokelat.jpg',
-'variasi' => '1 box isi 15',
-'jumlah' => 5
-]
-]
-],
-// Contoh jika ada pesanan dengan lebih dari 1 produk
-[
-'id_pesanan' => 'ORD-003',
-'tanggal' => '18-5-2025 09:00',
-'status' => 'Selesai',
-'total' => 150000,
-'link_detail' => '/detail-pesanan-3',
-'produk' => [
-[
-'nama' => 'Bakpia Kumbu Hitam',
-'gambar' => 'images/bakpia-kumbu-hitam.jpg',
-'variasi' => '1 box isi 15',
-'jumlah' => 2
-],
-[
-'nama' => 'Bakpia Kacang Hijau',
-'gambar' => 'images/bakpia-kacang-hijau.jpg',
-'variasi' => '1 box isi 15',
-'jumlah' => 1
-]
-]
-]
-];
-@endphp
-
 <div class="orders-container-box">
 
-    @if(count($finishOrders) > 0)
-    @foreach($finishOrders as $order)
-    <!-- Kartu Transaksi -->
-    <div class="transaction-card" onclick="window.location.href='detailpesanan'">
+    @php
+        $orders       = $orders ?? collect();
+        // kalau lupa dikirim dari controller, fallback ke query string
+        $filterStatus = $filterStatus ?? request('status');
+    @endphp
 
-        <!-- KEMBALI SEPERTI SEMULA: Menampilkan Tanggal dan Status -->
-        <div class="transaction-date">
-            {{ $order['tanggal'] }} | <span class="status-badge">{{ $order['status'] }}</span>
-        </div>
+    @forelse($orders as $order)
+        <div class="transaction-card"
+             onclick="window.location.href='{{ route('pesanan.detail', $order->nomorPemesanan) }}'">
 
-        <!-- Loop Produk dalam satu pesanan -->
-        @foreach($order['produk'] as $item)
-        <div class="product-item">
-            <img src="{{ asset($item['gambar']) }}"
-                 onerror="this.src='lihatproduk'"
-                 alt="{{ $item['nama'] }}"
-                 class="product-img">
-            <div class="product-info">
-                <div class="product-name">{{ $item['nama'] }}</div>
-                <div class="product-variant">Variasi : {{ $item['variasi'] }}</div>
-                <div class="product-variant">x{{ $item['jumlah'] }}</div>
+            {{-- Tanggal + Status --}}
+            <div class="transaction-date">
+                {{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('d-m-Y H:i') }}
+                |
+                @php
+                    $status      = strtolower($order->statusPesanan);
+                    $statusClass = in_array($status, ['cancel', 'dibatalkan'])
+                        ? 'status-badge-cancel'
+                        : 'status-badge';
+                @endphp
+                <span class="{{ $statusClass }}">{{ ucfirst($status) }}</span>
             </div>
-        </div>
-        @endforeach
 
-        <!-- Total Harga -->
-        <div class="total-section {{ count($order['produk']) > 1 ? 'border-top pt-3' : '' }}">
-            <span class="total-label">Total Pesanan :</span>
-            <span class="total-amount">Rp {{ number_format($order['total'], 0, ',', '.') }}</span>
-        </div>
+            {{-- Produk --}}
+            @foreach($order->detailTransaksiOnline as $detail)
+                @php $produk = $detail->produk; @endphp
 
-        <!-- Tombol Aksi -->
-        <div class="action-buttons">
-            <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beri Rating</button>
-            <button class="btn btn-custom-gray" onclick="event.stopPropagation()">Beli Lagi</button>
+                <div class="product-item">
+                    <img src="{{ $produk ? asset('images/' . $produk->gambar) : asset('images/bakpia-default.jpg') }}"
+                         alt="{{ $produk->namaProduk ?? 'Produk' }}"
+                         class="product-img"
+                         onerror="this.src='{{ asset('images/bakpia-default.jpg') }}'">
+
+                    <div class="product-info">
+                        <div class="product-name">{{ $produk->namaProduk ?? '-' }}</div>
+                        <div class="product-variant">
+                            Variasi : {{ $produk->pilihanJenis ?? '1 box isi 15' }}
+                        </div>
+                        <div class="product-variant">x{{ $detail->jumlahBarang }}</div>
+                    </div>
+                </div>
+            @endforeach
+
+            {{-- Total --}}
+            <div class="total-section {{ $order->detailTransaksiOnline->count() > 1 ? 'border-top pt-3' : '' }}">
+                <span class="total-label">Total Pesanan :</span>
+                <span class="total-amount">
+                    Rp {{ number_format($order->totalNota, 0, ',', '.') }}
+                </span>
+            </div>
+
+            {{-- Tombol Aksi: hanya muncul di tab "shipped" --}}
+            @if($filterStatus === 'shipped')
+                <div class="action-buttons">
+                    <button class="btn btn-custom-gray" onclick="event.stopPropagation()">
+                        Beri Rating
+                    </button>
+                    <button class="btn btn-custom-gray" onclick="event.stopPropagation()">
+                        Beli Lagi
+                    </button>
+                </div>
+            @endif
         </div>
-    </div>
-    @endforeach
-    @else
-    <div class="text-center py-5">
-        <h5 class="text-muted">Belum Ada Riwayat Pesanan.</h5>
-    </div>
-    @endif
+    @empty
+        <div class="text-center py-5">
+            <h5 class="text-muted">Belum ada pesanan untuk status ini.</h5>
+        </div>
+    @endforelse
 
 </div>
-</div>
-
-<script>
-    function setActive(element) {
-        const items = document.querySelectorAll('.nav-item-custom');
-        items.forEach(item => {
-            item.classList.remove('active');
-        });
-        element.classList.add('active');
-    }
-</script>
-
 @endsection

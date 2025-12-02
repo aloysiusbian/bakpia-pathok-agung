@@ -225,22 +225,37 @@
 
     <!-- 1. Navigasi Status Pesanan -->
     <div class="order-status-nav">
-        <a class="nav-item-custom {{ request()->is('bayarpesanan') ? 'active' : '' }}"
-           href="/bayarpesanan" title="Belum Bayar"><span>Belum Bayar</span>
-        </a>
-        <a class="nav-item-custom {{ request()->is('dalamproses') ? 'active' : '' }}"
-           href="/dalamproses" title="Dalam Proses"><span>Dalam Proses</span>
-        </a>
-        <a class="nav-item-custom {{ request()->is('batalkanpesanan') ? 'active' : '' }}"
-           href="/batalkanpesanan" title="Dibatalkan"><span>Dibatalkan</span>
-        </a>
-        <a class="nav-item-custom {{ request()->is('kirimpesanan') ? 'active' : '' }}"
-           href="/kirimpesanan" title="Dikirim"><span>Dikirim</span>
-        </a>
-        <a class="nav-item-custom {{ request()->is('pesanan-saya') ? 'active' : '' }}"
-           href="/pesanan-saya" title="Selesai"><span>Selesai</span>
-        </a>
+    @php
+        // kalau controller tidak mengirim, pakai request('status')
+        $filterStatus = $filterStatus ?? request('status');
+    @endphp
+
+    <a class="nav-item-custom {{ $filterStatus === 'preorder' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'preorder']) }}"
+       title="Pre-Order">
+        <span>Pre-Order</span>
+    </a>
+
+    <a class="nav-item-custom {{ $filterStatus === 'pending' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'pending']) }}"
+       title="Pending">
+        <span>Pending</span>
+    </a>
+
+    <a class="nav-item-custom {{ $filterStatus === 'cancel' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'cancel']) }}"
+       title="Cancel">
+        <span>Cancel</span>
+    </a>
+
+    <a class="nav-item-custom {{ $filterStatus === 'shipped' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'shipped']) }}"
+       title="Shipped">
+        <span>Shipped</span>
+    </a>
+    
     </div>
+
 
     @yield('content-pesanan')
 

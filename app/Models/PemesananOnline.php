@@ -28,7 +28,7 @@ class PemesananOnline extends Model
         'alamatPengirim',
     ];
 
-    public const STATUS_PENDING = 'pending';
+    public const STATUS_PO = 'preOrder';
 
     protected static function boot()
     {
@@ -54,4 +54,5 @@ class PemesananOnline extends Model
             'nomorPemesanan'
         );
     }
+    
 }

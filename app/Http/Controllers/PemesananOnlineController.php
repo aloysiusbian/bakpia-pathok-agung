@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Keranjang;
 use App\Models\PemesananOnline;
-use App\Models\Produk;                     
+use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PemesananOnlineController extends Controller
 {
@@ -53,7 +54,6 @@ class PemesananOnlineController extends Controller
             'shippingCost' => $shippingCost,
             'grandTotal'   => $grandTotal,
             'totalQty'     => $totalQty,
-            // ✨ form action kalau berasal dari keranjang
             'formAction'   => route('pembayaran.process'),
         ]);
     }
@@ -87,6 +87,15 @@ class PemesananOnlineController extends Controller
                 ->with('error', 'Item keranjang tidak ditemukan.');
         }
 
+        // ✨ Cek stok cukup untuk semua item sebelum transaksi
+        foreach ($items as $item) {
+            if (!$item->produk || $item->jumlahBarang > $item->produk->stok) {
+                return redirect()
+                    ->route('keranjang.index')
+                    ->with('error', 'Stok untuk produk ' . $item->produk->namaProduk . ' tidak mencukupi.');
+            }
+        }
+
         $shippingCost = session('checkout_shipping', 0);
         $subTotal     = $items->sum('subTotal');
         $grandTotal   = $subTotal + $shippingCost;
@@ -99,12 +108,18 @@ class PemesananOnlineController extends Controller
                 'tanggalPemesanan' => now(),
                 'totalNota'        => $grandTotal,
                 'metodePembayaran' => $request->metode_pembayaran,
-                'statusPesanan'    => PemesananOnline::STATUS_PENDING,
+                'statusPesanan'    => PemesananOnline::STATUS_PO,
                 'discountPerNota'  => 0,
                 'alamatPengirim'   => $request->alamatPengirim,
             ]);
 
             foreach ($items as $item) {
+                // ✨ Kurangi stok produk
+                Produk::where('idProduk', $item->idProduk)
+                    ->lockForUpdate()
+                    ->decrement('stok', $item->jumlahBarang);
+
+                // Simpan detail transaksi
                 $order->detailTransaksiOnline()->create([
                     'idProduk'          => $item->idProduk,
                     'jumlahBarang'      => $item->jumlahBarang,
@@ -147,11 +162,15 @@ class PemesananOnlineController extends Controller
         $produk = Produk::findOrFail($request->idProduk);
         $qty    = $request->jumlahBarang;
 
+        // ✨ Pastikan qty tidak melebihi stok
+        if ($qty > $produk->stok) {
+            return back()->with('error', 'Stok tidak mencukupi. Stok tersisa: ' . $produk->stok);
+        }
+
         $subTotal     = $produk->harga * $qty;
         $shippingCost = 10000;
         $grandTotal   = $subTotal + $shippingCost;
 
-        // simpan data sementara di session (bukan info asal, cuma data produk)
         session([
             'checkout_single' => [
                 'idProduk'     => $produk->idProduk,
@@ -163,7 +182,6 @@ class PemesananOnlineController extends Controller
             ],
         ]);
 
-        // bentuk collection mirip data keranjang supaya view bisa pakai loop yang sama
         $items = collect([
             (object) [
                 'produk'       => $produk,
@@ -178,7 +196,6 @@ class PemesananOnlineController extends Controller
             'shippingCost' => $shippingCost,
             'grandTotal'   => $grandTotal,
             'totalQty'     => $qty,
-            // ✨ action khusus kalau berasal dari detail produk
             'formAction'   => route('pembayaran.process.produk'),
         ]);
     }
@@ -195,7 +212,7 @@ class PemesananOnlineController extends Controller
 
         $data = session('checkout_single');
         if (!$data) {
-            return redirect()->route('produk.index') // sesuaikan kalau nama route beda
+            return redirect()->route('produk.index')
                 ->with('error', 'Sesi checkout sudah berakhir. Silakan ulangi.');
         }
 
@@ -204,16 +221,28 @@ class PemesananOnlineController extends Controller
         DB::beginTransaction();
 
         try {
+            // ✨ Cek stok lagi di level DB (lebih aman)
+            $produk = Produk::lockForUpdate()->findOrFail($data['idProduk']);
+            if ($data['jumlahBarang'] > $produk->stok) {
+                DB::rollBack();
+                return redirect()->route('produk.show', $produk->idProduk)
+                    ->with('error', 'Stok untuk produk ini tidak mencukupi.');
+            }
+
             $order = PemesananOnline::create([
                 'idPelanggan'      => $idPelanggan,
                 'tanggalPemesanan' => now(),
                 'totalNota'        => $data['grandTotal'],
                 'metodePembayaran' => $request->metode_pembayaran,
-                'statusPesanan'    => PemesananOnline::STATUS_PENDING,
+                'statusPesanan'    => PemesananOnline::STATUS_PO,
                 'discountPerNota'  => 0,
                 'alamatPengirim'   => $request->alamatPengirim,
             ]);
 
+            // ✨ Kurangi stok produk
+            $produk->decrement('stok', $data['jumlahBarang']);
+
+            // Detail transaksi
             $order->detailTransaksiOnline()->create([
                 'idProduk'          => $data['idProduk'],
                 'jumlahBarang'      => $data['jumlahBarang'],
@@ -253,4 +282,43 @@ class PemesananOnlineController extends Controller
 
         return view('pages.bank', compact('order'));
     }
+
+    public function riwayat(Request $request)
+{
+    // id pelanggan yang sedang login
+    $idPelanggan = Auth::id(); // atau Auth::user()->idPelanggan kalau kamu mau konsisten
+
+    // ambil status dari query string, contoh: ?status=pending
+    $filterStatus = $request->query('status'); // bisa null
+
+    // boleh dibatasi supaya status yang aneh diabaikan
+    $allowedStatus = ['preorder', 'pending', 'cancel', 'shipped'];
+
+    $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
+        ->where('idPelanggan', $idPelanggan)
+        ->orderByDesc('tanggalPemesanan');
+
+    if ($filterStatus && in_array($filterStatus, $allowedStatus)) {
+        $query->where('statusPesanan', $filterStatus);
+    }
+
+    $orders = $query->get();
+
+    return view('pages.pesanansaya', [
+        'orders'       => $orders,
+        'filterStatus' => $filterStatus, // dipakai di blade untuk set tab aktif
+    ]);
+}
+
+    public function detail($nomorPemesanan)
+{
+    $idPelanggan = Auth::user()->idPelanggan;
+
+    $order = PemesananOnline::with(['detailTransaksiOnline.produk'])
+        ->where('idPelanggan', $idPelanggan)
+        ->findOrFail($nomorPemesanan);
+
+    return view('pages.detailpesanan', compact('order'));
+}
+
 }

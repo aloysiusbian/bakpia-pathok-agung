@@ -125,6 +125,14 @@ Route::middleware('auth')->group(function () {
     // 4) Halaman pembayaran Transfer Bank (setelah process)
     Route::get('/pembayaran/bank/{nomorPesanan}', [PemesananOnlineController::class, 'transfer'])
         ->name('pembayaran.bank');
+    
+    // Pesanan SATU PESANAN ONLINE
+    Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])
+    ->name('pesanan.saya');
+
+    // DETAIL SATU PESANAN ONLINE
+    Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])
+        ->name('pesanan.detail');
 
 });
 
@@ -189,13 +197,7 @@ Route::get('/kelola-admin', function () {
 Route::get('/lihatproduk', function () {
     return view('dashboard-admin.lihatproduk');
 });
-Route::get('/pesanan-saya', function () {
-    return view('pages.pesanansaya');
-});
 
-Route::get('/detailpesanan', function () {
-    return view('pages.detailpesanan');
-});
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
 });
