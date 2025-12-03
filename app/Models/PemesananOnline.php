@@ -28,7 +28,7 @@ class PemesananOnline extends Model
         'alamatPengirim',
     ];
 
-    public const STATUS_PO = 'preOrder';
+    public const STATUS_PO = 'payment';
 
     protected static function boot()
     {

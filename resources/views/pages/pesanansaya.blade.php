@@ -17,7 +17,7 @@
 
             {{-- Tanggal + Status --}}
             <div class="transaction-date">
-                {{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('d-m-Y H:i') }}
+                {{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('d-m-Y') }}
                 |
                 @php
                     $status      = strtolower($order->statusPesanan);

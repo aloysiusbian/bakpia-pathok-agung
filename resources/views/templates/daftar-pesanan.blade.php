@@ -230,10 +230,10 @@
         $filterStatus = $filterStatus ?? request('status');
     @endphp
 
-    <a class="nav-item-custom {{ $filterStatus === 'preorder' ? 'active' : '' }}"
-       href="{{ route('pesanan.saya', ['status' => 'preorder']) }}"
-       title="Pre-Order">
-        <span>Pre-Order</span>
+    <a class="nav-item-custom {{ $filterStatus === 'payment' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'payment']) }}"
+       title="Payment">
+        <span>Payment</span>
     </a>
 
     <a class="nav-item-custom {{ $filterStatus === 'pending' ? 'active' : '' }}"

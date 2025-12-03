@@ -3,41 +3,6 @@
 @section('title', 'Riwayat Pemesanan')
 
 @section('content')
-@php
-// Simulasi data pelanggan
-$customer = [
-'nama' => 'Alberto Sahara',
-'gambar' => asset('images/bian.png')
-];
-
-// Simulasi data riwayat pembelian
-$orders = [
-[
-'kode' => 'ORD-001',
-'tanggal' => '2025-10-25',
-'produk' => 'Bakpia Kacang Hijau (Isi 15)',
-'jumlah' => 2,
-'total' => 70000,
-'status' => 'Selesai'
-],
-[
-'kode' => 'ORD-002',
-'tanggal' => '2025-10-28',
-'produk' => 'Bakpia Keju (Isi 10)',
-'jumlah' => 1,
-'total' => 40000,
-'status' => 'Dalam Proses'
-],
-[
-'kode' => 'ORD-003',
-'tanggal' => '2025-11-02',
-'produk' => 'Bakpia Coklat (Isi 15)',
-'jumlah' => 3,
-'total' => 105000,
-'status' => 'Dibatalkan'
-],
-];
-@endphp
 
 <!-- CONTENT -->
 <div class="content" id="content">
@@ -47,7 +12,7 @@ $orders = [
             <table class="table align-middle">
                 <thead>
                 <tr>
-                    <th>Kode Pesanan</th>
+                    {{-- <th>Kode Pesanan</th>  <-- DIHAPUS --}}
                     <th>Tanggal</th>
                     <th>Produk</th>
                     <th>Jumlah</th>
@@ -55,25 +20,60 @@ $orders = [
                     <th>Status</th>
                 </tr>
                 </thead>
+
                 <tbody>
-                @foreach ($orders as $order)
-                <tr>
-                    <td>{{ $order['kode'] }}</td>
-                    <td>{{ $order['tanggal'] }}</td>
-                    <td>{{ $order['produk'] }}</td>
-                    <td>{{ $order['jumlah'] }}</td>
-                    <td>Rp {{ number_format($order['total'], 0, ',', '.') }}</td>
-                    <td>
-                        @if ($order['status'] === 'Selesai')
-                        <span class="status-selesai"><i class="bi bi-check-circle"></i> {{ $order['status'] }}</span>
-                        @elseif ($order['status'] === 'Dalam Proses')
-                        <span class="status-proses"><i class="bi bi-hourglass-split"></i> {{ $order['status'] }}</span>
-                        @else
-                        <span class="status-batal"><i class="bi bi-x-circle"></i> {{ $order['status'] }}</span>
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
+                @forelse ($orders as $order)
+                    @if ($order->statusPesanan === 'cancel')
+                        @continue
+                    @endif
+
+                    @php
+                        // Ambil produk pertama untuk ditampilkan
+                        $firstDetail = $order->detailTransaksiOnline->first();
+                        $namaProduk  = $firstDetail?->produk->namaProduk ?? '-';
+
+                        // Jika pesanan punya lebih dari 1 produk, tampilkan info +x produk lain
+                        if ($order->detailTransaksiOnline->count() > 1) {
+                            $namaProduk .= ' (+' . ($order->detailTransaksiOnline->count() - 1) . ' produk lain)';
+                        }
+
+                        // Total qty
+                        $totalQty = $order->detailTransaksiOnline->sum('jumlahBarang');
+
+                        $statusLabel = ucfirst($order->statusPesanan);
+                    @endphp
+
+                    <tr>
+                        {{-- Kolom kode pesanan dihapus --}}
+                        {{-- <td>{{ $order->nomorPemesanan }}</td> --}}
+
+                        <td>{{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('Y-m-d') }}</td>
+                        <td>{{ $namaProduk }}</td>
+                        <td>{{ $totalQty }}</td>
+                        <td>Rp {{ number_format($order->totalNota, 0, ',', '.') }}</td>
+
+                        <td>
+                            @if ($order->statusPesanan === 'shipped')
+                                <span class="status-selesai">
+                                    <i class="bi bi-check-circle"></i> {{ $statusLabel }}
+                                </span>
+                            @elseif ($order->statusPesanan === 'pending' or $order->statusPesanan === 'payment')
+                                <span class="status-proses">
+                                    <i class="bi bi-hourglass-split"></i> {{ $statusLabel }}
+                                </span>
+                            @else
+                                <span class="cancel">
+                                    <i class="bi bi-x-circle"></i> {{ $statusLabel }}
+                                </span>
+                            @endif
+                        </td>
+                    </tr>
+
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">Belum ada transaksi.</td>
+                    </tr>
+                @endforelse
                 </tbody>
             </table>
         </div>
@@ -82,7 +82,7 @@ $orders = [
 
 <script>
     const sidebar = document.getElementById('sidebar');
-    const navbar = document.getElementById('navbar');
+    const navbar  = document.getElementById('navbar');
     const content = document.getElementById('content');
     const toggleBtn = document.getElementById('toggle-btn');
 

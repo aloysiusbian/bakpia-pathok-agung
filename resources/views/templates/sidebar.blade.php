@@ -479,7 +479,7 @@
             <p class="nav-section-title">Menu Utama</p>
             <ul class="nav flex-column px-3">
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->is('dashboard-pelanggan') ? 'active' : '' }}"
+                    <a class="nav-link {{ request()->is('dashboard.pelanggan') ? 'active' : '' }}"
                        href="/dashboard-pelanggan" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Beranda"><i class="bi bi-house-door"></i>
                         <span>Beranda</span></a>
@@ -492,8 +492,8 @@
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->is('riwayat') ? 'active' : '' }}"
-                       href="/riwayat" data-bs-toggle="tooltip" data-bs-placement="right"
-                       title="Riwayat Pembelian"><i class="bi bi-clock-history"></i>
+                       href="{{ route('riwayat.pemesanan') }}" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Riwayat Pembelian"><i class="bi bi-clock-history {{ request()->routeIs('riwayat.pemesanan') ? 'active' : '' }}"></i>
                         <span>Riwayat Pembelian</span></a>
                 </li>
             </ul>

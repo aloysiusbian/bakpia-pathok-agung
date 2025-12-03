@@ -292,7 +292,7 @@ class PemesananOnlineController extends Controller
     $filterStatus = $request->query('status'); // bisa null
 
     // boleh dibatasi supaya status yang aneh diabaikan
-    $allowedStatus = ['preorder', 'pending', 'cancel', 'shipped'];
+    $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
 
     $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
         ->where('idPelanggan', $idPelanggan)
@@ -319,6 +319,56 @@ class PemesananOnlineController extends Controller
         ->findOrFail($nomorPemesanan);
 
     return view('pages.detailpesanan', compact('order'));
+}
+
+    public function riwayatTabel()
+{
+        $idPelanggan = Auth::user()->idPelanggan;
+
+        $orders = PemesananOnline::with('detailTransaksiOnline.produk')
+            ->where('idPelanggan', $idPelanggan)
+            ->orderByDesc('tanggalPemesanan')
+            ->get();
+
+        return view('dashboard-pelanggan.riwayat', compact('orders'));
+}
+
+   public function dashboard()
+{
+    $idPelanggan = Auth::user()->idPelanggan;
+
+    // 1. Total pembelian: JUMLAH pesanan yang sudah shipped
+    $totalPembelian = PemesananOnline::where('idPelanggan', $idPelanggan)
+        ->where('statusPesanan', 'shipped')
+        ->count();
+
+    // 2. Pesanan aktif: pending atau payment
+    $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
+        ->whereIn('statusPesanan', ['pending', 'payment'])
+        ->count();
+
+    // 3. Pesanan baru minggu ini (status shipped)
+    $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
+        ->where('statusPesanan', 'shipped')
+        ->whereBetween('tanggalPemesanan', [
+            Carbon::now()->startOfWeek(),
+            Carbon::now()->endOfWeek(),
+        ])
+        ->count();
+
+    // 4. Total pengeluaran: jumlah uang dari pesanan shipped (misal bulan ini)
+    $totalPengeluaran = PemesananOnline::where('idPelanggan', $idPelanggan)
+        ->where('statusPesanan', 'shipped')
+        ->whereMonth('tanggalPemesanan', Carbon::now()->month)
+        ->whereYear('tanggalPemesanan', Carbon::now()->year)
+        ->sum('totalNota');
+
+    return view('dashboard-pelanggan.dashboardPelanggan', compact(
+        'totalPembelian',
+        'pesananAktif',
+        'baruMingguIni',
+        'totalPengeluaran'
+    ));
 }
 
 }
