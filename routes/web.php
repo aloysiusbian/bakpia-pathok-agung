@@ -33,18 +33,27 @@ Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name(
 */
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
 
+    Route::get('/tambah-admin', function () {
+        return view('dashboard-admin.tambah_admin');
+    });
+    Route::get('/kelola-admin', function () {
+        return view('dashboard-admin.kelola_admin');
+    });
+
+    Route::get('/lihatproduk', [ProdukController::class, 'index2'])->name('lihat.produk');
     // Ini adalah route yang Anda panggil di LoginController
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'dashAdmin'])->name('dashboard');
 
     // Route logout khusus untuk admin
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
-    Route::get('/pemesananOnline', function () {
-        return view('dashboard-admin.pemesananOnline');
-    })->name('pemesanan.online');
+    // Route::get('/pemesananOnline', function () {
+    //     return view('dashboard-admin.pemesananOnline');
+    // })->name('pemesanan.online');
 
-      Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])
-        ->name('pemesanan.offline');
+    Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
+
+    Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
 
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
@@ -80,7 +89,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/regencies', [ProfileController::class, 'getRegencies'])->name('api.regencies');
 
 
-        // --- FITUR KERANJANG (Updated) ---
+    // --- FITUR KERANJANG (Updated) ---
 
     // 1. Lihat Keranjang (Menggunakan method index)
     Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
@@ -113,7 +122,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/pembayaran/process', [PemesananOnlineController::class, 'process'])
         ->name('pembayaran.process');
 
-        // ========== BARU: CHECKOUT LANGSUNG DARI DETAIL PRODUK ==========
+    // ========== BARU: CHECKOUT LANGSUNG DARI DETAIL PRODUK ==========
     Route::post('/pembayaran/produk', [PemesananOnlineController::class, 'checkoutProduk'])
         ->name('pembayaran.checkout.produk');
 
@@ -127,15 +136,14 @@ Route::middleware('auth')->group(function () {
     // 4) Halaman pembayaran Transfer Bank (setelah process)
     Route::get('/pembayaran/bank/{nomorPesanan}', [PemesananOnlineController::class, 'transfer'])
         ->name('pembayaran.bank');
-    
+
     // Pesanan SATU PESANAN ONLINE
     Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])
-    ->name('pesanan.saya');
+        ->name('pesanan.saya');
 
     // DETAIL SATU PESANAN ONLINE
     Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])
         ->name('pesanan.detail');
-
 });
 
 
@@ -171,9 +179,9 @@ Route::get('/lihat-profil', function () {
     return view('dashboard-pelanggan.profile');
 });
 
-Route::get('/lihatproduk', function () {
-    return view('dashboard-admin.lihatproduk');
-});
+// Route::get('/lihatproduk', function () {
+//     return view('dashboard-admin.lihatproduk');
+// });
 Route::get('/tambahproduk', function () {
     return view('dashboard-admin.tambah_produk');
 });
@@ -186,17 +194,10 @@ Route::get('/testambahakun', function () {
 Route::get('/teskelolaadmin', function () {
     return view('dashboard-admin.kelola_admin');
 });
-Route::get('/tambah-admin', function () {
-    return view('dashboard-admin.tambah_admin');
-});
-Route::get('/kelola-admin', function () {
-    return view('dashboard-admin.kelola_admin');
-});
-Route::get('/lihatproduk', function () {
-    return view('dashboard-admin.lihatproduk');
-});
+// Route::get('/lihatproduk', function () {
+//     return view('dashboard-admin.lihatproduk');
+// });
 
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
 });
-

@@ -15,6 +15,14 @@ class ProdukController extends Controller
         ];
         return view('pages.home', $products);
     }
+
+    public function index2()
+    {
+        $products = [
+            'products'    => Produk::orderBy('idProduk', 'DESC')->get()
+        ];
+        return view('dashboard-admin.lihatproduk', $products);
+    }
    
     public function detailProduk(Produk $produk)
     {

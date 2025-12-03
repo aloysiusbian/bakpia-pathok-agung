@@ -15,6 +15,42 @@ class PemesananOnlineController extends Controller
     /**
      * DARI KERANJANG -> tampil halaman checkout
      */
+
+    public function index()
+    {
+        // 1. Ambil data pesanan dengan eager loading relasi 'pelanggan'
+        $orders = PemesananOnline::with('pelanggan')
+            ->orderByDesc('tanggalPemesanan') // Urutkan dari yang terbaru
+            ->paginate(10); // Gunakan pagination
+
+        // 2. Hitung Ringkasan Statistik untuk Card (Summary)
+        $summary = $this->calculateOrderSummary();
+
+        // 3. Kirim data ke View (menggunakan compact lebih disarankan)
+        return view('dashboard-admin.pemesananOnline', compact('orders', 'summary'));
+    }
+
+    /**
+     * Helper function untuk menghitung ringkasan statistik.
+     */
+    protected function calculateOrderSummary()
+    {
+        $today = Carbon::now()->toDateString();
+
+        $totalToday = PemesananOnline::whereDate('tanggalPemesanan', $today)->count();
+
+        $paidCount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->count();
+        $paidAmount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->sum('totalNota');
+
+        $pendingCount = PemesananOnline::where('statusPesanan', 'Menunggu Pembayaran')->count();
+
+        return [
+            'total_today' => $totalToday,
+            'paid_count' => $paidCount,
+            'paid_amount' => $paidAmount,
+            'pending_count' => $pendingCount,
+        ];
+    }
     public function checkout(Request $request)
     {
         $ids         = $request->input('items', []);
@@ -142,7 +178,6 @@ class PemesananOnlineController extends Controller
             }
 
             return redirect()->route('pembayaran.bank', $order->nomorPemesanan);
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran.');
@@ -260,7 +295,6 @@ class PemesananOnlineController extends Controller
             }
 
             return redirect()->route('pembayaran.bank', $order->nomorPemesanan);
-
         } catch (\Throwable $e) {
             DB::rollBack();
             return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran.');
@@ -284,45 +318,45 @@ class PemesananOnlineController extends Controller
     }
 
     public function riwayat(Request $request)
-{
-    // id pelanggan yang sedang login
-    $idPelanggan = Auth::id(); // atau Auth::user()->idPelanggan kalau kamu mau konsisten
+    {
+        // id pelanggan yang sedang login
+        $idPelanggan = Auth::id(); // atau Auth::user()->idPelanggan kalau kamu mau konsisten
 
-    // ambil status dari query string, contoh: ?status=pending
-    $filterStatus = $request->query('status'); // bisa null
+        // ambil status dari query string, contoh: ?status=pending
+        $filterStatus = $request->query('status'); // bisa null
 
-    // boleh dibatasi supaya status yang aneh diabaikan
-    $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
+        // boleh dibatasi supaya status yang aneh diabaikan
+        $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
 
-    $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
-        ->where('idPelanggan', $idPelanggan)
-        ->orderByDesc('tanggalPemesanan');
+        $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
+            ->where('idPelanggan', $idPelanggan)
+            ->orderByDesc('tanggalPemesanan');
 
-    if ($filterStatus && in_array($filterStatus, $allowedStatus)) {
-        $query->where('statusPesanan', $filterStatus);
+        if ($filterStatus && in_array($filterStatus, $allowedStatus)) {
+            $query->where('statusPesanan', $filterStatus);
+        }
+
+        $orders = $query->get();
+
+        return view('pages.pesanansaya', [
+            'orders'       => $orders,
+            'filterStatus' => $filterStatus, // dipakai di blade untuk set tab aktif
+        ]);
     }
 
-    $orders = $query->get();
-
-    return view('pages.pesanansaya', [
-        'orders'       => $orders,
-        'filterStatus' => $filterStatus, // dipakai di blade untuk set tab aktif
-    ]);
-}
-
     public function detail($nomorPemesanan)
-{
-    $idPelanggan = Auth::user()->idPelanggan;
+    {
+        $idPelanggan = Auth::user()->idPelanggan;
 
-    $order = PemesananOnline::with(['detailTransaksiOnline.produk'])
-        ->where('idPelanggan', $idPelanggan)
-        ->findOrFail($nomorPemesanan);
+        $order = PemesananOnline::with(['detailTransaksiOnline.produk'])
+            ->where('idPelanggan', $idPelanggan)
+            ->findOrFail($nomorPemesanan);
 
-    return view('pages.detailpesanan', compact('order'));
-}
+        return view('pages.detailpesanan', compact('order'));
+    }
 
     public function riwayatTabel()
-{
+    {
         $idPelanggan = Auth::user()->idPelanggan;
 
         $orders = PemesananOnline::with('detailTransaksiOnline.produk')
@@ -331,44 +365,43 @@ class PemesananOnlineController extends Controller
             ->get();
 
         return view('dashboard-pelanggan.riwayat', compact('orders'));
-}
+    }
 
-   public function dashboard()
-{
-    $idPelanggan = Auth::user()->idPelanggan;
+    public function dashboard()
+    {
+        $idPelanggan = Auth::user()->idPelanggan;
 
-    // 1. Total pembelian: JUMLAH pesanan yang sudah shipped
-    $totalPembelian = PemesananOnline::where('idPelanggan', $idPelanggan)
-        ->where('statusPesanan', 'shipped')
-        ->count();
+        // 1. Total pembelian: JUMLAH pesanan yang sudah shipped
+        $totalPembelian = PemesananOnline::where('idPelanggan', $idPelanggan)
+            ->where('statusPesanan', 'shipped')
+            ->count();
 
-    // 2. Pesanan aktif: pending atau payment
-    $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
-        ->whereIn('statusPesanan', ['pending', 'payment'])
-        ->count();
+        // 2. Pesanan aktif: pending atau payment
+        $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
+            ->whereIn('statusPesanan', ['pending', 'payment'])
+            ->count();
 
-    // 3. Pesanan baru minggu ini (status shipped)
-    $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
-        ->where('statusPesanan', 'shipped')
-        ->whereBetween('tanggalPemesanan', [
-            Carbon::now()->startOfWeek(),
-            Carbon::now()->endOfWeek(),
-        ])
-        ->count();
+        // 3. Pesanan baru minggu ini (status shipped)
+        $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
+            ->where('statusPesanan', 'shipped')
+            ->whereBetween('tanggalPemesanan', [
+                Carbon::now()->startOfWeek(),
+                Carbon::now()->endOfWeek(),
+            ])
+            ->count();
 
-    // 4. Total pengeluaran: jumlah uang dari pesanan shipped (misal bulan ini)
-    $totalPengeluaran = PemesananOnline::where('idPelanggan', $idPelanggan)
-        ->where('statusPesanan', 'shipped')
-        ->whereMonth('tanggalPemesanan', Carbon::now()->month)
-        ->whereYear('tanggalPemesanan', Carbon::now()->year)
-        ->sum('totalNota');
+        // 4. Total pengeluaran: jumlah uang dari pesanan shipped (misal bulan ini)
+        $totalPengeluaran = PemesananOnline::where('idPelanggan', $idPelanggan)
+            ->where('statusPesanan', 'shipped')
+            ->whereMonth('tanggalPemesanan', Carbon::now()->month)
+            ->whereYear('tanggalPemesanan', Carbon::now()->year)
+            ->sum('totalNota');
 
-    return view('dashboard-pelanggan.dashboardPelanggan', compact(
-        'totalPembelian',
-        'pesananAktif',
-        'baruMingguIni',
-        'totalPengeluaran'
-    ));
-}
-
+        return view('dashboard-pelanggan.dashboardPelanggan', compact(
+            'totalPembelian',
+            'pesananAktif',
+            'baruMingguIni',
+            'totalPengeluaran'
+        ));
+    }
 }

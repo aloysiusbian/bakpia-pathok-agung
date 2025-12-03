@@ -549,10 +549,13 @@
 
             <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Icon" height="30">
         </a>
+        @php
+        $image = $admin->image ?? 'bian.png';
+        @endphp
         <div class="profile d-flex align-items-center justify-content-center">
             <div class="profile-content">
-                <img src="{{ $loggedInAdmin->image ?? 'bian.png' }}" alt="Admin" class="rounded-circle me-3">
-                <span class="profile-name">{{ $loggedInAdmin->username ?? 'Pengguna' }}</span>
+                <img src="{{ asset('images/bian.png') }}" alt="Admin" class="rounded-circle me-3">
+                <span class="profile-name">{{ $admin->username ?? 'Pengguna' }}</span>
             </div>
         </div>
 
@@ -567,7 +570,7 @@
                         <span>Dashboard</span></a>
                 </li>
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->is('Analisis') ? 'active' : '' }}" href="#"
+                    <a class="nav-link {{ request()->is('admin/analisis') ? 'active' : '' }}" href="#"
                        data-bs-toggle="tooltip" data-bs-placement="right" title="Analisis"><i
                             class="bi bi-graph-up"></i>
                         <span>Analisis</span></a>
@@ -593,8 +596,8 @@
             <p class="nav-section-title mt-3">Produk</p>
             <ul class="nav flex-column px-3">
                 <li class="nav-item ">
-                    <a class="nav-link {{ request()->is('lihatproduk') ? 'active' : '' }}"
-                       href="/lihatproduk" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a class="nav-link {{ request()->is('admin/lihatproduk') ? 'active' : '' }}"
+                       href="/admin/lihatproduk" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Lihat Produk"><i class="bi bi-box-seam"></i>
                         <span>Lihat Produk</span></a>
                 </li>
@@ -603,14 +606,14 @@
             <p class="nav-section-title mt-3">Admin</p>
             <ul class="nav flex-column px-3">
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('testambahakun') ? 'active' : '' }}"
-                       href="/tambah-admin" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a class="nav-link {{ request()->is('admin/tambah-admin') ? 'active' : '' }}"
+                       href="/admin/tambah-admin" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Tambah Admin"><i class="bi bi-person-fill-add"></i>
                         <span>Tambah Admin</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('teskelolaadmin') ? 'active' : '' }}"
-                       href="/kelola-admin" data-bs-toggle="tooltip" data-bs-placement="right"
+                    <a class="nav-link {{ request()->is('admin/kelola-admin') ? 'active' : '' }}"
+                       href="/admin/kelola-admin" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Kelola Admin"><i class="bi bi-people-fill"></i>
                         <span>Kelola Admin</span></a>
                 </li>
