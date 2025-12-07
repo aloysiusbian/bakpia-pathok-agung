@@ -455,13 +455,6 @@
 
 <body>
 
-<!--@php-->
-<!--$pelanggan = [-->
-<!--'username' => 'Alberto Sahara',-->
-<!--'gambar' => asset('images/bian.png')-->
-<!--];-->
-<!--@endphp-->
-
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <div>
@@ -469,8 +462,11 @@
             <img class="logo-full" src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
             <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Pathok Agung" height="40">
         </a>
+        @php
+        $image = $pelanggan->image ?? 'profile-dummy.png';
+        @endphp
         <div class="profile">
-            <img src="{{ $pelanggan->image ?? 'bian.png' }}" alt="Pelanggan">
+            <img src="{{ asset('images/' . $image) }}" alt="Pelanggan">
             <h6>{{ $pelanggan->username ?? 'Pelanggan' }}</h6>
         </div>
 
@@ -493,7 +489,8 @@
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->is('riwayat') ? 'active' : '' }}"
                        href="{{ route('riwayat.pemesanan') }}" data-bs-toggle="tooltip" data-bs-placement="right"
-                       title="Riwayat Pembelian"><i class="bi bi-clock-history {{ request()->routeIs('riwayat.pemesanan') ? 'active' : '' }}"></i>
+                       title="Riwayat Pembelian"><i
+                            class="bi bi-clock-history {{ request()->routeIs('riwayat.pemesanan') ? 'active' : '' }}"></i>
                         <span>Riwayat Pembelian</span></a>
                 </li>
             </ul>

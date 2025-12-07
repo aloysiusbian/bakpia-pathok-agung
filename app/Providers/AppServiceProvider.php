@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\View\Composers\AdminComposer;
+use App\View\Composers\PelangganComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::composer('dashboard-admin.*', AdminComposer::class);
+        View::composer('dashboard-pelanggan.*', PelangganComposer::class);
     }
 }
