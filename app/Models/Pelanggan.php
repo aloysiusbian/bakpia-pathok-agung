@@ -16,7 +16,6 @@ class Pelanggan extends Authenticatable
     protected $fillable = [
         'password',
         'email',
-        'alamat',
         'noTelp',
     ];
     public $incrementing = true; // Mengaktifkan auto-increment karena primary key adalah integer
