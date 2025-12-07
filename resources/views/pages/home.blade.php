@@ -118,7 +118,7 @@
                                 alt="{{ $product['namaProduk'] }}">
                             <div class="product-info">
                                 <div class="product-name">{{ $product['namaProduk'] }}</div>
-                                <div class="product-rating">⭐ {{ $product['rating'] }}</div>
+                                <div class="product-rating">Rating : {{ $product['rating'] }} ⭐</div>
                                 <div class="product-price">Rp{{ number_format($product['harga'], 0, ',', '.') }}</div>
                             </div>
                         </div>

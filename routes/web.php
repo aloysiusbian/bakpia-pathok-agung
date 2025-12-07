@@ -201,3 +201,10 @@ Route::get('/teskelolaadmin', function () {
 Route::get('/batalkanpesanan', function () {
     return view('pages.batalkanpesanan');
 });
+// 1. Route untuk PROSES Upload Bukti (POST dari Modal)
+    Route::post('/pesanan/upload-bukti/{nomorPemesanan}', [PemesananOnlineController::class, 'uploadBukti'])
+        ->name('pembayaran.upload');
+
+    // 2. Route untuk Menampilkan Halaman Sukses (GET)
+    Route::get('/pembayaran/sukses/{nomorPemesanan}', [PemesananOnlineController::class, 'pembayaranSukses'])
+        ->name('pembayaran.sukses');

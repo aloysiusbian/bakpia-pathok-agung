@@ -147,10 +147,54 @@
         </tr>
     </table>
 
-    <!-- Tombol Status (Diubah menjadi tombol aksi/konfirmasi) -->
-    {{-- Arahkan ke route konfirmasi pembayaran jika sudah dibuat --}}
-    <a href="#" class="btn-status">Konfirmasi Pembayaran</a>
+    <!-- Tombol Status (MODIFIKASI: Menambahkan trigger modal) -->
+    <!-- Saya mengganti href="#" dengan atribut data-bs-toggle -->
+    <button type="button" class="btn-status" data-bs-toggle="modal" data-bs-target="#uploadBuktiModal">
+        Kirim bukti pembayaran!
+    </button>
     
-    <p class="notes">Lakukan pembayaran dalam waktu 24 jam agar pesanan tidak dibatalkan.</p>
+    <p style="margin-top: 20px; font-size: 0.8rem; color: #888;">Pesanan akan dibatalkan otomatis jika belum ada bukti pembayaran dalam 24 jam.</p>
 </div>
+
+<!-- TAMBAHAN: MODAL UPLOAD BUKTI -->
+<div class="modal fade" id="uploadBuktiModal" tabindex="-1" aria-labelledby="uploadBuktiModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="uploadBuktiModalLabel">Upload Bukti Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <!-- Form Upload -->
+            <!-- Pastikan route 'upload.bukti' sudah ada di web.php Anda -->
+            <form action="{{ route('pembayaran.upload', $order->nomorPemesanan) }}" 
+      method="POST"
+      enctype="multipart/form-data">
+    @csrf
+
+                <div class="modal-body text-start p-4">
+                    <div class="mb-3">
+                        <label for="fileBukti" class="form-label fw-bold">Pilih Foto / Screenshot</label>
+                        <input class="form-control" type="file" id="fileBukti" name="bukti_pembayaran" accept="image/*" required>
+                        <div class="form-text">Format: JPG, PNG, atau JPEG. Maksimal 2MB.</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="catatan" class="form-label fw-bold">Catatan (Opsional)</label>
+                        <textarea class="form-control" id="catatan" name="catatan" rows="2" placeholder="Contoh: Sudah transfer a.n Budi"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 pb-4 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-dark px-4" style="background-color: #000; border-radius: 8px;">Kirim Bukti</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Script Bootstrap Bundle (Wajib ada untuk Modal) -->
+<!-- Jika di templates.app sudah ada, baris ini bisa dihapus -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 @endsection

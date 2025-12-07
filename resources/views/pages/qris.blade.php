@@ -123,8 +123,11 @@
             
             <!-- Form Upload -->
             <!-- Pastikan route 'upload.bukti' sudah ada di web.php Anda -->
-            <form action="{{ url('/pesanan/upload-bukti/' . $order->idTransaksi) }}" method="POST" enctype="multipart/form-data">
-                @csrf
+            <form action="{{ route('pembayaran.upload', $order->nomorPemesanan) }}" 
+      method="POST"
+      enctype="multipart/form-data">
+    @csrf
+
                 <div class="modal-body text-start p-4">
                     <div class="mb-3">
                         <label for="fileBukti" class="form-label fw-bold">Pilih Foto / Screenshot</label>

@@ -26,6 +26,8 @@ class PemesananOnline extends Model
         'statusPesanan',
         'discountPerNota',
         'alamatPengirim',
+        'buktiPembayaran',
+        'catatan',
     ];
 
     public const STATUS_PO = 'payment';

@@ -404,4 +404,55 @@ class PemesananOnlineController extends Controller
             'totalPengeluaran'
         ));
     }
+    /**
+     * Menangani Upload Bukti Pembayaran
+     */
+    public function uploadBukti(Request $request, $nomorPemesanan)
+    {
+        $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Maks 2MB
+            'catatan'          => 'nullable|string|max:255',
+        ]);
+
+        $order = PemesananOnline::where('idPelanggan', Auth::user()->idPelanggan)
+            ->where('nomorPemesanan', $nomorPemesanan)
+            ->firstOrFail();
+
+        // 1. Proses Upload File
+        if ($request->hasFile('bukti_pembayaran')) {
+            $file = $request->file('bukti_pembayaran');
+            // Nama file unik: bukti_NOMORORDER_TIMESTAMP.ext
+            $filename = 'bukti_' . $order->nomorPemesanan . '_' . time() . '.' . $file->getClientOriginalExtension();
+            
+            // Simpan ke folder public/storage/bukti_pembayaran
+            // Pastikan kamu sudah jalankan: php artisan storage:link
+            $path = $file->storeAs('public/bukti_pembayaran', $filename);
+            
+            // Simpan path yang bisa diakses publik (tanpa 'public/')
+            $order->buktiPembayaran = 'bukti_pembayaran/' . $filename;
+        }
+
+        // 2. Update Catatan & Status
+        // Asumsi kamu punya kolom 'catatan' dan 'buktiPembayaran' di tabel
+        $order->catatan       = $request->catatan;
+        $order->statusPesanan = 'menunggu_verifikasi'; // Ganti status jadi menunggu verifikasi admin
+        $order->save();
+
+        // 3. Redirect ke Halaman Sukses
+        return redirect()->route('pembayaran.sukses', $nomorPemesanan);
+    }
+
+    /**
+     * Menampilkan Halaman "Bukti Diterima"
+     */
+    public function pembayaranSukses($nomorPemesanan)
+    {
+        $order = PemesananOnline::where('idPelanggan', Auth::user()->idPelanggan)
+            ->where('nomorPemesanan', $nomorPemesanan)
+            ->firstOrFail();
+
+        // Arahkan ke view yang baru saja kamu buat
+        // Misal nama filenya: resources/views/pages/pembayaran_sukses.blade.php
+        return view('pages.status_pembayaran', compact('order'));
+    }
 }

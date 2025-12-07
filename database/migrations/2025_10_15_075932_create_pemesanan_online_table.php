@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('statusPesanan', 50);
             $table->decimal('discountPerNota', 3, 2);
             $table->text('alamatPengirim');
+            $table->string('buktiPembayaran')->nullable(); 
+            $table->text('catatan')->nullable();
 
             // Foreign Key
 //             $table->foreign('idPelanggan')->references('idPelanggan')->on('pelanggan');
