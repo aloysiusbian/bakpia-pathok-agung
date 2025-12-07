@@ -42,47 +42,6 @@
     </div>
 
     <main>
-        {{-- @php
-        $products = [
-        [
-        'idProduk' => 1,
-        'namaProduk' => 'Bakpia Durian',
-        'deskripsi' => 'Rasa durian legit dan lembut',
-        'harga' => 250000,
-        'stok' => 100,
-        'rating' => 4.9,
-        'gambar' => 'images/bakpiadurian.png',
-        ],
-        [
-        'idProduk' => 2,
-        'namaProduk' => 'Bakpia Coklat',
-        'deskripsi' => 'Rasa coklat manis lezat',
-        'harga' => 150000,
-        'stok' => 100,
-        'rating' => 4.5,
-        'gambar' => 'images/bakpiacoklat.png',
-        ],
-        [
-        'idProduk' => 3,
-        'namaProduk' => 'Bakpia Kacang Hijau',
-        'deskripsi' => 'Isi kacang hijau gurih dan manis',
-        'harga' => 99000,
-        'stok' => 120,
-        'rating' => 4.8,
-        'gambar' => 'images/bakpiakacanghijau.png',
-        ],
-        [
-        'idProduk' => 4,
-        'namaProduk' => 'Bakpia Keju',
-        'deskripsi' => 'Rasa keju lembut dan creamy',
-        'harga' => 99000,
-        'stok' => 90,
-        'rating' => 4.7,
-        'gambar' => 'images/bakpiakeju.png',
-        ],
-        ];
-        @endphp --}}
-
         {{-- DATA DUMMY PRODUK TERLARIS --}}
         @php
             $bestSeller = [
@@ -105,17 +64,16 @@
 
         {{-- SECTION PRODUK TERLARIS --}}
         <div class="container py-3">
-
-            <div class="section-header">
-                Best Seller
-            </div>
+            <div class="section-header">Best Seller</div>
 
             <div class="products">
                 @foreach ($bestSeller as $product)
                     <a href="{{ route('produk.show', $product['idProduk']) }}" class="product-link">
                         <div class="product-card">
-                            <img src="{{ !empty($product['gambar']) ? asset('images/' . $product['gambar']) : 'https://via.placeholder.com/300x200/A0522D/FFFFFF?text=Best+Seller' }}"
-                                alt="{{ $product['namaProduk'] }}">
+                            <img
+                                src="{{ !empty($product['gambar']) ? asset('images/' . $product['gambar']) : 'https://via.placeholder.com/300x200/A0522D/FFFFFF?text=Best+Seller' }}"
+                                alt="{{ $product['namaProduk'] }}"
+                            >
                             <div class="product-info">
                                 <div class="product-name">{{ $product['namaProduk'] }}</div>
                                 <div class="product-rating">Rating : {{ $product['rating'] }} ⭐</div>
@@ -125,34 +83,67 @@
                     </a>
                 @endforeach
             </div>
-
         </div>
 
-
+        {{-- SECTION PRODUK LAINNYA --}}
         <div class="container py-4">
-            <div class="section-header">
-                Produk Lainnya
-            </div>
+            <div class="section-header">Produk Lainnya</div>
+
             <div class="products">
                 @foreach ($products as $product)
-                    {{-- Menambahkan anchor tag untuk membuat produk dapat diklik --}}
-                    {{-- Pastikan Anda memiliki route dengan nama 'produk.show' yang menerima id produk --}}
                     <a href="{{ route('produk.show', $product->idProduk) }}" class="product-link">
-                        <div class="product-card">
 
-                            <img src="{{ !empty($product['gambar']) ? asset('images/' . $product['gambar']) : 'https://via.placeholder.com/300x200/A0522D/FFFFFF?text=Bakpia' }}"
-                                alt="{{ $product['namaProduk'] }}">
+                        {{-- penting: position-relative untuk overlay --}}
+                        <div class="product-card position-relative">
+
+                            
+                            <img
+                                src="{{ !empty($product->gambar) ? asset('images/' . $product->gambar) : 'https://via.placeholder.com/300x200/A0522D/FFFFFF?text=Bakpia' }}"
+                                alt="{{ $product->namaProduk }}"
+                                class="product-img {{ $product->stok <= 0 ? 'out' : '' }}"
+                            >
+
+                         
+                            @if($product->stok <= 0)
+                                <img
+                                    src="{{ asset('images/soldout.png') }}"
+                                    alt="Sold Out"
+                                    class="soldout-badge"
+                                >
+                            @endif
 
                             <div class="product-info">
-                                <div class="product-name">{{ $product['namaProduk'] }}</div>
-                                <div class="product-stock">Stok : {{ $product['stok'] }}</div>
-                                <div class="product-rating">Rating : {{ $product['rating'] }} ⭐</div>
-                                <div class="product-price">Rp{{ number_format($product['harga'], 0, ',', '.') }}</div>
+                                <div class="product-name">{{ $product->namaProduk }}</div>
+                                <div class="product-stock">Stok : {{ $product->stok }}</div>
+                                <div class="product-rating">Rating : {{ $product->rating }} ⭐</div>
+                                <div class="product-price">Rp{{ number_format($product->harga, 0, ',', '.') }}</div>
                             </div>
+
                         </div>
                     </a>
                 @endforeach
             </div>
         </div>
     </main>
+
+    {{-- CSS cepat (boleh pindah ke file CSS kamu) --}}
+    <style>
+        .product-card { position: relative; }
+        .product-img { width: 100%; display: block; }
+
+        .soldout-badge{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 140px; /* sesuaikan */
+            height: auto;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .product-img.out{
+            filter: grayscale(100%);
+            opacity: .65;
+        }
+    </style>
 @endsection

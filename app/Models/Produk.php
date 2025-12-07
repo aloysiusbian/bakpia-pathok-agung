@@ -26,6 +26,28 @@ class Produk extends Model
         'gambar',
     ];
 
+     //  1) Status stok habis atau tidak
+    public function getIsOutOfStockAttribute(): bool
+    {
+        return (int) $this->stok <= 0;
+    }
+
+    // 2) Gambar yang ditampilkan (otomatis pilih)
+    public function getDisplayImageAttribute(): string
+    {
+        // kalau stok habis -> tampilkan stokhabis.png
+        if ($this->is_out_of_stock) {
+            return asset('images/stokhabis.png');
+        }
+
+        // kalau stok masih ada -> tampilkan gambar produk dari storage
+        // (kalau gambar produk kamu bukan di storage, lihat catatan di bawah)
+        return $this->gambar
+        
+    ? asset('images/' . $this->gambar)
+    : asset('images/default.png');
+    }
+
     public function detailTransaksiOffline()
     {
         return $this->hasMany(DetailTransaksiOffline::class, 'idProduk', 'idProduk');
