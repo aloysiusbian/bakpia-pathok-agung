@@ -45,13 +45,13 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 ## Contributing
 
 Proyek ini dikerjakan oleh Kelompok 7 dari Program Studi Informatika, Fakultas Sains dan Teknologi, Universitas Sanata Dharma.
-| Nama Anggota | NIM | GitHub | Instagram |
-| :--- | :--- | :--- | :--- |
-| Aloysius Abian Dwi Hananta | 235314174 | <a href="github.com/aloysiusbian"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> Aloysius Abian</a>  | <a href="instagram.com/aloysiusbian_"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @aloysiusbian_</a> |
-| Ruben Syah Putra Sembiring | 235314179 | <a href="github.com/Ruben1401"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> Ruben1401</a>  | <a href="instagram.com/rubenn.sps"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @rubenn.sps</a> |
-| Michael Duan T. Mauday | 235314184 | <a href="github.com/MichaelApaajadeh"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> MichaelApaajadeh</a>  | <a href="instagram.com/michaelll16_"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @michaelll16_</a> |
-| Cedric Chandra | 235314195 | <a href="github.com/CedXD"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> CedXD</a>  | <a href="instagram.com/cedric_chandra1"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @cedric_chandra1</a> |
-| Alberto Safanda | 235314199 | <a href="github.com/AbangBerto"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> AbangBerto</a>  | <a href="instagram.com/alberrrrttttoo"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @alberrrrttttoo</a> |
+| Nama Anggota | NIM |
+| :--- | :--- |
+| Aloysius Abian Dwi Hananta | 235314174 |
+| Ruben Syah Putra Sembiring | 235314179 |
+| Michael Duan T. Mauday | 235314184 |
+| Cedric Chandra | 235314195  |
+| Alberto Safanda | 235314199 |
 
 **Dosen Pengampu:** Agnes Maria Polina, S.Kom., M.Sc.
 
