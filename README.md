@@ -1,4 +1,4 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://github.com/aloysiusbian/bakpia-pathok-agung/blob/main/public/images/logo.png" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
@@ -7,19 +7,17 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## About E-Commerce Bakpia Pathok
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Proyek ini bertujuan untuk mengembangkan **Sistem Informasi E-Commerce** berbasis *website* untuk **Bakpia Pathok Agung**, sebuah toko oleh-oleh ternama di Yogyakarta. Sistem ini dirancang untuk mentransformasi proses penjualan konvensional menjadi digital, mengatasi masalah jangkauan pasar yang terbatas, inefisiensi transaksi, dan kesulitan manajemen inventaris.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Tujuan Utama:**
+* Memperluas jangkauan pasar Bakpia Pathok Agung secara *online*.
+* Mengotomatisasi proses transaksi (pemesanan, pembayaran, konfirmasi).
+* Mempermudah pengelolaan inventaris dan pelacakan pesanan secara *real-time*.
+* Menyediakan media promosi yang efektif.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Walaupun projek ini belum sepenuhnya jadi, kedepannya kami akan terus mengembangkan sistem ini sehingga dapat di implementasikan dengan matang.
 
 ## Learning Laravel
 
@@ -46,7 +44,16 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Proyek ini dikerjakan oleh Kelompok 7 dari Program Studi Informatika, Fakultas Sains dan Teknologi, Universitas Sanata Dharma.
+| Nama Anggota | NIM | GitHub | Instagram |
+| :--- | :--- | :--- | :--- |
+| Aloysius Abian Dwi Hananta | 235314174 | <a href="github.com/aloysiusbian"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> Aloysius Abian</a>  | <a href="instagram.com/aloysiusbian_"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @aloysiusbian_</a> |
+| Ruben Syah Putra Sembiring | 235314179 | <a href="github.com/Ruben1401"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> Ruben1401</a>  | <a href="instagram.com/rubenn.sps"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @rubenn.sps</a> |
+| Michael Duan T. Mauday | 235314184 | <a href="github.com/MichaelApaajadeh"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> MichaelApaajadeh</a>  | <a href="instagram.com/michaelll16_"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @michaelll16_</a> |
+| Cedric Chandra | 235314195 | <a href="github.com/CedXD"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> CedXD</a>  | <a href="instagram.com/cedric_chandra1"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @cedric_chandra1</a> |
+| Alberto Safanda | 235314199 | <a href="github.com/AbangBerto"><img src="https://github.com/user-attachments/assets/a2673acb-0e09-4a35-8cb8-36d8f28b2e94" width="20"> AbangBerto</a>  | <a href="instagram.com/alberrrrttttoo"><img src="https://github.com/user-attachments/assets/e7343d33-4a78-4837-a7e3-c75b4856969a" width="20"> @alberrrrttttoo</a> |
+
+**Dosen Pengampu:** Agnes Maria Polina, S.Kom., M.Sc.
 
 ## Code of Conduct
 
