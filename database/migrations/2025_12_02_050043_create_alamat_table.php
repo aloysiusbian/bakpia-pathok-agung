@@ -18,8 +18,16 @@ return new class extends Migration
             $table->foreignId('idPelanggan')->constrained('pelanggan', 'idPelanggan')->onDelete('cascade'); // Kunci asing
             $table->string('judul_alamat')->nullable(); // Contoh: 'Rumah', 'Kantor', 'Alamat 2'
             $table->text('alamat_lengkap');
+            $table->string('nama_penerima');              
+            $table->string('no_telp_penerima');      
+            $table->integer('provinsi_id');
+            $table->string('provinsi_nama');
+            $table->integer('kota_id');
+            $table->string('kota_nama');
+            $table->string('kecamatan');       
             $table->string('kode_pos', 10)->nullable();
             $table->boolean('is_utama')->default(false); // Untuk menandai alamat utama
+            $table->text('catatan_kurir')->nullable();
             $table->timestamps();
         });
     }

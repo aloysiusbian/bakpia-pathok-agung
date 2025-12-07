@@ -175,9 +175,7 @@ Route::get('/tes', function () {
     return view('dashboard-admin.dashboard');
 });
 
-Route::get('/lihat-profil', function () {
-    return view('dashboard-pelanggan.profile');
-});
+Route::get('/lihat-profil', [ProfileController::class, 'index'])->name('profile.index');
 
 // Route::get('/lihatproduk', function () {
 //     return view('dashboard-admin.lihatproduk');
