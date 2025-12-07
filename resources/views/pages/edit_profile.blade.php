@@ -12,23 +12,53 @@
                 <i class="bi bi-person-lines-fill me-2"></i>Edit Profil
             </h4>
 
-            {{-- Pesan sukses --}}
             @if(session('success'))
                 <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
             @php
-                // Pastikan $primaryAddress ada
                 $primaryAddress = $primaryAddress ?? null;
-                
-                // PERBAIKAN 1: Akses menggunakan tanda panah (->) karena ini Object
-                // PERBAIKAN 2: Gunakan nama kolom DB 'judul_alamat'
                 $label = $primaryAddress->judul_alamat ?? 'Rumah'; 
             @endphp
 
-            <form action="{{ route('profile.update') }}" method="POST">
+            {{-- FORM START: enctype wajib ada untuk upload file --}}
+            <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
+
+                {{-- ========================================== --}}
+                {{-- BAGIAN FOTO PROFIL (SUDAH DIPERBAIKI)      --}}
+                {{-- ========================================== --}}
+                <div class="row mb-4 align-items-center">
+                    <div class="col-md-3">
+                        <label class="form-label d-block fw-bold text-center">Foto Saat Ini</label>
+                        
+                        {{-- Wrapper ini menjaga agar gambar tetap di tengah --}}
+                        <div class="d-flex justify-content-center">
+                            @if(Auth::user()->foto_profil)
+                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}" 
+                                     class="rounded-circle img-thumbnail d-block mx-auto" 
+                                     width="100" height="100" 
+                                     id="img-preview"
+                                     style="object-fit: cover;"> 
+                            @else
+                                <img src="{{ asset('images/bian.png') }}" 
+                                     class="rounded-circle img-thumbnail d-block mx-auto" 
+                                     width="100" height="100" 
+                                     id="img-preview"
+                                     style="object-fit: cover;">
+                            @endif
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-9">
+                        <label class="form-label">Ganti Foto Profil</label>
+                        <input type="file" class="form-control" name="foto_profil" id="foto_profil" onchange="previewImage()">
+                        <small class="text-muted">Format: JPG, JPEG, PNG. Maks: 2MB</small>
+                    </div>
+                </div>
+
+                <hr>
 
                 {{-- DATA AKUN --}}
                 <div class="mb-3">
@@ -51,7 +81,6 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Nama Penerima</label>
-                        {{-- PERBAIKAN: $primaryAddress->nama_penerima --}}
                         <input type="text" class="form-control"
                                name="address[namaPenerima]"
                                value="{{ $primaryAddress->nama_penerima ?? '' }}"
@@ -60,7 +89,6 @@
 
                     <div class="col-md-6 mb-3">
                         <label class="form-label">Nomor Telepon Penerima</label>
-                        {{-- PERBAIKAN: Gunakan kolom DB 'no_telp_penerima' --}}
                         <input type="text" class="form-control"
                                name="address[noTelp]"
                                value="{{ $primaryAddress->no_telp_penerima ?? Auth::user()->noTelp ?? '' }}"
@@ -87,7 +115,6 @@
                             <option value="">-- Pilih Provinsi --</option>
                             @foreach($provinces as $prov)
                                 <option value="{{ $prov['id'] }}"
-                                    {{-- PERBAIKAN: Akses ->provinsi_id --}}
                                     @if(($primaryAddress->provinsi_id ?? null) == $prov['id']) selected @endif>
                                     {{ $prov['name'] }}
                                 </option>
@@ -122,7 +149,6 @@
                     </div>
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Kode Pos</label>
-                        {{-- PERBAIKAN: Gunakan kolom DB 'kode_pos' --}}
                         <input type="text" class="form-control"
                                name="address[kodePos]"
                                value="{{ $primaryAddress->kode_pos ?? '' }}" required>
@@ -132,7 +158,6 @@
                 {{-- ALAMAT LENGKAP --}}
                 <div class="mb-3">
                     <label class="form-label">Alamat Lengkap</label>
-                    {{-- PERBAIKAN: Gunakan kolom DB 'alamat_lengkap' --}}
                     <textarea class="form-control" rows="3"
                               name="address[alamatLengkap]" required>{{ $primaryAddress->alamat_lengkap ?? '' }}</textarea>
                 </div>
@@ -140,7 +165,6 @@
                 {{-- CATATAN --}}
                 <div class="mb-3">
                     <label class="form-label">Catatan untuk Kurir (Opsional)</label>
-                    {{-- PERBAIKAN: Gunakan kolom DB 'catatan_kurir' --}}
                     <input type="text" class="form-control"
                            name="address[catatanKurir]"
                            value="{{ $primaryAddress->catatan_kurir ?? '' }}">
@@ -157,7 +181,7 @@
                 </div>
 
                 <div class="text-end">
-                    <button type="submit" class="btn btn-save px-4">
+                    <button type="submit" class="btn btn-warning px-4 text-white">
                         <i class="bi bi-save me-1"></i> Simpan Perubahan
                     </button>
                 </div>
@@ -167,10 +191,26 @@
     </div>
 </div>
 
-{{-- ===================== --}}
-{{-- SCRIPT PROVINSI / KOTA --}}
-{{-- ===================== --}}
+{{-- SCRIPT --}}
 <script>
+// SCRIPT PREVIEW IMAGE
+function previewImage() {
+    const image = document.querySelector('#foto_profil');
+    const imgPreview = document.querySelector('#img-preview');
+
+    // Kita tidak perlu display: block lagi karena sudah dihandle class Bootstrap (d-block)
+    // Tapi untuk memastikan image muncul jika sebelumnya hidden:
+    imgPreview.style.display = 'block'; 
+    
+    const oFReader = new FileReader();
+    oFReader.readAsDataURL(image.files[0]);
+
+    oFReader.onload = function(oFREvent) {
+        imgPreview.src = oFREvent.target.result;
+    }
+}
+
+// SCRIPT PROVINSI (TETAP SAMA)
 document.addEventListener('DOMContentLoaded', function () {
     const provinsiSelect = document.getElementById('provinsiSelect');
     const regencySelect  = document.getElementById('regencySelect');
@@ -178,7 +218,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const kotaNama       = document.getElementById('kotaNama');
 
     const selectedProvinceId = provinsiSelect.value;
-    // PERBAIKAN: Akses ->kota_id
     const selectedRegencyId  = "{{ $primaryAddress->kota_id ?? '' }}";
 
     function loadRegencies(provinceId) {
@@ -186,7 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!provinceId) return;
         
-        // PASTIKAN ROUTE INI BENAR SESUAI WEB.PHP ('profile.regencies' atau 'api.regencies')
         fetch(`{{ route('api.regencies') }}?province_id=${provinceId}`)
             .then(response => response.json())
             .then(data => {
