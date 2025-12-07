@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('pelanggan', function (Blueprint $table) {
             $table->id('idPelanggan')->primary();
+            $table->string('username');
             $table->string('password');
             $table->string('email', 20);
             $table->string('noTelp');
+            $table->string('image');
         });
     }
 
