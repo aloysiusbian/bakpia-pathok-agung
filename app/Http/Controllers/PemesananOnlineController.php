@@ -435,7 +435,7 @@ class PemesananOnlineController extends Controller
         // 2. Update Catatan & Status
         // Asumsi kamu punya kolom 'catatan' dan 'buktiPembayaran' di tabel
         $order->catatan       = $request->catatan;
-        $order->statusPesanan = 'menunggu_verifikasi'; // Ganti status jadi menunggu verifikasi admin
+        $order->statusPesanan = 'pending'; // Ganti status jadi menunggu admin
         $order->save();
 
         // 3. Redirect ke Halaman Sukses
