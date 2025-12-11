@@ -550,11 +550,11 @@
             <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Icon" height="30">
         </a>
         @php
-        $image = $admin->image ?? 'profile-dummy.png';
+        $image = $admin->image ?? 'foto_profil/profile-dummy.png';
         @endphp
         <div class="profile d-flex align-items-center justify-content-center">
             <div class="profile-content">
-                <img src="{{ asset('images/' . $image) }}" alt="Admin" class="rounded-circle me-3">
+                <img src="{{ asset('storage/' . $image) }}" alt="Admin" class="rounded-circle me-3">
                 <span class="profile-name">{{ $admin->username ?? 'Pengguna' }}</span>
             </div>
         </div>
