@@ -8,12 +8,12 @@
     <div class="card p-4">
         <div class="d-flex align-items-center">
             {{-- Foto Profil (Static dulu karena belum ada fitur upload foto) --}}
-            <img src="{{ asset('images/bian.png') }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
-            
+            <img src="{{ asset('images/' . ($pelanggan->image ?? 'profile-dummy.png')) }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
+
             <div class="profile-info">
                 {{-- 1. TAMPILKAN NAMA --}}
                 {{-- Logika: Ambil nama penerima dari alamat. Jika kosong, pakai Email --}}
-                <h5>{{ $address->nama_penerima ?? $user->email }}</h5>
+                <h5>{{$user->username }}</h5>
 
                 {{-- 2. TAMPILKAN EMAIL DARI USER AUTH --}}
                 <p class="text-muted mb-1">{{ $user->email }}</p>
@@ -33,7 +33,7 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="mt-4">
             {{-- Gunakan route name agar lebih aman --}}
             <a href="{{ route('profile.edit') }}" class="btn btn-warning">
