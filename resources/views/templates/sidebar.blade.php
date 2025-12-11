@@ -463,10 +463,10 @@
             <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Pathok Agung" height="40">
         </a>
         @php
-        $image = $pelanggan->image ?? 'profile-dummy.png';
+        $image = $pelanggan->image ?? 'foto_profil/profile-dummy.png';
         @endphp
         <div class="profile">
-            <img src="{{ asset('images/' . $image) }}" alt="Pelanggan">
+            <img src="{{ asset('storage/' . $image) }}" alt="Pelanggan">
             <h6>{{ $pelanggan->username ?? 'Pelanggan' }}</h6>
         </div>
 

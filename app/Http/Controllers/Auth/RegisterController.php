@@ -28,10 +28,11 @@ class RegisterController extends Controller
 
         // Simpan ke tabel pelanggan
         $pelanggan = Pelanggan::create([
+            'username' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'alamat' => '-', // nilai default
             'noTelp' => '-', // nilai default
+            'image' => 'foto_profil/profile-dummy.png',
         ]);
 
         // Login otomatis setelah register

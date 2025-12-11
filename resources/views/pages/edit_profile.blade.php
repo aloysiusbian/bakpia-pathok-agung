@@ -18,7 +18,7 @@
 
             @php
                 $primaryAddress = $primaryAddress ?? null;
-                $label = $primaryAddress->judul_alamat ?? 'Rumah'; 
+                $label = $primaryAddress->judul_alamat ?? 'Rumah';
             @endphp
 
             {{-- FORM START: enctype wajib ada untuk upload file --}}
@@ -32,25 +32,25 @@
                 <div class="row mb-4 align-items-center">
                     <div class="col-md-3">
                         <label class="form-label d-block fw-bold text-center">Foto Saat Ini</label>
-                        
+
                         {{-- Wrapper ini menjaga agar gambar tetap di tengah --}}
                         <div class="d-flex justify-content-center">
-                            @if(Auth::user()->foto_profil)
-                                <img src="{{ asset('storage/' . Auth::user()->foto_profil) }}" 
-                                     class="rounded-circle img-thumbnail d-block mx-auto" 
-                                     width="100" height="100" 
+                            @if(Auth::user()->image)
+                                <img src="{{ asset('storage/' . Auth::user()->image) }}"
+                                     class="rounded-circle img-thumbnail d-block mx-auto"
+                                     width="100" height="100"
                                      id="img-preview"
-                                     style="object-fit: cover;"> 
+                                     style="object-fit: cover;">
                             @else
-                                <img src="{{ asset('images/bian.png') }}" 
-                                     class="rounded-circle img-thumbnail d-block mx-auto" 
-                                     width="100" height="100" 
+                                <img src="{{ asset('storage/app/public/profile-dummy.png') }}"
+                                     class="rounded-circle img-thumbnail d-block mx-auto"
+                                     width="100" height="100"
                                      id="img-preview"
                                      style="object-fit: cover;">
                             @endif
                         </div>
                     </div>
-                    
+
                     <div class="col-md-9">
                         <label class="form-label">Ganti Foto Profil</label>
                         <input type="file" class="form-control" name="foto_profil" id="foto_profil" onchange="previewImage()">
@@ -200,8 +200,8 @@ function previewImage() {
 
     // Kita tidak perlu display: block lagi karena sudah dihandle class Bootstrap (d-block)
     // Tapi untuk memastikan image muncul jika sebelumnya hidden:
-    imgPreview.style.display = 'block'; 
-    
+    imgPreview.style.display = 'block';
+
     const oFReader = new FileReader();
     oFReader.readAsDataURL(image.files[0]);
 
@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
         regencySelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
 
         if (!provinceId) return;
-        
+
         fetch(`{{ route('api.regencies') }}?province_id=${provinceId}`)
             .then(response => response.json())
             .then(data => {
@@ -250,13 +250,13 @@ document.addEventListener('DOMContentLoaded', function () {
     provinsiSelect.addEventListener('change', function () {
         const provinceId = this.value;
         const selectedText = this.options[this.selectedIndex].text;
-        
+
         if (provinceId) {
              provinsiNama.value = selectedText;
         } else {
              provinsiNama.value = "";
         }
-        
+
         kotaNama.value = '';
         loadRegencies(provinceId);
     });

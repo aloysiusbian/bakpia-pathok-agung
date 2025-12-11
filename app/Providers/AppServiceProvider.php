@@ -24,5 +24,7 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('dashboard-admin.*', AdminComposer::class);
         View::composer('dashboard-pelanggan.*', PelangganComposer::class);
+        View::composer('pages.edit_profile', PelangganComposer::class);
+        View::composer('pages.edit_profil', AdminComposer::class);
     }
 }
