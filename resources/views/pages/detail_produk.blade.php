@@ -10,10 +10,20 @@
         <div class="col-lg-8 mb-3">
             <div class="card p-3">
                 <div class="row g-3">
-                    <div class="col-md-5 text-center">
+                    <div class="col-md-5 text-center position-relative">
+                        {{-- Gambar utama: abu-abu + overlay jika stok habis --}}
                         <img src="{{ asset('images/' . $produk->gambar) }}" alt="{{ $produk->namaProduk }}"
-                             class="img-fluid rounded"
+                             class="img-fluid rounded product-img-detail {{ $produk->stok <= 0 ? 'out' : '' }}"
                              onerror="this.onerror=null;this.src='https://placehold.co/400x400/A0522D/FFFFFF?text=Gambar+Tidak+Ada';">
+
+                        @if($produk->stok <= 0)
+                            <img
+                                src="{{ asset('images/soldout.png') }}"
+                                alt="Sold Out"
+                                class="soldout-badge"
+                            >
+                        @endif
+
                         <div class="d-flex justify-content-center mt-3 gap-2 thumbnail-scroll">
                             <img src="{{ asset('images/' . $produk->gambar) }}" alt="Thumbnail 1"
                                  class="img-thumbnail rounded thumbnail-item active"
@@ -21,18 +31,29 @@
                                  data-bs-toggle="modal" data-bs-target="#imageZoomModal">
                         </div>
                     </div>
+
                     <div class="col-md-7">
                         <h4>{{ $produk->namaProduk }}</h4>
                         <p class="text-warning mb-1">⭐ {{ $produk->rating }}</p>
                         <h5 class="fw-bold text-dark">Rp{{ number_format($produk->harga, 0, ',', '.') }}</h5>
+
+                        <p class="mb-1">
+                            Stok:
+                            <strong id="stok-display">{{ $produk->stok }}</strong>
+                            @if($produk->stok <= 0)
+                                <span class="badge bg-danger ms-1">Habis</span>
+                            @endif
+                        </p>
+
                         <div class="mt-2">
                             <p class="fw-bold mb-1">Pilih Jenis:</p>
-                            <div class="d-flex gap-2">
+                            <div class="d-flex gap-2 flex-wrap">
                                 @foreach(explode(',', $produk->pilihanJenis) as $jenis)
                                     <button class="btn btn-outline-dark btn-sm">{{ trim($jenis) }}</button>
                                 @endforeach
                             </div>
                         </div>
+
                         <div class="mt-3">
                             <p class="fw-bold mb-1">Deskripsi Produk :</p>
                             <div class="desc-scroll">
@@ -88,7 +109,7 @@
                                        id="kuantitas-input" readonly>
                                 <button class="btn btn-outline-dark" type="button" id="btn-plus">+</button>
                             </div>
-                            <span>Stok: <strong id="stok-display">{{ $produk->stok }}</strong></span>
+                            <span>Stok: <strong id="stok-display-sidebar">{{ $produk->stok }}</strong></span>
                         </div>
 
                         <hr class="my-3">
@@ -104,14 +125,14 @@
                             {{-- + KERANJANG --}}
                             <button type="submit"
                                     formaction="{{ route('keranjang.store') }}"
-                                    class="btn btn-warning fw-bold">
+                                    class="btn btn-warning fw-bold btn-aksi-beli">
                                 + Keranjang
                             </button>
 
                             {{-- BELI SEKARANG --}}
                             <button type="submit"
                                     formaction="{{ route('pembayaran.checkout.produk') }}"
-                                    class="btn btn-outline-dark">
+                                    class="btn btn-outline-dark btn-aksi-beli">
                                 Beli Sekarang
                             </button>
                         </div>
@@ -126,10 +147,24 @@
     <h5 class="fw-bold mb-3">Produk Lainnya</h5>
     <div class="products">
         @forelse ($produksLainnya as $product)
-            <a href="{{ route('produk.show', $product->idProduk) }}" class="text-decoration-none">
-                <div class="product-card">
-                    <img src="{{ asset('images/' . $product->gambar) }}" alt="{{ $product->namaProduk }}"
-                         onerror="this.onerror=null;this.src='https://placehold.co/300x200/A0522D/FFFFFF?text=Bakpia';">
+            <a href="{{ route('produk.show', $product->idProduk) }}" class="text-decoration-none product-link">
+                <div class="product-card position-relative">
+
+                    <img
+                        src="{{ asset('images/' . $product->gambar) }}"
+                        alt="{{ $product->namaProduk }}"
+                        onerror="this.onerror=null;this.src='https://placehold.co/300x200/A0522D/FFFFFF?text=Bakpia';"
+                        class="product-img {{ $product->stok <= 0 ? 'out' : '' }}"
+                    >
+
+                    @if($product->stok <= 0)
+                        <img
+                            src="{{ asset('images/soldout.png') }}"
+                            alt="Sold Out"
+                            class="soldout-badge"
+                        >
+                    @endif
+
                     <div class="product-info">
                         <div class="product-name">{{ $product->namaProduk }}</div>
                         <div class="product-stock">Stok : {{ $product->stok }}</div>
@@ -145,7 +180,73 @@
 </div>
 
 <style>
-    /* ... style-mu tetap di sini ... */
+    /* contoh style, sesuaikan dengan punyamu */
+
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+    }
+
+    .product-card {
+        position: relative;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .product-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    .product-img,
+    .product-img-detail {
+        width: 100%;
+        display: block;
+    }
+
+    .soldout-badge{
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 140px;
+        height: auto;
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .out{
+        filter: grayscale(100%);
+        opacity: .65;
+    }
+
+    .product-info {
+        padding: 10px 12px 12px;
+    }
+
+    .product-name {
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #3b2b1a;
+    }
+
+    .product-price {
+        font-weight: 700;
+        color: #000;
+    }
+
+    .desc-scroll {
+        max-height: 160px;
+        overflow-y: auto;
+    }
+
+    .sticky-purchase {
+        position: sticky;
+        top: 90px;
+    }
 </style>
 
 {{-- SCRIPT LANGSUNG DI DALAM SECTION, TANPA @push --}}
@@ -158,6 +259,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnPlus        = document.getElementById('btn-plus');
     const qtyInput       = document.getElementById('kuantitas-input');
     const subtotalElm    = document.getElementById('subtotal');
+    const stokDisplay    = document.getElementById('stok-display');
+    const stokDisplaySb  = document.getElementById('stok-display-sidebar');
+    const aksiButtons    = document.querySelectorAll('.btn-aksi-beli');
 
     const hargaSatuan  = parseFloat(purchaseCard.dataset.harga);
     const stokTersedia = parseInt(purchaseCard.dataset.stok);
@@ -173,8 +277,29 @@ document.addEventListener('DOMContentLoaded', function () {
         const subtotal = hargaSatuan * qty;
         subtotalElm.textContent = 'Rp' + subtotal.toLocaleString('id-ID');
 
-        btnPlus.disabled  = (qty >= stokTersedia);
-        btnMinus.disabled = (qty <= 1);
+        if (btnPlus && btnMinus) {
+            btnPlus.disabled  = (qty >= stokTersedia);
+            btnMinus.disabled = (qty <= 1);
+        }
+    }
+
+    // Jika stok habis: disable semua aksi beli
+    function handleStokHabis() {
+        if (stokTersedia <= 0) {
+            if (qtyInput) qtyInput.value = 0;
+            if (subtotalElm) subtotalElm.textContent = 'Rp0';
+
+            if (btnPlus)  btnPlus.disabled  = true;
+            if (btnMinus) btnMinus.disabled = true;
+
+            aksiButtons.forEach(btn => {
+                btn.disabled = true;
+                btn.textContent = 'Stok Habis';
+            });
+
+            if (stokDisplay)   stokDisplay.textContent   = '0';
+            if (stokDisplaySb) stokDisplaySb.textContent = '0';
+        }
     }
 
     if (btnPlus && btnMinus) {
@@ -195,8 +320,8 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // logika thumbnail & zoom tetap
-    const mainImage   = document.querySelector('.col-md-5 img:first-child');
+    // logika thumbnail & zoom
+    const mainImage   = document.querySelector('.product-img-detail');
     const thumbnails  = document.querySelectorAll('.thumbnail-item');
     const zoomedImage = document.getElementById('zoomedImage');
 
@@ -206,8 +331,10 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.add('active');
 
             const newDetailSrc = this.src;
-            mainImage.src = newDetailSrc;
-            mainImage.alt = this.alt;
+            if (mainImage) {
+                mainImage.src = newDetailSrc;
+                mainImage.alt = this.alt;
+            }
 
             const fullSrc = this.getAttribute('data-full-src') || this.src;
             if (zoomedImage) {
@@ -216,6 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    handleStokHabis();
     updateSubtotal();
 });
 </script>
