@@ -10,6 +10,7 @@ use App\Http\Controllers\PemesananOnlineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,12 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/kelola-admin', function () {
         return view('dashboard-admin.kelola_admin');
     });
+
+    Route::get('/ganti-sandi', [ChangePasswordController::class, 'edit1'])->name('password-admin.edit');
+    Route::put('/ganti-sandi', [ChangePasswordController::class, 'update1'])->name('password-admin.update');
+
+    Route::get('/edit-akun', [DashboardController::class, 'edit'])->name('akun-admin.edit');
+    Route::put('/edit-akun', [DashboardController::class, 'update'])->name('akun-admin.update');
 
     Route::get('/lihatproduk', [ProdukController::class, 'index2'])->name('lihat.produk');
     // Ini adalah route yang Anda panggil di LoginController
@@ -83,6 +90,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard-pelanggan', [PemesananOnlineController::class, 'dashboard'])->name('dashboard.pelanggan');
     Route::get('/edit-profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/edit-profil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/ganti-password', [ChangePasswordController::class, 'edit'])->name('password-pelanggan.edit');
+    Route::put('/ganti-password', [ChangePasswordController::class, 'update'])->name('password-pelanggan.update');
     Route::get('/riwayat-pemesanan', [PemesananOnlineController::class, 'riwayatTabel'])->name('riwayat.pemesanan');
 
     // API untuk dropdown kabupaten

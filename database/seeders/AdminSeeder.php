@@ -18,7 +18,6 @@ class AdminSeeder extends Seeder
             'username' => 'biann',
             'password' => Hash::make('bian123'),
             'email' => 'bian@gmail.com',
-            'image' => 'foto_profil/bian.png',
         ]);
     }
 }

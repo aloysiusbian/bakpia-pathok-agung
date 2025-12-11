@@ -550,11 +550,15 @@
             <img class="logo-icon" src="{{ asset('images/logo-icon.png') }}" alt="Bakpia Icon" height="30">
         </a>
         @php
-        $image = $admin->image ?? 'foto_profil/profile-dummy.png';
+        if ($admin->image) {
+        $image = asset('storage/' . $admin->image);
+        } else {
+        $image = asset('images/profile-dummy.png');
+        }
         @endphp
         <div class="profile d-flex align-items-center justify-content-center">
             <div class="profile-content">
-                <img src="{{ asset('storage/' . $image) }}" alt="Admin" class="rounded-circle me-3">
+                <img src="{{ $image }}" alt="Admin" class="rounded-circle me-3">
                 <span class="profile-name">{{ $admin->username ?? 'Pengguna' }}</span>
             </div>
         </div>
@@ -568,6 +572,18 @@
                        href="/admin/dashboard" data-bs-toggle="tooltip" data-bs-placement="right"
                        title="Beranda"><i class="bi bi-speedometer2"></i>
                         <span>Dashboard</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('admin/edit-akun') ? 'active' : '' }}"
+                       href="/admin/edit-akun" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Edit Akun"><i class="bi bi-speedometer2"></i>
+                        <span>Edit Akun</span></a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link {{ request()->is('admin/ganti-password') ? 'active' : '' }}"
+                       href="/admin/ganti-sandi" data-bs-toggle="tooltip" data-bs-placement="right"
+                       title="Edit Akun"><i class="bi bi-lock"></i>
+                        <span>Ganti Password</span></a>
                 </li>
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->is('admin/analisis') ? 'active' : '' }}" href="#"

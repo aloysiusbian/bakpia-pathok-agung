@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id('idPelanggan')->primary();
             $table->string('username');
             $table->string('password');
-            $table->string('email', 20);
+            $table->string('email');
             $table->string('noTelp');
-            $table->string('image');
+            $table->string('image')->nullable();
         });
     }
 

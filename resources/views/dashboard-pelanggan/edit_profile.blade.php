@@ -13,12 +13,16 @@
             </h4>
 
             @if(session('success'))
-                <div class="alert alert-success">{{ session('success') }}</div>
+            <div class="alert alert-success">{{ session('success') }}</div>
             @endif
 
+            @error('current_password')
+            <div class="alert alert-danger">{{ $message }}</div>
+            @enderror
+
             @php
-                $primaryAddress = $primaryAddress ?? null;
-                $label = $primaryAddress->judul_alamat ?? 'Rumah';
+            $primaryAddress = $primaryAddress ?? null;
+            $label = $primaryAddress->judul_alamat ?? 'Rumah';
             @endphp
 
             {{-- FORM START: enctype wajib ada untuk upload file --}}
@@ -27,7 +31,7 @@
                 @method('PUT')
 
                 {{-- ========================================== --}}
-                {{-- BAGIAN FOTO PROFIL (SUDAH DIPERBAIKI)      --}}
+                {{-- BAGIAN FOTO PROFIL (SUDAH DIPERBAIKI) --}}
                 {{-- ========================================== --}}
                 <div class="row mb-4 align-items-center">
                     <div class="col-md-3">
@@ -36,24 +40,25 @@
                         {{-- Wrapper ini menjaga agar gambar tetap di tengah --}}
                         <div class="d-flex justify-content-center">
                             @if(Auth::user()->image)
-                                <img src="{{ asset('storage/' . Auth::user()->image) }}"
-                                     class="rounded-circle img-thumbnail d-block mx-auto"
-                                     width="100" height="100"
-                                     id="img-preview"
-                                     style="object-fit: cover;">
+                            <img src="{{ asset('storage/' . Auth::user()->image) }}"
+                                 class="rounded-circle img-thumbnail d-block mx-auto"
+                                 width="100" height="100"
+                                 id="img-preview"
+                                 style="object-fit: cover;">
                             @else
-                                <img src="{{ asset('storage/app/public/profile-dummy.png') }}"
-                                     class="rounded-circle img-thumbnail d-block mx-auto"
-                                     width="100" height="100"
-                                     id="img-preview"
-                                     style="object-fit: cover;">
+                            <img src="{{ asset('images/profile-dummy.png') }}"
+                                 class="rounded-circle img-thumbnail d-block mx-auto"
+                                 width="100" height="100"
+                                 id="img-preview"
+                                 style="object-fit: cover;">
                             @endif
                         </div>
                     </div>
 
                     <div class="col-md-9">
                         <label class="form-label">Ganti Foto Profil</label>
-                        <input type="file" class="form-control" name="foto_profil" id="foto_profil" onchange="previewImage()">
+                        <input type="file" class="form-control" name="foto_profil" id="foto_profil"
+                               onchange="previewImage()">
                         <small class="text-muted">Format: JPG, JPEG, PNG. Maks: 2MB</small>
                     </div>
                 </div>
@@ -101,9 +106,12 @@
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Label Alamat</label>
                         <select class="form-select" name="address[labelAlamat]">
-                            <option value="Rumah"   {{ $label=='Rumah' ? 'selected' : '' }}>Rumah</option>
-                            <option value="Kantor"  {{ $label=='Kantor' ? 'selected' : '' }}>Kantor</option>
-                            <option value="Lainnya" {{ $label=='Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                            <option value="Rumah" {{ $label=='Rumah' ?
+                            'selected' : '' }}>Rumah</option>
+                            <option value="Kantor" {{ $label=='Kantor' ?
+                            'selected' : '' }}>Kantor</option>
+                            <option value="Lainnya" {{ $label=='Lainnya' ?
+                            'selected' : '' }}>Lainnya</option>
                         </select>
                     </div>
 
@@ -114,10 +122,10 @@
                                 name="address[provinsi_id]" required>
                             <option value="">-- Pilih Provinsi --</option>
                             @foreach($provinces as $prov)
-                                <option value="{{ $prov['id'] }}"
+                            <option value="{{ $prov['id'] }}"
                                     @if(($primaryAddress->provinsi_id ?? null) == $prov['id']) selected @endif>
-                                    {{ $prov['name'] }}
-                                </option>
+                                {{ $prov['name'] }}
+                            </option>
                             @endforeach
                         </select>
                         <input type="hidden" id="provinsiNama"
@@ -159,7 +167,8 @@
                 <div class="mb-3">
                     <label class="form-label">Alamat Lengkap</label>
                     <textarea class="form-control" rows="3"
-                              name="address[alamatLengkap]" required>{{ $primaryAddress->alamat_lengkap ?? '' }}</textarea>
+                              name="address[alamatLengkap]"
+                              required>{{ $primaryAddress->alamat_lengkap ?? '' }}</textarea>
                 </div>
 
                 {{-- CATATAN --}}
@@ -169,6 +178,16 @@
                            name="address[catatanKurir]"
                            value="{{ $primaryAddress->catatan_kurir ?? '' }}">
                 </div>
+
+                <hr class="my-4">
+
+                {{-- Validasi --}}
+                <div class="mb-3">
+                    <label class="form-label">Password Validasi</label>
+                    <input type="password" class="form-control" name="current_password" required>
+                </div>
+
+                <hr class="my-4">
 
                 {{-- DEFAULT --}}
                 <div class="form-check mb-4">
@@ -193,83 +212,83 @@
 
 {{-- SCRIPT --}}
 <script>
-// SCRIPT PREVIEW IMAGE
-function previewImage() {
-    const image = document.querySelector('#foto_profil');
-    const imgPreview = document.querySelector('#img-preview');
+    // SCRIPT PREVIEW IMAGE
+    function previewImage() {
+        const image = document.querySelector('#foto_profil');
+        const imgPreview = document.querySelector('#img-preview');
 
-    // Kita tidak perlu display: block lagi karena sudah dihandle class Bootstrap (d-block)
-    // Tapi untuk memastikan image muncul jika sebelumnya hidden:
-    imgPreview.style.display = 'block';
+        // Kita tidak perlu display: block lagi karena sudah dihandle class Bootstrap (d-block)
+        // Tapi untuk memastikan image muncul jika sebelumnya hidden:
+        imgPreview.style.display = 'block';
 
-    const oFReader = new FileReader();
-    oFReader.readAsDataURL(image.files[0]);
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(image.files[0]);
 
-    oFReader.onload = function(oFREvent) {
-        imgPreview.src = oFREvent.target.result;
+        oFReader.onload = function (oFREvent) {
+            imgPreview.src = oFREvent.target.result;
+        }
     }
-}
 
-// SCRIPT PROVINSI (TETAP SAMA)
-document.addEventListener('DOMContentLoaded', function () {
-    const provinsiSelect = document.getElementById('provinsiSelect');
-    const regencySelect  = document.getElementById('regencySelect');
-    const provinsiNama   = document.getElementById('provinsiNama');
-    const kotaNama       = document.getElementById('kotaNama');
+    // SCRIPT PROVINSI (TETAP SAMA)
+    document.addEventListener('DOMContentLoaded', function () {
+        const provinsiSelect = document.getElementById('provinsiSelect');
+        const regencySelect = document.getElementById('regencySelect');
+        const provinsiNama = document.getElementById('provinsiNama');
+        const kotaNama = document.getElementById('kotaNama');
 
-    const selectedProvinceId = provinsiSelect.value;
-    const selectedRegencyId  = "{{ $primaryAddress->kota_id ?? '' }}";
+        const selectedProvinceId = provinsiSelect.value;
+        const selectedRegencyId = "{{ $primaryAddress->kota_id ?? '' }}";
 
-    function loadRegencies(provinceId) {
-        regencySelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
+        function loadRegencies(provinceId) {
+            regencySelect.innerHTML = '<option value="">-- Pilih Kabupaten/Kota --</option>';
 
-        if (!provinceId) return;
+            if (!provinceId) return;
 
-        fetch(`{{ route('api.regencies') }}?province_id=${provinceId}`)
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(function (reg) {
-                    const opt = document.createElement('option');
-                    opt.value = reg.id;
-                    opt.textContent = reg.name;
+            fetch(`{{ route('api.regencies') }}?province_id=${provinceId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(function (reg) {
+                        const opt = document.createElement('option');
+                        opt.value = reg.id;
+                        opt.textContent = reg.name;
 
-                    if (selectedRegencyId && selectedRegencyId == reg.id) {
-                        opt.selected = true;
-                        kotaNama.value = reg.name;
-                    }
+                        if (selectedRegencyId && selectedRegencyId == reg.id) {
+                            opt.selected = true;
+                            kotaNama.value = reg.name;
+                        }
 
-                    regencySelect.appendChild(opt);
+                        regencySelect.appendChild(opt);
+                    });
                 });
-            });
-    }
-
-    if (selectedProvinceId) {
-        loadRegencies(selectedProvinceId);
-    }
-
-    provinsiSelect.addEventListener('change', function () {
-        const provinceId = this.value;
-        const selectedText = this.options[this.selectedIndex].text;
-
-        if (provinceId) {
-             provinsiNama.value = selectedText;
-        } else {
-             provinsiNama.value = "";
         }
 
-        kotaNama.value = '';
-        loadRegencies(provinceId);
-    });
-
-    regencySelect.addEventListener('change', function () {
-        const selectedText = this.options[this.selectedIndex].text;
-        if(this.value) {
-            kotaNama.value = selectedText;
-        } else {
-            kotaNama.value = "";
+        if (selectedProvinceId) {
+            loadRegencies(selectedProvinceId);
         }
+
+        provinsiSelect.addEventListener('change', function () {
+            const provinceId = this.value;
+            const selectedText = this.options[this.selectedIndex].text;
+
+            if (provinceId) {
+                provinsiNama.value = selectedText;
+            } else {
+                provinsiNama.value = "";
+            }
+
+            kotaNama.value = '';
+            loadRegencies(provinceId);
+        });
+
+        regencySelect.addEventListener('change', function () {
+            const selectedText = this.options[this.selectedIndex].text;
+            if (this.value) {
+                kotaNama.value = selectedText;
+            } else {
+                kotaNama.value = "";
+            }
+        });
     });
-});
 </script>
 
 @endsection

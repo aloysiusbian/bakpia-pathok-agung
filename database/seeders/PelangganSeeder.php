@@ -19,7 +19,6 @@ class PelangganSeeder extends Seeder
             'password' => Hash::make('4444'),
             'email' => 'alberto@gmail.com',
             'noTelp' => '6282289183719',
-            'image' => 'foto_profil/berto.jpg',
         ]);
     }
 }

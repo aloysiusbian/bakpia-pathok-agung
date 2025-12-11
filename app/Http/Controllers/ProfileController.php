@@ -62,7 +62,7 @@ class ProfileController extends Controller
             return json_decode(File::get(database_path('data/provinces.json')), true);
         });
 
-        return view('pages.edit_profile', [
+        return view('dashboard-pelanggan.edit_profile', [
             'user' => $user,
             'primaryAddress' => $primaryAddress, // Object biasa, aksesnya sama: $primaryAddress->kota_nama
             'provinces' => $provinces,
@@ -98,6 +98,7 @@ class ProfileController extends Controller
 
         // Validasi (Tetap Sama)
         $request->validate([
+            'current_password' => ['required', 'string', 'current_password'],
             'email' => [
                 'required', 'email',
                 Rule::unique('pelanggan', 'email')->ignore($user->idPelanggan, 'idPelanggan')

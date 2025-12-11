@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id('idAdmin');
             $table->string('username');
             $table->string('password');
-            $table->string('email', 20);
-            $table->string('image', 20);
+            $table->string('email');
+            $table->string('image')->nullable();
         });
     }
 
