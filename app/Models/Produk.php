@@ -35,10 +35,6 @@ class Produk extends Model
     // 2) Gambar yang ditampilkan (otomatis pilih)
     public function getDisplayImageAttribute(): string
     {
-        // kalau stok habis -> tampilkan stokhabis.png
-        if ($this->is_out_of_stock) {
-            return asset('images/stokhabis.png');
-        }
 
         // kalau stok masih ada -> tampilkan gambar produk dari storage
         // (kalau gambar produk kamu bukan di storage, lihat catatan di bawah)
@@ -47,6 +43,16 @@ class Produk extends Model
     ? asset('images/' . $this->gambar)
     : asset('images/default.png');
     }
+
+        public function getTotalTerjualAttribute(): int
+    {
+        
+        $offline = $this->detailTransaksiOffline->sum('jumlahBarang');
+        $online  = $this->detailTransaksiOnline->sum('jumlahBarang');
+
+        return $offline + $online;
+    }
+
 
     public function detailTransaksiOffline()
     {
