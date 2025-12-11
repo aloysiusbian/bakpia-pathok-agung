@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable; 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Admin extends Authenticatable 
+class Admin extends Authenticatable
 {
     use HasFactory;
 
@@ -19,7 +19,7 @@ class Admin extends Authenticatable
         'image',
     ];
     /**
-     * Kolom yang harus disembunyikan.
+     * Kolom yang harus disembunyikan
      *
      * @var array<int, string>
      */

@@ -16,7 +16,7 @@ class AdminComposer
         $admin = Auth::guard('admin')->user();
 
         // 2. Jika admin ditemukan, bind (ikat) objek tersebut ke semua view yang menggunakan composer ini.
-        // Variabel ini akan tersedia di view sebagai $admin.
+        // Variabel ini akan tersedia di view sebagai $admin
         if ($admin) {
             $view->with('admin', $admin);
         } else {

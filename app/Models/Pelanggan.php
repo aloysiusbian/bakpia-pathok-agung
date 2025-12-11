@@ -20,7 +20,7 @@ class Pelanggan extends Authenticatable
         'noTelp',
         'image',
     ];
-    public $incrementing = true; // Mengaktifkan auto-increment karena primary key adalah integerr
+    public $incrementing = true; // Mengaktifkan auto-increment karena primary key adalah integer
 
     protected $hidden = [
         'password',

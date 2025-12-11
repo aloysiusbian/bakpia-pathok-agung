@@ -148,7 +148,7 @@ class ProfileController extends Controller
 
         // Siapkan data untuk disimpan
         $dataAlamat = [
-            // Kolom target => Nilai dari formm
+            // Kolom target => Nilai dari form
             'judul_alamat' => $request->input('address.labelAlamat'),
             'nama_penerima' => $request->input('address.namaPenerima'),
             'no_telp_penerima' => $request->input('address.noTelp'),

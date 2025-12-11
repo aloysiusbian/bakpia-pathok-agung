@@ -11,7 +11,7 @@
                 <span class="text-3xl font-semibold"></span>
             </div>
 
-            {{-- Ringkasan error --}}
+            {{-- Ringkasan errorr --}}
             @if ($errors->any())
                 <div class="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
                     <ul class="list-disc list-inside">

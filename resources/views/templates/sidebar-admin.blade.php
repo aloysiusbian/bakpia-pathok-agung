@@ -541,7 +541,7 @@
 </head>
 
 <body>
-<!-- SIDEBARR -->
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <div>
         <a class="logo" href="/">
