@@ -3,78 +3,97 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Produk;
+use Illuminate\Support\Str;
 
 class ProdukController extends Controller
 {
+    // HOME (menampilkan produk + best seller)
     public function index()
     {
-        $products = [
-            'products'    => Produk::orderBy('idProduk', 'DESC')->get()
-        ];
-        return view('pages.home', $products);
+        $products = Produk::with(['detailTransaksiOffline', 'detailTransaksiOnline'])
+            ->orderBy('idProduk', 'DESC')
+            ->get();
+
+        $bestSeller = $products
+            ->filter(fn ($p) => $p->total_terjual > 0)
+            ->sortByDesc('total_terjual')
+            ->take(2);
+
+        return view('pages.home', [
+            'products' => $products,
+            'bestSeller' => $bestSeller
+        ]);
     }
 
+    // HALAMAN ADMIN
     public function index2()
     {
-        $products = [
-            'products'    => Produk::orderBy('idProduk', 'DESC')->get()
-        ];
-        return view('dashboard-admin.lihatproduk', $products);
+        return view('dashboard-admin.lihatproduk', [
+            'products' => Produk::orderBy('idProduk', 'DESC')->get()
+        ]);
     }
-   
+
+    // DETAIL PRODUK
     public function detailProduk(Produk $produk)
     {
         $produksLainnya = Produk::where('idProduk', '!=', $produk->idProduk)
-                                  ->inRandomOrder() // Tampilkan secara acak
-                                  ->take(4)         // Ambil 4 produk saja
-                                  ->get();
+            ->inRandomOrder()
+            ->take(4)
+            ->get();
 
-        // Kirim data produk yang dipilih dan produk lainnya ke view 'pages.detail'
         return view('pages.detail_produk', [
             'produk' => $produk,
             'produksLainnya' => $produksLainnya
         ]);
     }
+
+    // FORM TAMBAH PRODUK
     public function create()
     {
-        // Pastikan nama view sesuai dengan lokasi file Anda (misal: 'pages.tambah_produk')
-        return view('pages.tambah_produk'); 
+        return view('pages.tambah_produk');
     }
 
-
+    // SIMPAN PRODUK BARU
     public function store(Request $request)
     {
-        // 1. Validasi Data
-        $request->validate([
-            'nama_produk' => 'required|string|max:255',
-            'harga' => 'required|integer|min:0',
-            'stok' => 'required|integer|min:0',
-            'rating' => 'numeric|min:0|max:5',
-            'deskripsi_produk' => 'required|string',
-            'pilihan_jenis' => 'nullable|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Max 2MB
+        // Validasi
+        $validated = $request->validate([
+            'nama_produk'       => 'required|string|max:255',
+            'harga'             => 'required|integer|min:0',
+            'stok'              => 'required|integer|min:0',
+            'rating'            => 'nullable|numeric|min:0|max:5',
+            'deskripsi_produk'  => 'required|string',
+            'pilihan_jenis'     => 'nullable|string',
+            'kategori'          => 'nullable|string',
+            'gambar'            => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        // 2. Upload Gambar
+      
         $gambarPath = null;
         if ($request->hasFile('gambar')) {
-            $gambarPath = $request->file('gambar')->store('produk_images', 'public');
+            $file = $request->file('gambar');
+
+            // Nama file rapi: slug-nama_produk + timestamp + extension
+            $namaBersih = Str::slug($validated['nama_produk']);
+            $filename = $namaBersih . '-' . time() . '.' . $file->getClientOriginalExtension();
+
+            // Simpan di storage/app/public/produk_images
+            $gambarPath = $file->storeAs('produk_images', $filename, 'public');
         }
 
-        // 3. Simpan Data
+        // Simpan ke database
         Produk::create([
-            'nama_produk' => $request->nama_produk,
-            'harga' => $request->harga,
-            'stok' => $request->stok,
-            'rating' => $request->rating ?? 5.0,
-            'pilihan_jenis' => $request->pilihan_jenis,
-            'deskripsi_produk' => $request->deskripsi_produk,
-            'gambar' => $gambarPath,
+            'namaProduk'       => $validated['nama_produk'],
+            'harga'            => $validated['harga'],
+            'stok'             => $validated['stok'],
+            'rating'           => $validated['rating'] ?? 5.0,
+            'pilihanJenis'     => $validated['pilihan_jenis'] ?? null,
+            'kategori'         => $validated['kategori'] ?? null,
+            'deskripsiProduk'  => $validated['deskripsi_produk'],
+            'gambar'           => $gambarPath,  // contoh: "produk_images/kopi-susu-1700000000.jpg"
         ]);
 
-        // Redirect ke dashboard atau halaman list produk (asumsi dashboard)
         return redirect('/dashboard')->with('success', 'Produk baru berhasil ditambahkan!');
     }
 }
