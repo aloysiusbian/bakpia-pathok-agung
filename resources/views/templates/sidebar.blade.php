@@ -455,7 +455,7 @@
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- SIDEBARR -->
 <div class="sidebar" id="sidebar">
     <div>
         <a class="logo" href="/">

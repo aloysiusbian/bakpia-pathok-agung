@@ -11,7 +11,7 @@
             <img src="{{ asset('storage/' . ($pelanggan->image ?? 'foto_profil/profile-dummy.png')) }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
 
             <div class="profile-info">
-                {{-- 1. TAMPILKAN NAMA --}}
+                {{-- 1. TAMPILKAN NAMAA --}}
                 {{-- Logika: Ambil nama penerima dari alamat. Jika kosong, pakai Email --}}
                 <h5>{{$user->username }}</h5>
 

@@ -35,7 +35,7 @@ class RegisterController extends Controller
             'image' => 'foto_profil/profile-dummy.png',
         ]);
 
-        // Login otomatis setelah register
+        // Login otomatis setelah registerr
         Auth::login($pelanggan);
 
         // Redirect ke dashboard
