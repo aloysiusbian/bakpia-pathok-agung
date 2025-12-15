@@ -11,9 +11,9 @@
         <div class="col-md-4">
             <div class="card p-4 text-center">
                 <i class="bi bi-basket-fill fs-2 text-success bg-light"></i>
-                <h6 class="mt-2 text-muted">Total Pembelian</h6>
+                <h6 class="mt-2 text-muted">Total Pemesanan</h6>
                 <h3 class="fw-bold">{{ $totalPembelian }}</h3>
-                <small class="text-success">+{{ $baruMingguIni }} pesanan baru minggu ini</small>
+                <small class="text-success">+{{ $baruMingguIni }} pembelian dilakukan</small>
             </div>
         </div>
 
@@ -35,7 +35,7 @@
                 <h3 class="fw-bold">
                     Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}
                 </h3>
-                <small class="text-muted">Berdasarkan pesanan yang sudah dikirim</small>
+                <small class="text-muted">Berdasarkan pesanan yang sudah dibayar</small>
             </div>
         </div>
     </div>

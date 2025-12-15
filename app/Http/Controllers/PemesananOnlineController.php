@@ -301,6 +301,31 @@ class PemesananOnlineController extends Controller
         }
     }
 
+    public function konfirmasiPembayaran($nomorPemesanan)
+    {
+        $order = PemesananOnline::where('nomorPemesanan', $nomorPemesanan)
+            ->first();
+
+        if (!$order) {
+            return back()->with('error', 'Pesanan tidak ditemukan atau statusnya tidak valid untuk dikonfirmasi.');
+        }
+
+        DB::beginTransaction();
+        try {
+            // Ubah status pesanan menjadi 'shipped'
+            $order->statusPesanan = 'shipped';
+            $order->save();
+
+            DB::commit();
+
+            return redirect()->route('admin.pemesanan.online') // Arahkan kembali ke daftar pesanan admin
+                ->with('success', 'Pesanan ' . $order->nomorPemesanan . ' berhasil dikonfirmasi dan status diubah menjadi SHIPPED.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal mengkonfirmasi pembayaran: ' . $e->getMessage());
+        }
+    }
+
     public function qris($nomorPemesanan)
     {
         $order = PemesananOnline::with('detailTransaksiOnline.produk')
@@ -326,7 +351,7 @@ class PemesananOnlineController extends Controller
         $filterStatus = $request->query('status'); // bisa null
 
         // boleh dibatasi supaya status yang aneh diabaikan
-        $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
+        $allowedStatus = ['Menunggu Pembayaran', 'Sudah Dibayar', 'cancel', 'shipped'];
 
         $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
             ->where('idPelanggan', $idPelanggan)
@@ -378,7 +403,7 @@ class PemesananOnlineController extends Controller
 
         // 2. Pesanan aktif: pending atau payment
         $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->whereIn('statusPesanan', ['pending', 'payment'])
+            ->whereIn('statusPesanan', ['Sudah Dibayar', 'Menunggu Pembayaran'])
             ->count();
 
         // 3. Pesanan baru minggu ini (status shipped)
@@ -423,11 +448,11 @@ class PemesananOnlineController extends Controller
             $file = $request->file('bukti_pembayaran');
             // Nama file unik: bukti_NOMORORDER_TIMESTAMP.ext
             $filename = 'bukti_' . $order->nomorPemesanan . '_' . time() . '.' . $file->getClientOriginalExtension();
-            
+
             // Simpan ke folder public/storage/bukti_pembayaran
             // Pastikan kamu sudah jalankan: php artisan storage:link
             $path = $file->storeAs('public/bukti_pembayaran', $filename);
-            
+
             // Simpan path yang bisa diakses publik (tanpa 'public/')
             $order->buktiPembayaran = 'bukti_pembayaran/' . $filename;
         }
@@ -435,7 +460,7 @@ class PemesananOnlineController extends Controller
         // 2. Update Catatan & Status
         // Asumsi kamu punya kolom 'catatan' dan 'buktiPembayaran' di tabel
         $order->catatan       = $request->catatan;
-        $order->statusPesanan = 'pending'; // Ganti status jadi menunggu admin
+        $order->statusPesanan = 'Sudah Dibayar'; // Ganti status jadi menunggu admin
         $order->save();
 
         // 3. Redirect ke Halaman Sukses

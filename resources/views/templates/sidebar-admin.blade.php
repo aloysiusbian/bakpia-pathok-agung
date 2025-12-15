@@ -576,7 +576,7 @@
                 <li class="nav-item ">
                     <a class="nav-link {{ request()->is('admin/edit-akun') ? 'active' : '' }}"
                        href="/admin/edit-akun" data-bs-toggle="tooltip" data-bs-placement="right"
-                       title="Edit Akun"><i class="bi bi-speedometer2"></i>
+                       title="Edit Akun"><i class="bi-person-fill-gear"></i>
                         <span>Edit Akun</span></a>
                 </li>
                 <li class="nav-item ">

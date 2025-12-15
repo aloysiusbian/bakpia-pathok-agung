@@ -8,7 +8,7 @@
     <div class="card p-4">
         <div class="d-flex align-items-center">
             {{-- Foto Profil (Static dulu karena belum ada fitur upload foto) --}}
-            <img src="{{ asset('storage/' . ($pelanggan->image ?? 'foto_profil/profile-dummy.png')) }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
+            <img src="{{ asset('storage/' . Auth::user()->image) }}" alt="Foto Profil" class="rounded-circle me-4" width="100" height="100">
 
             <div class="profile-info">
                 {{-- 1. TAMPILKAN NAMA --}}

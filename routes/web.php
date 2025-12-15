@@ -59,9 +59,9 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     // })->name('pemesanan.online');
 
     Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
+    Route::post('/pemesananOnline/{nomorPemesanan}/konfirmasi', [PemesananOnlineController::class, 'konfirmasiPembayaran'])->name('admin.pemesanan.online');
 
     Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
-
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
     | (sesuai use case diagram Anda: Tambah, Edit, Hapus Produk)
