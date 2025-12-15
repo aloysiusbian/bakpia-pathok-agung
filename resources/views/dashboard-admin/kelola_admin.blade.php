@@ -4,351 +4,195 @@
 
 @section('content')
 
-<div class="content" id="content">
-    <h2 class="mb-4 text-dark">Kelola Akun Administrator</h2>
-
-    <div class="card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5>Daftar Pengguna Admin</h5>
-            <a href="/testambahakun" class="btn btn-primary-custom">
-                <i class="bi bi-person-add"></i> Tambah Admin Baru
-            </a>
-        </div>
-
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered table-custom">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nama</th>
-                    <th>Email</th>
-                    <th>Peran</th>
-                    <th>Status</th>
-                    <th>Aksi</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{-- Ini adalah contoh data statis. Di Laravel, Anda akan menggunakan @foreach loop --}}
-                <tr>
-                    <td>1</td>
-                    <td>Alberto Sahara</td>
-                    <td>alberto.s@bakpia.com</td>
-                    <td>Administrator</td>
-                    <td><span class="badge bg-success">Aktif</span></td>
-                    <td>
-                        <a href="{{ url('/admin/accounts/1/edit') }}" class="btn btn-sm btn-warning action-btn"
-                           title="Edit"><i class="bi bi-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger action-btn" title="Hapus"><i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Reza Kakap</td>
-                    <td>reza.k@bakpia.com</td>
-                    <td>Administrator</td>
-                    <td><span class="badge bg-warning text-dark">Nonaktif</span></td>
-                    <td>
-                        <a href="{{ url('/admin/accounts/2/edit') }}" class="btn btn-sm btn-warning action-btn"
-                           title="Edit"><i class="bi bi-pencil"></i></a>
-                        <button class="btn btn-sm btn-danger action-btn" title="Hapus"><i class="bi bi-trash"></i>
-                        </button>
-                    </td>
-                </tr>
-
-                {{-- Akhir contoh data --}}
-
-                {{-- Di Laravel, Anda akan menggunakan: --}}
-                {{-- @foreach ($admins as $admin)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $admin->name }}</td>
-                    <td>{{ $admin->email }}</td>
-                    <td>{{ $admin->role_name }}</td>
-                    <td><span class="badge bg-{{ $admin->is_active ? 'success' : 'warning text-dark' }}">{{ $admin->is_active ? 'Aktif' : 'Nonaktif' }}</span>
-                    </td>
-                    <td>
-                        <a href="{{ route('admin.accounts.edit', $admin->id) }}"
-                           class="btn btn-sm btn-warning action-btn" title="Edit"><i class="bi bi-pencil"></i></a>
-                        <form action="{{ route('admin.accounts.destroy', $admin->id) }}" method="POST"
-                              style="display:inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger action-btn"
-                                    onclick="return confirm('Yakin ingin menghapus akun ini?')" title="Hapus"><i
-                                    class="bi bi-trash"></i></button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach --}}
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script>
-    // JavaScript untuk Toggle Sidebar
-    const sidebar = document.getElementById('sidebar');
-    const navbar = document.getElementById('navbar');
-    const content = document.getElementById('content');
-    const toggleBtn = document.getElementById('toggle-btn');
-
-    toggleBtn.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        navbar.classList.toggle('collapsed');
-        content.classList.toggle('collapsed');
-    });
-</script>
-
-@endsection
-
-<!-- <!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produk | Tambah Baru</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #fbf3df;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
-        }
-
-        /* Styling CSS yang sama persis untuk konsistensi */
-        .sidebar {
-            width: 260px;
-            background-color: #e3d3ad;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-            padding: 10px 0;
-        }
-
-        .sidebar.collapsed {
-            transform: translateX(-200%);
-        }
-
-        .sidebar .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-
-        .sidebar .profile {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .sidebar .profile img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .sidebar .profile h6 {
-            margin-top: 8px;
-            font-weight: 600;
-            color: #3a2d1a;
-        }
-
-        .nav-section-title {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #6e5b3b;
-            margin: 10px 20px 5px;
-        }
-
-        .sidebar .nav-link {
-            color: #3a2d1a;
-            border-radius: 8px;
-            margin: 4px 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.2s;
-        }
-
-        .sidebar .nav-link:hover,
-        .sidebar .nav-link.active {
-            background-color: #d1b673;
-            color: #000;
-            font-weight: 600;
-        }
-
-        .offline-btn {
-            margin: 15px 20px;
-            border-radius: 10px;
-            background-color: white;
-            color: #3a2d1a;
-            font-weight: 600;
-        }
-
-        .navbar {
-            background-color: #f5c24c;
-            padding: 10px 25px;
-            position: fixed;
-            top: 0;
-            left: 260px;
-            width: calc(100% - 260px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-        }
-
-        .navbar.collapsed {
-            left: 0;
-            width: 100%;
-        }
-
-        .content {
-            margin-left: 260px;
-            padding: 100px 30px 30px;
-            transition: all 0.3s ease;
-        }
-
-        .content.collapsed {
-            margin-left: 0;
-        }
-
-        .card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-primary-custom {
-            background-color: #f5c24c;
-            border: none;
-            color: #3a2d1a;
-            font-weight: 600;
-        }
-        .btn-primary-custom:hover {
-            background-color: #d1b673;
-            color: #3a2d1a;
-        }
-    </style>
-</head>
-
-<body>
-
-    <div class="sidebar" id="sidebar">
-        <div>
-            <a class="logo" href="/">
-                <img src="{{ asset('images/logo.png') }}" alt="Bakpia Pathok Agung" height="40">
-            </a>
-            <div class="profile">
-                <img src="{{ asset('images/bian.png') }}" alt="Admin">
-                <h6>Alberto Sahara</h6>
-            </div>
-
-            <div class="menu px-2">
-                <hr class="my-2">
-                <p class="nav-section-title">Dashboard</p>
-                <a href="/admin/dashboard" class="nav-link"><i class="bi bi-speedometer2"></i> <span>Dashboard</span></a>
-                <a href="#" class="nav-link"><i class="bi bi-graph-up"></i> <span>Analytics</span></a>
-                <hr class="my-2">
-                <p class="nav-section-title mt-3">Pesanan</p>
-                <a href="{{ route('admin.pemesanan.online') }}" class="nav-link">
-                    <i class="bi bi-cart4"></i> <span>Pemesanan Online</span>
-                </a>
-                <a href="#" class="nav-link"><i class="bi bi-telephone"></i> <span>Pemesanan Offline</span></a>
-                <hr class="my-2">
-                <p class="nav-section-title mt-3">Produk</p>
-                <a href="/tambah_produk" class="nav-link active"><i class="bi bi-box-seam"></i> <span>Lihat Produk</span></a>
-                <hr class="my-2">
-            </div>
-        </div>
-
-        <div class="text-center mb-3">
-            <a href="/" class="btn offline-btn w-75"><i class="bi bi-box-arrow-right"></i> Logout</a>
-        </div>
-    </div>
-
-    <nav class="navbar d-flex align-items-center" id="navbar">
-        <button class="btn btn-light me-3" id="toggle-btn"><i class="bi bi-list"></i></button>
-        <input type="text" class="form-control w-50 me-auto" placeholder="Tambah Produk Baru">
-    </nav>
-
     <div class="content" id="content">
-        <h2 class="mb-4 text-dark">Tambah Produk Baru</h2>
+        <h2 class="mb-4 text-dark">Kelola Akun Administrator</h2>
+
+        {{-- Logika untuk menampilkan pesan SUKSES atau GAGAL (Flash Messages) --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {!! session('success') !!}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {!! session('error') !!}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
 
         <div class="card p-4">
-            <div class="mb-4">
-                <a href="{{ url('/admin/produk') }}" class="btn btn-secondary btn-sm"><i class="bi bi-arrow-left"></i> Kembali ke Daftar Produk</a>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5>Daftar Pengguna Admin</h5>
+                {{-- Mengubah URL statis ke Route Naming: admin.accounts.create --}}
+                <a href="/admin/tambah-admin" class="btn btn-primary-custom">
+                    <i class="bi bi-person-add"></i> Tambah Admin Baru
+                </a>
             </div>
 
-            <form action="{{ url('/admin/produk') }}" method="POST" enctype="multipart/form-data">
-                {{-- Di Laravel, Anda akan menambahkan: @csrf --}}
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered table-custom">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Peran</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="nama_produk" class="form-label">Nama Produk</label>
-                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" required placeholder="Contoh: Bakpia Original (15 Pcs)">
-                    </div>
+                        {{-- Loop data admin dari database --}}
+                        @forelse ($admins as $admin)
+                            <tr>
+                                <td>{{ $loop->iteration + ($admins->currentPage() - 1) * $admins->perPage() }}</td>
+                                {{-- Asumsi kolom nama di model Admin adalah 'username' atau 'name' --}}
+                                <td>{{ $admin->username ?? $admin->name }}</td>
+                                <td>{{ $admin->email }}</td>
 
-                    <div class="col-md-6">
-                        <label for="kategori" class="form-label">Kategori</label>
-                        <select class="form-select" id="kategori" name="kategori_id" required>
-                            <option selected disabled value="">Pilih Kategori...</option>
-                            <option value="1">Bakpia</option>
-                            <option value="2">Minuman</option>
-                            <option value="3">Oleh-Oleh Lain</option>
-                            {{-- Di Laravel, Anda akan loop data kategori: @foreach ($kategoris as $kategori) ... @endforeach --}}
-                        </select>
-                    </div>
+                                {{-- Peran: Asumsi kolom 'role' ada di tabel Admin, jika tidak, Anda harus menyesuaikannya. --}}
+                                <td>{{ $admin->role ?? 'Administrator' }}</td>
 
-                    <div class="col-md-4">
-                        <label for="harga" class="form-label">Harga (Rp)</label>
-                        <input type="number" class="form-control" id="harga" name="harga" required min="0" placeholder="Contoh: 45000">
-                    </div>
+                                {{-- Status: Asumsi ada kolom boolean 'is_active' --}}
+                                <td>
+                                    @if ($admin->is_active ?? true)
+                                        <span class="badge bg-success">Aktif</span>
+                                    @else
+                                        <span class="badge bg-warning text-dark">Nonaktif</span>
+                                    @endif
+                                </td>
 
-                    <div class="col-md-4">
-                        <label for="stok" class="form-label">Stok Awal</label>
-                        <input type="number" class="form-control" id="stok" name="stok" required min="0" placeholder="Contoh: 100">
-                    </div>
+                                <td>
+                                    {{-- Tombol Edit: Memicu Modal Edit --}}
+                                    <button type="button" class="btn btn-sm btn-warning action-btn" data-bs-toggle="modal"
+                                        data-bs-target="#editAdminModal" data-id="{{ $admin->id }}"
+                                        data-name="{{ $admin->username ?? $admin->name }}" data-email="{{ $admin->email }}"
+                                        data-role="{{ $admin->role ?? 'Administrator' }}"
+                                        data-is-active="{{ $admin->is_active ?? 1 }}" {{-- Asumsi default aktif --}}
+                                        title="Edit">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
 
-                    <div class="col-md-4">
-                        <label for="berat" class="form-label">Berat (Gram)</label>
-                        <input type="number" class="form-control" id="berat" name="berat" required min="1" placeholder="Contoh: 500">
-                    </div>
+                                    {{-- Tombol Hapus: Memicu Modal Hapus --}}
+                                    <button type="button" class="btn btn-sm btn-danger action-btn" data-bs-toggle="modal"
+                                        data-bs-target="#deleteAdminModal" data-id="{{ $admin->id }}"
+                                        data-name="{{ $admin->username ?? $admin->name }}" title="Hapus">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Belum ada data administrator.</td>
+                            </tr>
+                        @endforelse
 
-                    <div class="col-12">
-                        <label for="deskripsi" class="form-label">Deskripsi Produk</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="4" required placeholder="Jelaskan detail produk, rasa, dan daya tahan."></textarea>
-                    </div>
+                    </tbody>
+                </table>
+            </div>
 
-                    <div class="col-12">
-                        <label for="gambar" class="form-label">Gambar Produk</label>
-                        <input class="form-control" type="file" id="gambar" name="gambar" accept="image/*" required>
-                        <div class="form-text">Maksimal ukuran file 2MB (jpg, jpeg, png).</div>
-                    </div>
+            {{-- Menampilkan Link Pagination --}}
+            <div class="mt-3">
+                {{ $admins->links() }}
+            </div>
+        </div>
+    </div>
 
-                    <div class="col-12 mt-4 text-end">
-                        <button type="reset" class="btn btn-outline-secondary me-2">Reset Formulir</button>
-                        <button type="submit" class="btn btn-primary-custom">
-                            <i class="bi bi-save"></i> Simpan Produk
-                        </button>
-                    </div>
+    {{-- Modal untuk Edit Akun Admin --}}
+    <div class="modal fade" id="editAdminModal" tabindex="-1" aria-labelledby="editAdminModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAdminModalLabel">Edit Akun Admin</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </form>
+                {{-- Form akan diisi aksi dinamis oleh JavaScript --}}
+                <form id="editAdminForm" method="PUT">
+                    @csrf
+                    <div class="modal-body">
+                        {{-- Input ID admin, disembunyikan --}}
+                        <input type="hidden" id="admin_id_edit" name="admin_id">
 
+                        <div class="mb-3">
+                            <label for="edit_name" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="edit_name" name="name" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="edit_email" name="email" required>
+                        </div>
+
+                        {{-- Contoh field password baru (opsional) --}}
+                        <div class="mb-3">
+                            <label for="edit_password" class="form-label">Password Baru (Kosongkan jika tidak
+                                diubah)</label>
+                            <input type="password" class="form-control" id="edit_password" name="password" minlength="8">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="edit_password_confirmation" class="form-label">Konfirmasi Password Baru</label>
+                            <input type="password" class="form-control" id="edit_password_confirmation"
+                                name="password_confirmation" minlength="8">
+                        </div>
+
+                        {{-- Contoh field Peran (jika Anda mengelola peran) --}}
+                        <div class="mb-3">
+                            <label for="edit_role" class="form-label">Peran</label>
+                            <select class="form-select" id="edit_role" name="role">
+                                <option value="Administrator">Administrator</option>
+                                <option value="Editor">Editor</option>
+                                {{-- Tambahkan opsi peran lain sesuai kebutuhan --}}
+                            </select>
+                        </div>
+
+                        {{-- Contoh field Status --}}
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" role="switch" id="edit_is_active"
+                                name="is_active" value="1">
+                            <label class="form-check-label" for="edit_is_active">Aktifkan Akun</label>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary-custom">Simpan Perubahan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- Modal untuk Konfirmasi Hapus Akun Admin --}}
+    <div class="modal fade" id="deleteAdminModal" tabindex="-1" aria-labelledby="deleteAdminModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteAdminModalLabel">Konfirmasi Penghapusan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="deleteAdminForm" method="DELETE">
+                    @csrf
+                    <div class="modal-body">
+                        <p>Anda yakin ingin menghapus akun admin bernama **<span id="admin_name_delete"
+                                class="fw-bold"></span>**?</p>
+                        <div class="alert alert-danger" role="alert">
+                            Tindakan ini tidak dapat dibatalkan.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-danger">Ya, Hapus Akun</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        // JavaScript untuk Toggle Sidebar
+        // JavaScript untuk Toggle Sidebar (dibiarkan seperti semula)
         const sidebar = document.getElementById('sidebar');
         const navbar = document.getElementById('navbar');
         const content = document.getElementById('content');
@@ -359,8 +203,69 @@
             navbar.classList.toggle('collapsed');
             content.classList.toggle('collapsed');
         });
+
+        // --- LOGIKA MODAL EDIT DAN HAPUS ---
+        document.addEventListener('DOMContentLoaded', function () {
+            const editModal = document.getElementById('editAdminModal');
+            const deleteModal = document.getElementById('deleteAdminModal');
+
+            // --- Modal Edit ---
+            if (editModal) {
+                editModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget; // Tombol yang memicu modal
+
+                    // Ambil data dari atribut data-*
+                    const adminId = button.getAttribute('data-id');
+                    const adminName = button.getAttribute('data-name');
+                    const adminEmail = button.getAttribute('data-email');
+                    const adminRole = button.getAttribute('data-role');
+                    const adminIsActive = button.getAttribute('data-is-active');
+
+                    // Dapatkan form dan elemen input
+                    const form = document.getElementById('editAdminForm');
+                    const inputName = document.getElementById('edit_name');
+                    const inputEmail = document.getElementById('edit_email');
+                    const inputRole = document.getElementById('edit_role');
+                    const inputIsActive = document.getElementById('edit_is_active');
+
+                    // Isi input form dengan data yang diambil
+                    inputName.value = adminName;
+                    inputEmail.value = adminEmail;
+                    inputRole.value = adminRole;
+                    inputIsActive.checked = (adminIsActive === '1' || adminIsActive === 'true'); // Atur checkbox
+
+                    // Atur action form ke route update
+                    // Asumsi nama route Anda adalah 'admin.accounts.update'
+                    form.action = '/admin/kelola-admin/' + adminId;
+
+                    // Kosongkan password field setiap kali modal dibuka
+                    document.getElementById('edit_password').value = '';
+                    document.getElementById('edit_password_confirmation').value = '';
+                });
+            }
+
+            // --- Modal Hapus ---
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget; // Tombol yang memicu modal
+
+                    // Ambil data dari atribut data-*
+                    const adminId = button.getAttribute('data-id');
+                    const adminName = button.getAttribute('data-name');
+
+                    // Dapatkan form dan elemen teks
+                    const form = document.getElementById('deleteAdminForm');
+                    const nameSpan = document.getElementById('admin_name_delete');
+
+                    // Isi nama admin pada teks konfirmasi
+                    nameSpan.textContent = adminName;
+
+                    // Atur action form ke route destroy
+                    // Asumsi nama route Anda adalah 'admin.accounts.destroy'
+                    form.action = '/admin/kelola-admin/' + adminId;
+                });
+            }
+        });
     </script>
 
-</body>
-
-</html> -->
+@endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PemesananOnlineController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KeranjangController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\ChangePasswordController;
 | Publik
 |-------------------------------------------------------------------------- 
 */
+
 Route::get('/', [ProdukController::class, 'index'])->name('pages.home');
 Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name('produk.show');
 
@@ -26,8 +28,15 @@ Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name(
 |-------------------------------------------------------------------------- 
 */
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/kelola-admin', [AdminController::class, 'index'])->name('kelola.akun');
+    Route::get('/tambah-admin', [AdminController::class, 'create'])->name('accounts.create');
+    Route::post('/kelola-admin', [AdminController::class, 'store'])->name('accounts.store');
+    Route::put('/kelola-admin/{idAdmin}', [AdminController::class, 'update'])->name('accounts.update');
+    Route::delete('/kelola-admin/{idAdmin}', [AdminController::class, 'destroy'])->name('accounts.destroy');
+
     Route::get('/tambah-admin', fn() => view('dashboard-admin.tambah_admin'));
-    Route::get('/kelola-admin', fn() => view('dashboard-admin.kelola_admin'));
+    // Route::get('/kelola-admin', fn() => view('dashboard-admin.kelola_admin'));
 
     Route::get('/ganti-sandi', [ChangePasswordController::class, 'edit1'])->name('password-admin.edit');
     Route::put('/ganti-sandi', [ChangePasswordController::class, 'update1'])->name('password-admin.update');

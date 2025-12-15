@@ -318,7 +318,7 @@ class PemesananOnlineController extends Controller
         $idPelanggan = Auth::user()->idPelanggan;
 
         $filterStatus = $request->query('status');
-        $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
+        $allowedStatus = ['Menunggu Pembayaran', 'Sudah Dibayar', 'cancel', 'shipped'];
 
         $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
             ->where('idPelanggan', $idPelanggan)
@@ -368,7 +368,7 @@ class PemesananOnlineController extends Controller
             ->count();
 
         $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->whereIn('statusPesanan', ['pending', 'payment'])
+            ->whereIn('statusPesanan', ['Sudah Dibayar', 'Menunggu Pembayaran'])
             ->count();
 
         $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
@@ -422,7 +422,7 @@ class PemesananOnlineController extends Controller
 
         $order->buktiPembayaran = 'storage/' . $savedPath;
         $order->catatan = $request->catatan;
-        $order->statusPesanan = 'pending';
+        $order->statusPesanan = 'Sudah Dibayar';
         $order->save();
 
         return redirect()->route('pembayaran.sukses', $nomorPemesanan);
