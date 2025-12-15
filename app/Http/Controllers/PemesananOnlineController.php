@@ -326,7 +326,7 @@ class PemesananOnlineController extends Controller
         $filterStatus = $request->query('status'); // bisa null
 
         // boleh dibatasi supaya status yang aneh diabaikan
-        $allowedStatus = ['menunggu_pembayaran', 'diproses', 'batal', 'selesai'];
+        $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
 
         $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
             ->where('idPelanggan', $idPelanggan)
@@ -378,7 +378,7 @@ class PemesananOnlineController extends Controller
 
         // 2. Pesanan aktif: pending atau payment
         $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->whereIn('statusPesanan', ['diproses', 'menunggu_pembayaran'])
+            ->whereIn('statusPesanan', ['pending', 'payment'])
             ->count();
 
         // 3. Pesanan baru minggu ini (status shipped)
@@ -455,17 +455,4 @@ class PemesananOnlineController extends Controller
         // Misal nama filenya: resources/views/pages/pembayaran_sukses.blade.php
         return view('pages.status_pembayaran', compact('order'));
     }
-    public function batalkanPesanan($nomorPemesanan)
-{
-    $transaksi = PemesananOnline::findOrFail($nomorPemesanan);
-    
-    // Validasi tambahan agar yang bisa dibatalkan hanya yang belum dibayar
-    if($transaksi->statusPesanan == 'menunggu_pembayaran'){
-        $transaksi->statusPesanan = 'batal';
-        $transaksi->save();
-        return back()->with('success', 'Pesanan berhasil dibatalkan.');
-    }
-
-    return back()->with('error', 'Pesanan tidak dapat dibatalkan.');
-}
 }
