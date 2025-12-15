@@ -12,27 +12,17 @@ use Carbon\Carbon;
 
 class PemesananOnlineController extends Controller
 {
-    /**
-     * DARI KERANJANG -> tampil halaman checkout
-     */
-
     public function index()
     {
-        // 1. Ambil data pesanan dengan eager loading relasi 'pelanggan'
         $orders = PemesananOnline::with('pelanggan')
-            ->orderByDesc('tanggalPemesanan') // Urutkan dari yang terbaru
-            ->paginate(10); // Gunakan pagination
+            ->orderByDesc('tanggalPemesanan')
+            ->paginate(10);
 
-        // 2. Hitung Ringkasan Statistik untuk Card (Summary)
         $summary = $this->calculateOrderSummary();
 
-        // 3. Kirim data ke View (menggunakan compact lebih disarankan)
         return view('dashboard-admin.pemesananOnline', compact('orders', 'summary'));
     }
 
-    /**
-     * Helper function untuk menghitung ringkasan statistik.
-     */
     protected function calculateOrderSummary()
     {
         $today = Carbon::now()->toDateString();
@@ -51,14 +41,14 @@ class PemesananOnlineController extends Controller
             'pending_count' => $pendingCount,
         ];
     }
+
     public function checkout(Request $request)
     {
-        $ids         = $request->input('items', []);
+        $ids = $request->input('items', []);
         $idPelanggan = Auth::user()->idPelanggan;
 
         if (empty($ids)) {
-            return redirect()
-                ->route('keranjang.index')
+            return redirect()->route('keranjang.index')
                 ->with('error', 'Pilih minimal satu produk untuk dibeli.');
         }
 
@@ -68,43 +58,39 @@ class PemesananOnlineController extends Controller
             ->get();
 
         if ($items->isEmpty()) {
-            return redirect()
-                ->route('keranjang.index')
+            return redirect()->route('keranjang.index')
                 ->with('error', 'Item keranjang tidak ditemukan.');
         }
 
-        $subTotal     = $items->sum('subTotal');
+        $subTotal = $items->sum('subTotal');
         $shippingCost = 10000;
-        $grandTotal   = $subTotal + $shippingCost;
-        $totalQty     = $items->sum('jumlahBarang');
+        $grandTotal = $subTotal + $shippingCost;
+        $totalQty = $items->sum('jumlahBarang');
 
         session([
-            'checkout_items'    => $ids,
+            'checkout_items' => $ids,
             'checkout_subtotal' => $subTotal,
             'checkout_shipping' => $shippingCost,
         ]);
 
         return view('pages.pembayaran', [
-            'items'        => $items,
-            'subTotal'     => $subTotal,
+            'items' => $items,
+            'subTotal' => $subTotal,
             'shippingCost' => $shippingCost,
-            'grandTotal'   => $grandTotal,
-            'totalQty'     => $totalQty,
-            'formAction'   => route('pembayaran.process'),
+            'grandTotal' => $grandTotal,
+            'totalQty' => $totalQty,
+            'formAction' => route('pembayaran.process'),
         ]);
     }
 
-    /**
-     * SIMPAN dari keranjang ke pemesanan + detail transaksi
-     */
     public function process(Request $request)
     {
         $request->validate([
             'metode_pembayaran' => 'required|in:qris,bank',
-            'alamatPengirim'    => 'required|string|max:255',
+            'alamatPengirim' => 'required|string|max:255',
         ]);
 
-        $ids         = session('checkout_items', []);
+        $ids = session('checkout_items', []);
         $idPelanggan = Auth::user()->idPelanggan;
 
         if (empty($ids)) {
@@ -118,50 +104,45 @@ class PemesananOnlineController extends Controller
             ->get();
 
         if ($items->isEmpty()) {
-            return redirect()
-                ->route('keranjang.index')
+            return redirect()->route('keranjang.index')
                 ->with('error', 'Item keranjang tidak ditemukan.');
         }
 
-        // ✨ Cek stok cukup untuk semua item sebelum transaksi
         foreach ($items as $item) {
             if (!$item->produk || $item->jumlahBarang > $item->produk->stok) {
-                return redirect()
-                    ->route('keranjang.index')
+                return redirect()->route('keranjang.index')
                     ->with('error', 'Stok untuk produk ' . $item->produk->namaProduk . ' tidak mencukupi.');
             }
         }
 
         $shippingCost = session('checkout_shipping', 0);
-        $subTotal     = $items->sum('subTotal');
-        $grandTotal   = $subTotal + $shippingCost;
+        $subTotal = $items->sum('subTotal');
+        $grandTotal = $subTotal + $shippingCost;
 
         DB::beginTransaction();
 
         try {
             $order = PemesananOnline::create([
-                'idPelanggan'      => $idPelanggan,
+                'idPelanggan' => $idPelanggan,
                 'tanggalPemesanan' => now(),
-                'totalNota'        => $grandTotal,
+                'totalNota' => $grandTotal,
                 'metodePembayaran' => $request->metode_pembayaran,
-                'statusPesanan'    => PemesananOnline::STATUS_PO,
-                'discountPerNota'  => 0,
-                'alamatPengirim'   => $request->alamatPengirim,
+                'statusPesanan' => PemesananOnline::STATUS_PO,
+                'discountPerNota' => 0,
+                'alamatPengirim' => $request->alamatPengirim,
             ]);
 
             foreach ($items as $item) {
-                // ✨ Kurangi stok produk
                 Produk::where('idProduk', $item->idProduk)
                     ->lockForUpdate()
                     ->decrement('stok', $item->jumlahBarang);
 
-                // Simpan detail transaksi
                 $order->detailTransaksiOnline()->create([
-                    'idProduk'          => $item->idProduk,
-                    'jumlahBarang'      => $item->jumlahBarang,
-                    'harga'             => $item->produk->harga,
+                    'idProduk' => $item->idProduk,
+                    'jumlahBarang' => $item->jumlahBarang,
+                    'harga' => $item->produk->harga,
                     'discountPerProduk' => 0,
-                    'subTotal'          => $item->subTotal,
+                    'subTotal' => $item->subTotal,
                 ]);
             }
 
@@ -184,65 +165,58 @@ class PemesananOnlineController extends Controller
         }
     }
 
-    /**
-     * DARI DETAIL PRODUK -> tampil halaman checkout (TANPA keranjang)
-     */
     public function checkoutProduk(Request $request)
     {
         $request->validate([
-            'idProduk'     => 'required|exists:produk,idProduk',
+            'idProduk' => 'required|exists:produk,idProduk',
             'jumlahBarang' => 'required|integer|min:1',
         ]);
 
         $produk = Produk::findOrFail($request->idProduk);
-        $qty    = $request->jumlahBarang;
+        $qty = $request->jumlahBarang;
 
-        // ✨ Pastikan qty tidak melebihi stok
         if ($qty > $produk->stok) {
             return back()->with('error', 'Stok tidak mencukupi. Stok tersisa: ' . $produk->stok);
         }
 
-        $subTotal     = $produk->harga * $qty;
+        $subTotal = $produk->harga * $qty;
         $shippingCost = 10000;
-        $grandTotal   = $subTotal + $shippingCost;
+        $grandTotal = $subTotal + $shippingCost;
 
         session([
             'checkout_single' => [
-                'idProduk'     => $produk->idProduk,
+                'idProduk' => $produk->idProduk,
                 'jumlahBarang' => $qty,
-                'harga'        => $produk->harga,
-                'subTotal'     => $subTotal,
+                'harga' => $produk->harga,
+                'subTotal' => $subTotal,
                 'shippingCost' => $shippingCost,
-                'grandTotal'   => $grandTotal,
+                'grandTotal' => $grandTotal,
             ],
         ]);
 
         $items = collect([
             (object) [
-                'produk'       => $produk,
+                'produk' => $produk,
                 'jumlahBarang' => $qty,
-                'subTotal'     => $subTotal,
+                'subTotal' => $subTotal,
             ],
         ]);
 
         return view('pages.pembayaran', [
-            'items'        => $items,
-            'subTotal'     => $subTotal,
+            'items' => $items,
+            'subTotal' => $subTotal,
             'shippingCost' => $shippingCost,
-            'grandTotal'   => $grandTotal,
-            'totalQty'     => $qty,
-            'formAction'   => route('pembayaran.process.produk'),
+            'grandTotal' => $grandTotal,
+            'totalQty' => $qty,
+            'formAction' => route('pembayaran.process.produk'),
         ]);
     }
 
-    /**
-     * SIMPAN dari detail produk (langsung) ke pemesanan + detail transaksi
-     */
     public function processProduk(Request $request)
     {
         $request->validate([
             'metode_pembayaran' => 'required|in:qris,bank',
-            'alamatPengirim'    => 'required|string|max:255',
+            'alamatPengirim' => 'required|string|max:255',
         ]);
 
         $data = session('checkout_single');
@@ -256,7 +230,6 @@ class PemesananOnlineController extends Controller
         DB::beginTransaction();
 
         try {
-            // ✨ Cek stok lagi di level DB (lebih aman)
             $produk = Produk::lockForUpdate()->findOrFail($data['idProduk']);
             if ($data['jumlahBarang'] > $produk->stok) {
                 DB::rollBack();
@@ -265,25 +238,23 @@ class PemesananOnlineController extends Controller
             }
 
             $order = PemesananOnline::create([
-                'idPelanggan'      => $idPelanggan,
+                'idPelanggan' => $idPelanggan,
                 'tanggalPemesanan' => now(),
-                'totalNota'        => $data['grandTotal'],
+                'totalNota' => $data['grandTotal'],
                 'metodePembayaran' => $request->metode_pembayaran,
-                'statusPesanan'    => PemesananOnline::STATUS_PO,
-                'discountPerNota'  => 0,
-                'alamatPengirim'   => $request->alamatPengirim,
+                'statusPesanan' => PemesananOnline::STATUS_PO,
+                'discountPerNota' => 0,
+                'alamatPengirim' => $request->alamatPengirim,
             ]);
 
-            // ✨ Kurangi stok produk
             $produk->decrement('stok', $data['jumlahBarang']);
 
-            // Detail transaksi
             $order->detailTransaksiOnline()->create([
-                'idProduk'          => $data['idProduk'],
-                'jumlahBarang'      => $data['jumlahBarang'],
-                'harga'             => $data['harga'],
+                'idProduk' => $data['idProduk'],
+                'jumlahBarang' => $data['jumlahBarang'],
+                'harga' => $data['harga'],
                 'discountPerProduk' => 0,
-                'subTotal'          => $data['subTotal'],
+                'subTotal' => $data['subTotal'],
             ]);
 
             session()->forget('checkout_single');
@@ -319,13 +290,9 @@ class PemesananOnlineController extends Controller
 
     public function riwayat(Request $request)
     {
-        // id pelanggan yang sedang login
-        $idPelanggan = Auth::id(); // atau Auth::user()->idPelanggan kalau kamu mau konsisten
+        $idPelanggan = Auth::user()->idPelanggan;
 
-        // ambil status dari query string, contoh: ?status=pending
-        $filterStatus = $request->query('status'); // bisa null
-
-        // boleh dibatasi supaya status yang aneh diabaikan
+        $filterStatus = $request->query('status');
         $allowedStatus = ['payment', 'pending', 'cancel', 'shipped'];
 
         $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
@@ -339,8 +306,8 @@ class PemesananOnlineController extends Controller
         $orders = $query->get();
 
         return view('pages.pesanansaya', [
-            'orders'       => $orders,
-            'filterStatus' => $filterStatus, // dipakai di blade untuk set tab aktif
+            'orders' => $orders,
+            'filterStatus' => $filterStatus,
         ]);
     }
 
@@ -371,17 +338,14 @@ class PemesananOnlineController extends Controller
     {
         $idPelanggan = Auth::user()->idPelanggan;
 
-        // 1. Total pembelian: JUMLAH pesanan yang sudah shipped
         $totalPembelian = PemesananOnline::where('idPelanggan', $idPelanggan)
             ->where('statusPesanan', 'shipped')
             ->count();
 
-        // 2. Pesanan aktif: pending atau payment
         $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
             ->whereIn('statusPesanan', ['pending', 'payment'])
             ->count();
 
-        // 3. Pesanan baru minggu ini (status shipped)
         $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
             ->where('statusPesanan', 'shipped')
             ->whereBetween('tanggalPemesanan', [
@@ -390,7 +354,6 @@ class PemesananOnlineController extends Controller
             ])
             ->count();
 
-        // 4. Total pengeluaran: jumlah uang dari pesanan shipped (misal bulan ini)
         $totalPengeluaran = PemesananOnline::where('idPelanggan', $idPelanggan)
             ->where('statusPesanan', 'shipped')
             ->whereMonth('tanggalPemesanan', Carbon::now()->month)
@@ -404,55 +367,50 @@ class PemesananOnlineController extends Controller
             'totalPengeluaran'
         ));
     }
-    /**
-     * Menangani Upload Bukti Pembayaran
-     */
+
     public function uploadBukti(Request $request, $nomorPemesanan)
-    {
-        $request->validate([
-            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048', // Maks 2MB
-            'catatan'          => 'nullable|string|max:255',
-        ]);
+{
+    $request->validate([
+        'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+        'catatan'          => 'nullable|string|max:255',
+    ]);
 
-        $order = PemesananOnline::where('idPelanggan', Auth::user()->idPelanggan)
-            ->where('nomorPemesanan', $nomorPemesanan)
-            ->firstOrFail();
+    $idPelanggan = Auth::user()->idPelanggan;
 
-        // 1. Proses Upload File
-        if ($request->hasFile('bukti_pembayaran')) {
-            $file = $request->file('bukti_pembayaran');
-            // Nama file unik: bukti_NOMORORDER_TIMESTAMP.ext
-            $filename = 'bukti_' . $order->nomorPemesanan . '_' . time() . '.' . $file->getClientOriginalExtension();
-            
-            // Simpan ke folder public/storage/bukti_pembayaran
-            // Pastikan kamu sudah jalankan: php artisan storage:link
-            $path = $file->storeAs('public/bukti_pembayaran', $filename);
-            
-            // Simpan path yang bisa diakses publik (tanpa 'public/')
-            $order->buktiPembayaran = 'bukti_pembayaran/' . $filename;
-        }
+    $order = PemesananOnline::where('nomorPemesanan', $nomorPemesanan)
+        ->where('idPelanggan', $idPelanggan)
+        ->firstOrFail();
 
-        // 2. Update Catatan & Status
-        // Asumsi kamu punya kolom 'catatan' dan 'buktiPembayaran' di tabel
-        $order->catatan       = $request->catatan;
-        $order->statusPesanan = 'pending'; // Ganti status jadi menunggu admin
-        $order->save();
+    $file = $request->file('bukti_pembayaran');
 
-        // 3. Redirect ke Halaman Sukses
-        return redirect()->route('pembayaran.sukses', $nomorPemesanan);
-    }
+    $filename = 'bukti_' . $order->nomorPemesanan . '_' . time() . '.' . $file->getClientOriginalExtension();
 
-    /**
-     * Menampilkan Halaman "Bukti Diterima"
-     */
+    // === PAKSA SIMPAN KE DISK PUBLIC (paling aman) ===
+    $savedPath = $file->storeAs('bukti_pembayaran', $filename, 'public');
+
+    // LOG HASILNYA
+    logger()->info('UPLOAD BUKTI SAVED', [
+        'savedPath' => $savedPath,
+        'fullPath'  => storage_path('app/public/' . $savedPath),
+        'exists'    => file_exists(storage_path('app/public/' . $savedPath)),
+    ]);
+
+    $order->buktiPembayaran = 'storage/' . $savedPath;
+    $order->catatan = $request->catatan;
+    $order->statusPesanan = 'pending';
+    $order->save();
+
+    return redirect()->route('pembayaran.sukses', $nomorPemesanan);
+}
+
+
+
     public function pembayaranSukses($nomorPemesanan)
     {
         $order = PemesananOnline::where('idPelanggan', Auth::user()->idPelanggan)
             ->where('nomorPemesanan', $nomorPemesanan)
             ->firstOrFail();
 
-        // Arahkan ke view yang baru saja kamu buat
-        // Misal nama filenya: resources/views/pages/pembayaran_sukses.blade.php
         return view('pages.status_pembayaran', compact('order'));
     }
 }

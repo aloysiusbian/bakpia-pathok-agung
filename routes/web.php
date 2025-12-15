@@ -13,33 +13,21 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ChangePasswordController;
 
 /*
-|--------------------------------------------------------------------------
-| Route Publik (Bisa diakses siapa saja)
-|--------------------------------------------------------------------------
+|-------------------------------------------------------------------------- 
+| Publik
+|-------------------------------------------------------------------------- 
 */
-
 Route::get('/', [ProdukController::class, 'index'])->name('pages.home');
-
 Route::get('/produk/{produk}', [ProdukController::class, 'detailProduk'])->name('produk.show');
 
-
 /*
-|--------------------------------------------------------------------------
-| Route Admin (Wajib login sebagai admin)
-|--------------------------------------------------------------------------
-|
-| ✅ KITA TAMBAHKAN GRUP INI
-| Route ini menggunakan middleware 'auth:admin'
-|
+|-------------------------------------------------------------------------- 
+| Admin
+|-------------------------------------------------------------------------- 
 */
 Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(function () {
-
-    Route::get('/tambah-admin', function () {
-        return view('dashboard-admin.tambah_admin');
-    });
-    Route::get('/kelola-admin', function () {
-        return view('dashboard-admin.kelola_admin');
-    });
+    Route::get('/tambah-admin', fn() => view('dashboard-admin.tambah_admin'));
+    Route::get('/kelola-admin', fn() => view('dashboard-admin.kelola_admin'));
 
     Route::get('/ganti-sandi', [ChangePasswordController::class, 'edit1'])->name('password-admin.edit');
     Route::put('/ganti-sandi', [ChangePasswordController::class, 'update1'])->name('password-admin.update');
@@ -48,170 +36,78 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::put('/edit-akun', [DashboardController::class, 'update'])->name('akun-admin.update');
 
     Route::get('/lihatproduk', [ProdukController::class, 'index2'])->name('lihat.produk');
-    // Ini adalah route yang Anda panggil di LoginController
     Route::get('/dashboard', [DashboardController::class, 'dashAdmin'])->name('dashboard');
 
-    // Route logout khusus untuk admin
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-    // Route::get('/pemesananOnline', function () {
-    //     return view('dashboard-admin.pemesananOnline');
-    // })->name('pemesanan.online');
 
     Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
-
     Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
-
-    /*
-    | Di sinilah Anda meletakkan route untuk mengelola produk
-    | (sesuai use case diagram Anda: Tambah, Edit, Hapus Produk)
-    |
-    | Contoh:
-    | Route::get('/produk', [ProdukController::class, 'adminIndex'])->name('produk.index');
-    | Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
-    | Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
-    | Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
-    | Route::put('/produk/{produk}', [ProdukController::class, 'update'])->name('produk.update');
-    | Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
-    */
 });
 
-
 /*
-|--------------------------------------------------------------------------
-| Route Pelanggan (Wajib login sebagai pelanggan)
-|--------------------------------------------------------------------------
-|
-| middleware('auth') akan otomatis menggunakan guard 'web' (pelanggan)
-|
+|-------------------------------------------------------------------------- 
+| Pelanggan (login)
+|-------------------------------------------------------------------------- 
 */
-Route::middleware('auth')->group(function () {
+Route::middleware('auth:web')->group(function () {
 
     Route::get('/dashboard-pelanggan', [PemesananOnlineController::class, 'dashboard'])->name('dashboard.pelanggan');
+
     Route::get('/edit-profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/edit-profil', [ProfileController::class, 'update'])->name('profile.update');
+
     Route::get('/ganti-password', [ChangePasswordController::class, 'edit'])->name('password-pelanggan.edit');
     Route::put('/ganti-password', [ChangePasswordController::class, 'update'])->name('password-pelanggan.update');
+
     Route::get('/riwayat-pemesanan', [PemesananOnlineController::class, 'riwayatTabel'])->name('riwayat.pemesanan');
 
-    // API untuk dropdown kabupaten
-    Route::get('/api/regencies', [ProfileController::class, 'getRegencies'])->name('api.regencies');
-
-
-    // --- FITUR KERANJANG (Updated) ---
-
-    // 1. Lihat Keranjang (Menggunakan method index)
-    Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
-
-    // 2. Tambah ke Keranjang
-
-    Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
-
-    // Route untuk logout pelanggan
-    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-    // Route untuk melihat keranjang
-    Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
-
-    // ✅ TAMBAHKAN ROUTE INI
-    // Route untuk menghapus item dari keranjang
-    Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
-
-
-
-    // 5. Kosongkan Keranjang (Hapus Semua) - Method POST
-    Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
-
-    Route::patch('/keranjang/{id}', [KeranjangController::class, 'update'])->name('keranjang.update');
-
-    Route::post('/pembayaran', [PemesananOnlineController::class, 'checkout'])
-        ->name('pembayaran.checkout');
-
-    // 2) Dari halaman checkout -> simpan ke PemesananOnline
-    Route::post('/pembayaran/process', [PemesananOnlineController::class, 'process'])
-        ->name('pembayaran.process');
-
-    // ========== BARU: CHECKOUT LANGSUNG DARI DETAIL PRODUK ==========
-    Route::post('/pembayaran/produk', [PemesananOnlineController::class, 'checkoutProduk'])
-        ->name('pembayaran.checkout.produk');
-
-    Route::post('/pembayaran/produk/process', [PemesananOnlineController::class, 'processProduk'])
-        ->name('pembayaran.process.produk');
-
-    // 3) Halaman pembayaran QRIS (setelah process)
-    Route::get('/pembayaran/qris/{nomorPesanan}', [PemesananOnlineController::class, 'qris'])
-        ->name('pembayaran.qris');
-
-    // 4) Halaman pembayaran Transfer Bank (setelah process)
-    Route::get('/pembayaran/bank/{nomorPesanan}', [PemesananOnlineController::class, 'transfer'])
-        ->name('pembayaran.bank');
-
-    // Pesanan SATU PESANAN ONLINE
-    Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])
-        ->name('pesanan.saya');
-
-    // DETAIL SATU PESANAN ONLINE
-    Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])
-        ->name('pesanan.detail');
-});
-
-
-/*
-|--------------------------------------------------------------------------
-| Route Tamu (Hanya bisa diakses yang BELUM login)
-|--------------------------------------------------------------------------
-|
-| middleware('guest') akan otomatis menggunakan guard 'web' (pelanggan)
-|
-*/
-Route::middleware('guest')->group(function () {
-    // Route untuk menampilkan halaman login
-    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-    // Route untuk memproses login
-    Route::post('/login', [LoginController::class, 'login']);
-
-    // Route untuk menampilkan halaman register
-    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-    // Route untuk memproses register
-    Route::post('/register', [RegisterController::class, 'register']);
-});
-// routes/web.php atau routes/admin.php
-Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
-Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
-
-
-Route::get('/tes', function () {
-    return view('dashboard-admin.dashboard');
-});
-
-Route::get('/lihat-profil', [ProfileController::class, 'index'])->name('profile.index');
-
-// Route::get('/lihatproduk', function () {
-//     return view('dashboard-admin.lihatproduk');
-// });
-Route::get('/tambahproduk', function () {
-    return view('dashboard-admin.tambah_produk');
-});
-Route::get('/pemesananonline', function () {
-    return view('dashboard-admin.pemesananOnline');
-});
-Route::get('/testambahakun', function () {
-    return view('dashboard-admin.tambah_admin');
-});
-Route::get('/teskelolaadmin', function () {
-    return view('dashboard-admin.kelola_admin');
-});
-// Route::get('/lihatproduk', function () {
-//     return view('dashboard-admin.lihatproduk');
-// });
-
-Route::get('/batalkanpesanan', function () {
-    return view('pages.batalkanpesanan');
-});
-// 1. Route untuk PROSES Upload Bukti (POST dari Modal)
     Route::post('/pesanan/upload-bukti/{nomorPemesanan}', [PemesananOnlineController::class, 'uploadBukti'])
         ->name('pembayaran.upload');
 
-    // 2. Route untuk Menampilkan Halaman Sukses (GET)
     Route::get('/pembayaran/sukses/{nomorPemesanan}', [PemesananOnlineController::class, 'pembayaranSukses'])
         ->name('pembayaran.sukses');
+
+    Route::get('/api/regencies', [ProfileController::class, 'getRegencies'])->name('api.regencies');
+
+    Route::get('/keranjang', [KeranjangController::class, 'tampilKeranjang'])->name('keranjang.index');
+    Route::post('/keranjang/tambah', [KeranjangController::class, 'store'])->name('keranjang.store');
+    Route::delete('/keranjang/{idKeranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+    Route::post('/keranjang/kosongkan', [KeranjangController::class, 'clear'])->name('keranjang.clear');
+    Route::patch('/keranjang/{id}', [KeranjangController::class, 'update'])->name('keranjang.update');
+
+    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+    Route::post('/pembayaran', [PemesananOnlineController::class, 'checkout'])->name('pembayaran.checkout');
+    Route::post('/pembayaran/process', [PemesananOnlineController::class, 'process'])->name('pembayaran.process');
+
+    Route::post('/pembayaran/produk', [PemesananOnlineController::class, 'checkoutProduk'])->name('pembayaran.checkout.produk');
+    Route::post('/pembayaran/produk/process', [PemesananOnlineController::class, 'processProduk'])->name('pembayaran.process.produk');
+
+    // DISAMAKAN param-nya jadi nomorPemesanan
+    Route::get('/pembayaran/qris/{nomorPemesanan}', [PemesananOnlineController::class, 'qris'])->name('pembayaran.qris');
+    Route::get('/pembayaran/bank/{nomorPemesanan}', [PemesananOnlineController::class, 'transfer'])->name('pembayaran.bank');
+
+    Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])->name('pesanan.saya');
+    Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])->name('pesanan.detail');
+});
+
+/*
+|-------------------------------------------------------------------------- 
+| Guest (belum login)
+|-------------------------------------------------------------------------- 
+*/
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+
+    Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register']);
+});
+
+/*
+|-------------------------------------------------------------------------- 
+| Route tambahan (kalau masih dipakai)
+|-------------------------------------------------------------------------- 
+*/
+Route::get('/tambah_produk', [ProdukController::class, 'create'])->name('produk.create');
+Route::post('/admin/produk', [ProdukController::class, 'store'])->name('produk.store');
