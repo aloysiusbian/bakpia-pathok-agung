@@ -272,6 +272,31 @@ class PemesananOnlineController extends Controller
         }
     }
 
+    public function konfirmasiPembayaran($nomorPemesanan)
+    {
+        $order = PemesananOnline::where('nomorPemesanan', $nomorPemesanan)
+            ->first();
+
+        if (!$order) {
+            return back()->with('error', 'Pesanan tidak ditemukan atau statusnya tidak valid untuk dikonfirmasi.');
+        }
+
+        DB::beginTransaction();
+        try {
+            // Ubah status pesanan menjadi 'shipped'
+            $order->statusPesanan = 'shipped';
+            $order->save();
+
+            DB::commit();
+
+            return redirect()->route('admin.pemesanan.online') // Arahkan kembali ke daftar pesanan admin
+                ->with('success', 'Pesanan ' . $order->nomorPemesanan . ' berhasil dikonfirmasi dan status diubah menjadi SHIPPED.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal mengkonfirmasi pembayaran: ' . $e->getMessage());
+        }
+    }
+
     public function qris($nomorPemesanan)
     {
         $order = PemesananOnline::with('detailTransaksiOnline.produk')
@@ -369,49 +394,39 @@ class PemesananOnlineController extends Controller
     }
 
     public function uploadBukti(Request $request, $nomorPemesanan)
-{
-    $request->validate([
-        'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-        'catatan'          => 'nullable|string|max:255',
-    ]);
+    {
+        $request->validate([
+            'bukti_pembayaran' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+            'catatan'          => 'nullable|string|max:255',
+        ]);
 
-    $idPelanggan = Auth::user()->idPelanggan;
+        $idPelanggan = Auth::user()->idPelanggan;
 
-    $order = PemesananOnline::where('nomorPemesanan', $nomorPemesanan)
-        ->where('idPelanggan', $idPelanggan)
-        ->firstOrFail();
+        $order = PemesananOnline::where('nomorPemesanan', $nomorPemesanan)
+            ->where('idPelanggan', $idPelanggan)
+            ->firstOrFail();
 
-    $file = $request->file('bukti_pembayaran');
+        $file = $request->file('bukti_pembayaran');
 
-    $filename = 'bukti_' . $order->nomorPemesanan . '_' . time() . '.' . $file->getClientOriginalExtension();
+        $filename = 'bukti_' . $order->nomorPemesanan . '_' . time() . '.' . $file->getClientOriginalExtension();
 
-    // === PAKSA SIMPAN KE DISK PUBLIC (paling aman) ===
-    $savedPath = $file->storeAs('bukti_pembayaran', $filename, 'public');
+        // === PAKSA SIMPAN KE DISK PUBLIC (paling aman) ===
+        $savedPath = $file->storeAs('bukti_pembayaran', $filename, 'public');
 
-    // LOG HASILNYA
-    logger()->info('UPLOAD BUKTI SAVED', [
-        'savedPath' => $savedPath,
-        'fullPath'  => storage_path('app/public/' . $savedPath),
-        'exists'    => file_exists(storage_path('app/public/' . $savedPath)),
-    ]);
+        // LOG HASILNYA
+        logger()->info('UPLOAD BUKTI SAVED', [
+            'savedPath' => $savedPath,
+            'fullPath'  => storage_path('app/public/' . $savedPath),
+            'exists'    => file_exists(storage_path('app/public/' . $savedPath)),
+        ]);
 
-    $order->buktiPembayaran = 'storage/' . $savedPath;
-    $order->catatan = $request->catatan;
-    $order->statusPesanan = 'pending';
-    $order->save();
-
-    return redirect()->route('pembayaran.sukses', $nomorPemesanan);
-}
-
-<<<<<<< HEAD
-=======
-        // 2. Update Catatan & Status
-        // Asumsi kamu punya kolom 'catatan' dan 'buktiPembayaran' di tabel
-        $order->catatan       = $request->catatan;
-        $order->statusPesanan = 'diproses'; // Ganti status jadi menunggu admin
+        $order->buktiPembayaran = 'storage/' . $savedPath;
+        $order->catatan = $request->catatan;
+        $order->statusPesanan = 'pending';
         $order->save();
->>>>>>> fe046609a4f0af9afb961dfda1391c56ee97dd91
 
+        return redirect()->route('pembayaran.sukses', $nomorPemesanan);
+    }
 
     public function pembayaranSukses($nomorPemesanan)
     {
