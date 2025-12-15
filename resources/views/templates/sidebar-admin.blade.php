@@ -314,12 +314,24 @@
         </div>
     </div>
 
+<<<<<<< HEAD
     <nav class="navbar d-flex align-items-center" id="navbar">
         <button type="button" class="btn btn-light me-3 shadow-sm border-0" id="toggle-btn" style="background: #fff;">
             <i class="bi bi-list fs-5"></i>
         </button>
         <input type="text" class="form-control w-50 me-auto" placeholder="Admin Dashboard">
     </nav>
+=======
+    <div class="text-center mb-3">
+        <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+            @csrf
+            <button type="submit" class="btn offline-btn w-75">
+                <i class="bi bi-box-arrow-right me-2"></i><span>Logout</span>
+            </button>
+        </form>
+    </div>
+</div>
+>>>>>>> 9b30a8972784f3a7c5bfd7b4eccce689a3bf33c8
 
 
         @yield('content')
