@@ -53,16 +53,16 @@
                         <td>Rp {{ number_format($order->totalNota, 0, ',', '.') }}</td>
 
                         <td>
-                            @if ($order->statusPesanan === 'shipped')
+                            @if ($order->statusPesanan === 'selesai')
                                 <span class="status-selesai">
                                     <i class="bi bi-check-circle"></i> {{ $statusLabel }}
                                 </span>
-                            @elseif ($order->statusPesanan === 'pending' or $order->statusPesanan === 'payment')
+                            @elseif ($order->statusPesanan === 'diproses' or $order->statusPesanan === 'menunggu_pembayaran')
                                 <span class="status-proses">
                                     <i class="bi bi-hourglass-split"></i> {{ $statusLabel }}
                                 </span>
                             @else
-                                <span class="cancel">
+                                <span class="batal">
                                     <i class="bi bi-x-circle"></i> {{ $statusLabel }}
                                 </span>
                             @endif

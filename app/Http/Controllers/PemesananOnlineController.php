@@ -347,7 +347,7 @@ class PemesananOnlineController extends Controller
             ->count();
 
         $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->where('statusPesanan', 'shipped')
+            ->where('statusPesanan', 'selesai')
             ->whereBetween('tanggalPemesanan', [
                 Carbon::now()->startOfWeek(),
                 Carbon::now()->endOfWeek(),
@@ -355,7 +355,7 @@ class PemesananOnlineController extends Controller
             ->count();
 
         $totalPengeluaran = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->where('statusPesanan', 'shipped')
+            ->where('statusPesanan', 'selesai')
             ->whereMonth('tanggalPemesanan', Carbon::now()->month)
             ->whereYear('tanggalPemesanan', Carbon::now()->year)
             ->sum('totalNota');
@@ -403,6 +403,14 @@ class PemesananOnlineController extends Controller
     return redirect()->route('pembayaran.sukses', $nomorPemesanan);
 }
 
+<<<<<<< HEAD
+=======
+        // 2. Update Catatan & Status
+        // Asumsi kamu punya kolom 'catatan' dan 'buktiPembayaran' di tabel
+        $order->catatan       = $request->catatan;
+        $order->statusPesanan = 'diproses'; // Ganti status jadi menunggu admin
+        $order->save();
+>>>>>>> fe046609a4f0af9afb961dfda1391c56ee97dd91
 
 
     public function pembayaranSukses($nomorPemesanan)

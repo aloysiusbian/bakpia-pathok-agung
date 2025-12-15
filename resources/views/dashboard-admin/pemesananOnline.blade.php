@@ -20,6 +20,7 @@
           </div>
         </div>
       </div>
+<<<<<<< HEAD
       <div class="col-md-4">
         <div class="card summary-card p-3 shadow-sm bg-light">
           <div class="d-flex justify-content-between align-items-center">
@@ -39,9 +40,136 @@
               <small class="text-uppercase fw-semibold text-danger">Menunggu Pembayaran</small>
               <h3 class="mb-0">{{ $summary['pending_count'] ?? 0 }}</h3>
               <small>Segera follow-up pelanggan</small>
+=======
+
+      <!-- FILTER & JUDUL -->
+      <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
+        <div>
+          <h4 class="mb-0">Daftar Pemesanan Online</h4>
+          <small class="text-muted">Kelola pesanan yang masuk melalui website / aplikasi.</small>
+        </div>
+      </div>
+
+      {{-- Cek apakah ada pesan sukses di session --}}
+      @if (session('success'))
+        <div class="alert alert-success">
+          {{ session('success') }}
+        </div>
+      @endif
+
+      {{-- (Opsional) Cek juga pesan error --}}
+      @if (session('error'))
+        <div class="alert alert-danger">
+          {{ session('error') }}
+        </div>
+      @endif
+
+      <div class="card shadow-lg border-0">
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="input-group input-group-sm" style="max-width: 260px;">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="text" class="form-control" placeholder="Cari ID / nama pelanggan">
+>>>>>>> fe046609a4f0af9afb961dfda1391c56ee97dd91
             </div>
             <i class="bi bi-hourglass-split fs-1 opacity-75 text-danger"></i>
           </div>
+<<<<<<< HEAD
+=======
+
+          <!-- TABEL DINAMIS PEMESANAN -->
+          <div class="table-responsive">
+            <table class="table align-middle table-hover">
+              <thead>
+                <tr class="text-sm">
+                  <th>Id Pemesanan</th>
+                  <th>Status Pembayaran</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
+                @forelse($orders as $order)
+                  <tr>
+                    {{-- Menggunakan nomorPemesanan (UUID) --}}
+                    <td><span class="fw-semibold">{{ $order->nomorPemesanan }}</span></td>
+                    <td>
+                      @php
+                        // Menggunakan kolom 'statusPesanan' dari skema database
+                        $status = $order->statusPesanan ?? 'Dibatalkan';
+                        $statusClass = [
+                          'Menunggu Pembayaran' => 'bg-warning text-dark',
+                          'Sudah Dibayar' => 'bg-success',
+                          'Dibatalkan' => 'bg-danger',
+                        ][$status] ?? 'bg-secondary';
+
+                        $statusIcon = [
+                          'Menunggu Pembayaran' => 'bi-hourglass-split',
+                          'Sudah Dibayar' => 'bi-check-circle',
+                          'Dibatalkan' => 'bi-x-circle',
+                        ][$status] ?? 'bi-question-circle';
+                      @endphp
+
+                      <span class="badge {{ $statusClass }} badge-status">
+                        <i class="bi {{ $statusIcon }} me-1"></i>{{ $status }}
+                      </span>
+                    </td>
+                    <td class="text-center">
+                      <div class="btn-group btn-group-sm" role="group">
+                        {{-- Tombol Detail - Data disesuaikan dengan skema database --}}
+                        <button class="btn btn-outline-dark btn-detail" data-bs-toggle="modal"
+                          data-bs-target="#modalDetailPesanan" data-orderid="{{ $order->nomorPemesanan }}"
+                          data-nama="{{ $order->pelanggan->namaPelanggan ?? 'Nama Tidak Tersedia' }}"
+                          data-alamat="{{ $order->alamatPengirim }}" data-hp="{{ $order->pelanggan->nomorHP ?? '-' }}"
+                          data-metode="{{ $order->metodePembayaran }}"
+                          data-total="Rp {{ number_format($order->totalNota, 0, ',', '.') }}"
+                          data-tgl="{{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('d M Y') }}"
+                          data-status="{{ $order->statusPesanan }}">
+                          <i class="bi bi-eye"></i> Detail
+                        </button>
+
+                        {{-- Tombol Bukti Transfer (Asumsi kolom buktiPembayaran ada) --}}
+                        @if ($order->buktiPembayaran ?? false)
+                          <button class="btn btn-outline-primary btn-lihat-bukti" data-bs-toggle="modal"
+                            data-bs-target="#modalBuktiTransfer" data-bukti="{{ asset($order->buktiPembayaran) }}">
+                            <i class="bi bi-file-earmark-image"></i> Bukti
+                          </button>
+                        @else
+                          <button class="btn btn-outline-secondary" disabled>
+                            <i class="bi bi-file-earmark-image"></i> Tidak ada bukti
+                          </button>
+                        @endif
+
+                        {{-- Tombol Konfirmasi --}}
+                        @if ($order->statusPesanan == 'Sudah Dibayar')
+                          <button class="btn btn-success btn-konfirmasi" data-bs-toggle="modal"
+                            data-bs-target="#modalKonfirmasiPembayaran" data-orderid="{{ $order->nomorPemesanan }}">
+                            <i class="bi bi-check2-circle"></i> Konfirmasi
+                          </button>
+                        @endif
+                      </div>
+                    </td>
+                  </tr>
+                @empty
+                  <tr>
+                    <td colspan="3" class="text-center py-4 text-gray-500">
+                      Tidak ada pesanan yang ditemukan.
+                    </td>
+                  </tr>
+                @endforelse
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINATION -->
+          @if(isset($orders) && method_exists($orders, 'links'))
+            <nav aria-label="Page navigation" class="mt-4">
+              {{-- Menggunakan Blade component untuk pagination --}}
+              {{ $orders->links('pagination::bootstrap-5') }}
+            </nav>
+          @endif
+
+>>>>>>> fe046609a4f0af9afb961dfda1391c56ee97dd91
         </div>
       </div>
     </div>
@@ -73,8 +201,35 @@
       </div>
     </div>
 
+<<<<<<< HEAD
     <div class="card shadow-lg border-0">
       <div class="card-body">
+=======
+  <!-- MODAL KONFIRMASI -->
+  <div class="modal fade" id="modalKonfirmasiPembayaran" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Konfirmasi Pembayaran</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+        </div>
+        <div class="modal-body">
+          <p>Yakin ingin mengkonfirmasi pembayaran untuk pesanan <span id="orderIdSpan" class="fw-semibold"></span>?</p>
+          {{-- Form untuk Konfirmasi Pembayaran --}}
+          <form id="formKonfirmasi" method="POST" action="">
+            @csrf
+            <input type="hidden" name="order_id" id="konfirmasiOrderId">
+            <p class="text-danger small mt-2">Tindakan ini tidak dapat dibatalkan.</p>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-success" type="submit" form="formKonfirmasi">Ya, Konfirmasi</button>
+        </div>
+      </div>
+    </div>
+  </div>
+>>>>>>> fe046609a4f0af9afb961dfda1391c56ee97dd91
 
         <div class="d-flex justify-content-between align-items-center mb-3">
           <div class="input-group input-group-sm" style="max-width: 260px;">
@@ -303,6 +458,7 @@
     });
   });
 
+<<<<<<< HEAD
   // set detail pesanan ke modal detail
   const detailButtons = document.querySelectorAll('.btn-detail');
   const detailOrderId = document.getElementById('detailOrderId');
@@ -313,6 +469,48 @@
   const detailTotal = document.getElementById('detailTotal');
   const detailTgl = document.getElementById('detailTgl');
   const detailStatus = document.getElementById('detailStatus');
+=======
+    document.addEventListener('DOMContentLoaded', function () {
+      const modalKonfirmasi = document.getElementById('modalKonfirmasiPembayaran');
+
+      modalKonfirmasi.addEventListener('show.bs.modal', function (event) {
+        // Tombol yang memicu modal
+        const button = event.relatedTarget;
+
+        // Ambil data-orderid dari tombol
+        const orderId = button.getAttribute('data-orderid');
+
+        // 1. Dapatkan elemen form
+        const formKonfirmasi = document.getElementById('formKonfirmasi');
+
+        // 2. Dapatkan elemen untuk menampilkan ID
+        const orderIdDisplay = document.getElementById('orderIdDisplay');
+
+        // 3. Tentukan URL action
+        // Pastikan Anda telah membuat route dengan nama 'admin.konfirmasi.validasi'
+        // Contoh route: Route::post('/{nomorPemesanan}/konfirmasi', 'konfirmasiPembayaran')->name('admin.konfirmasi.validasi');
+
+        // Ganti ini dengan route actual Anda. Asumsi route Anda adalah POST.
+        // Gunakan fungsi route helper Laravel di blade jika memungkinkan, jika tidak, gunakan string:
+
+        // Jika di Blade: 
+        // const url = `{{ route('admin.pemesanan.online', ['nomorPemesanan' => '__ID__']) }}`.replace('__ID__', orderId);
+
+        // Jika hanya di file JS terpisah (atau tidak bisa akses route helper)
+        // Asumsikan URL: /admin/pemesanan/12345/konfirmasi
+        const url = `/admin/pemesananOnline/${orderId}/konfirmasi`;
+
+
+        // 4. Set action form dan tampilkan ID
+        formKonfirmasi.action = url;
+        orderIdDisplay.textContent = orderId;
+      });
+    });
+
+    // set ID pesanan ke modal konfirmasi
+    const konfirmasiButtons = document.querySelectorAll('.btn-konfirmasi');
+    const orderIdSpan = document.getElementById('orderIdSpan');
+>>>>>>> fe046609a4f0af9afb961dfda1391c56ee97dd91
 
   detailButtons.forEach(btn => {
     btn.addEventListener('click', () => {

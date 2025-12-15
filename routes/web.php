@@ -41,8 +41,23 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 
     Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
+    Route::post('/pemesananOnline/{nomorPemesanan}/konfirmasi', [PemesananOnlineController::class, 'konfirmasiPembayaran'])->name('admin.pemesanan.online');
+
     Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
+    /*
+    | Di sinilah Anda meletakkan route untuk mengelola produk
+    | (sesuai use case diagram Anda: Tambah, Edit, Hapus Produk)
+    |
+    | Contoh:
+    | Route::get('/produk', [ProdukController::class, 'adminIndex'])->name('produk.index');
+    | Route::get('/produk/create', [ProdukController::class, 'create'])->name('produk.create');
+    | Route::post('/produk', [ProdukController::class, 'store'])->name('produk.store');
+    | Route::get('/produk/{produk}/edit', [ProdukController::class, 'edit'])->name('produk.edit');
+    | Route::put('/produk/{produk}', [ProdukController::class, 'update'])->name('produk.update');
+    | Route::delete('/produk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    */
 });
+
 
 /*
 |-------------------------------------------------------------------------- 
