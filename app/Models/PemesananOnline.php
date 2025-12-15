@@ -30,7 +30,7 @@ class PemesananOnline extends Model
         'catatan',
     ];
 
-    public const STATUS_PO = 'payment';
+    public const STATUS_PO = 'menunggu_pembayaran';
 
     protected static function boot()
     {

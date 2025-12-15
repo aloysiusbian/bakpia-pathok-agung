@@ -230,28 +230,28 @@
         $filterStatus = $filterStatus ?? request('status');
     @endphp
 
-    <a class="nav-item-custom {{ $filterStatus === 'payment' ? 'active' : '' }}"
-       href="{{ route('pesanan.saya', ['status' => 'payment']) }}"
-       title="Payment">
-        <span>Payment</span>
+    <a class="nav-item-custom {{ $filterStatus === 'menunggu_pembayaran' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'Menunggu Pembayaran']) }}"
+       title="Pembayaran">
+        <span>Menunggu Pembayaran</span>
     </a>
 
-    <a class="nav-item-custom {{ $filterStatus === 'pending' ? 'active' : '' }}"
-       href="{{ route('pesanan.saya', ['status' => 'pending']) }}"
-       title="Pending">
-        <span>Pending</span>
+    <a class="nav-item-custom {{ $filterStatus === 'diproses' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'diproses']) }}"
+       title="Proses">
+        <span>Dalam Proses</span>
     </a>
 
-    <a class="nav-item-custom {{ $filterStatus === 'cancel' ? 'active' : '' }}"
-       href="{{ route('pesanan.saya', ['status' => 'cancel']) }}"
-       title="Cancel">
-        <span>Cancel</span>
+    <a class="nav-item-custom {{ $filterStatus === 'batal' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'batal']) }}"
+       title="Batal">
+        <span>Dibatalkan</span>
     </a>
 
-    <a class="nav-item-custom {{ $filterStatus === 'shipped' ? 'active' : '' }}"
-       href="{{ route('pesanan.saya', ['status' => 'shipped']) }}"
-       title="Shipped">
-        <span>Shipped</span>
+    <a class="nav-item-custom {{ $filterStatus === 'selesai' ? 'active' : '' }}"
+       href="{{ route('pesanan.saya', ['status' => 'selesai']) }}"
+       title="Selesai">
+        <span>Selesai</span>
     </a>
     
     </div>
