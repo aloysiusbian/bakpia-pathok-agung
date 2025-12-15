@@ -641,7 +641,7 @@
         <form action="{{ route('logout') }}" method="POST" style="display:inline;">
             @csrf
             <button type="submit" class="btn offline-btn w-75">
-                <i class="bi bi-box-arrow-right me-2"></i> Logout
+                <i class="bi bi-box-arrow-right me-2"></i><span>Logout</span>
             </button>
         </form>
     </div>
