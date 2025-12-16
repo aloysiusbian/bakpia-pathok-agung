@@ -231,7 +231,7 @@
     @endphp
 
     <a class="nav-item-custom {{ $filterStatus === 'menunggu_pembayaran' ? 'active' : '' }}"
-       href="{{ route('pesanan.saya', ['status' => 'Menunggu Pembayaran']) }}"
+       href="{{ route('pesanan.saya', ['status' => 'menunggu_pembayaran']) }}"
        title="Pembayaran">
         <span>Menunggu Pembayaran</span>
     </a>

@@ -318,7 +318,7 @@ class PemesananOnlineController extends Controller
         $idPelanggan = Auth::user()->idPelanggan;
 
         $filterStatus = $request->query('status');
-        $allowedStatus = ['Menunggu Pembayaran', 'Sudah Dibayar', 'cancel', 'shipped'];
+        $allowedStatus = ['menunggu_pembayaran', 'diproses', 'batal', 'selesai'];
 
         $query = PemesananOnline::with(['detailTransaksiOnline.produk'])
             ->where('idPelanggan', $idPelanggan)
@@ -368,7 +368,7 @@ class PemesananOnlineController extends Controller
             ->count();
 
         $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->whereIn('statusPesanan', ['Sudah Dibayar', 'Menunggu Pembayaran'])
+            ->whereIn('statusPesanan', ['diproses', 'menunggu_pembayaran'])
             ->count();
 
         $baruMingguIni = PemesananOnline::where('idPelanggan', $idPelanggan)
@@ -422,7 +422,7 @@ class PemesananOnlineController extends Controller
 
         $order->buktiPembayaran = 'storage/' . $savedPath;
         $order->catatan = $request->catatan;
-        $order->statusPesanan = 'Sudah Dibayar';
+        $order->statusPesanan = 'diproses';
         $order->save();
 
         return redirect()->route('pembayaran.sukses', $nomorPemesanan);
@@ -436,4 +436,19 @@ class PemesananOnlineController extends Controller
 
         return view('pages.status_pembayaran', compact('order'));
     }
+
+    public function batalkanPesanan($nomorPemesanan)
+{
+    $pesanan = pemesananOnline::where('nomorPemesanan', $nomorPemesanan)
+                ->where('idPelanggan', Auth::id()) // Pastikan milik user yang login
+                ->firstOrFail();
+
+    if ($pesanan->statusPesanan == 'menunggu_pembayaran') {
+        $pesanan->statusPesanan = 'batal';
+        $pesanan->save();
+        return back()->with('success', 'Pesanan berhasil dibatalkan.');
+    }
+
+    return back()->with('error', 'Pesanan tidak dapat dibatalkan.');
+}
 }

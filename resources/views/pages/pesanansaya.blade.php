@@ -21,7 +21,7 @@
                 |
                 @php
                     $status      = strtolower($order->statusPesanan);
-                    $statusClass = in_array($status, ['cancel', 'dibatalkan'])
+                    $statusClass = in_array($status, ['batal', 'dibatalkan'])
                         ? 'status-badge-cancel'
                         : 'status-badge';
                 @endphp
@@ -56,17 +56,48 @@
                 </span>
             </div>
 
-            {{-- Tombol Aksi: hanya muncul di tab "shipped" --}}
-            @if($filterStatus === 'shipped')
-                <div class="action-buttons">
+    
+            {{-- Tombol Aksi --}}
+            <div class="action-buttons" style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
+                
+                @if($status === 'menunggu_pembayaran')
+                    {{-- TOMBOL BATAL --}}
+                    <form action="{{ route('pesanan.batal', $order->nomorPemesanan) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-danger btn-sm" 
+                                onclick="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')"
+                                onclick="event.stopPropagation()">
+                            Batalkan
+                        </button>
+                    </form>
+
+                    {{-- TOMBOL BAYAR --}}
+                    @php
+                        // Logika penentuan route pembayaran
+                        // Asumsi: nilai metodePembayaran di database adalah 'QRIS' atau 'Transfer Bank' (sesuaikan stringnya)
+                        $routeBayar = '#';
+                        if (str_contains(strtolower($order->metodePembayaran), 'qris')) {
+                            $routeBayar = route('pembayaran.qris', $order->nomorPemesanan);
+                        } else {
+                            // Default ke Bank / Transfer
+                            $routeBayar = route('pembayaran.bank', $order->nomorPemesanan);
+                        }
+                    @endphp
+
+                    <a href="{{ $routeBayar }}" class="btn btn-success btn-sm" onclick="event.stopPropagation()">
+                        Bayar Sekarang
+                    </a>
+
+                @elseif($filterStatus === 'selesai' || $status === 'selesai')
+                    {{-- TOMBOL SELESAI (Rating/Beli Lagi) --}}
                     <button class="btn btn-custom-gray" onclick="event.stopPropagation()">
                         Beri Rating
                     </button>
                     <button class="btn btn-custom-gray" onclick="event.stopPropagation()">
                         Beli Lagi
                     </button>
-                </div>
-            @endif
+                @endif
         </div>
     @empty
         <div class="text-center py-5">

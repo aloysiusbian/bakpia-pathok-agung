@@ -76,7 +76,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 Route::middleware('auth:web')->group(function () {
 
     Route::get('/dashboard-pelanggan', [PemesananOnlineController::class, 'dashboard'])->name('dashboard.pelanggan');
-
+    Route::get('/lihat-profil', [ProfileController::class, 'index'])->name('profile.lihat');
     Route::get('/edit-profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/edit-profil', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -113,6 +113,8 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])->name('pesanan.saya');
     Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])->name('pesanan.detail');
+    // web.php
+    Route::put('/pesanan/batal/{nomorPemesanan}', [PemesananOnlineController::class, 'batalkanPesanan'])->name('pesanan.batal');
 });
 
 /*
