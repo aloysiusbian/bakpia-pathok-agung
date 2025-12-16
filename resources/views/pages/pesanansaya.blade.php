@@ -33,7 +33,7 @@
                 @php $produk = $detail->produk; @endphp
 
                 <div class="product-item">
-                    <img src="{{ $produk ? asset('images/' . $produk->gambar) : asset('images/bakpia-default.jpg') }}"
+                    <img src="{{ $produk->display_image }}"
                          alt="{{ $produk->namaProduk ?? 'Produk' }}"
                          class="product-img"
                          onerror="this.src='{{ asset('images/bakpia-default.jpg') }}'">
