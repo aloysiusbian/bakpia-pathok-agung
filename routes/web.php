@@ -44,7 +44,17 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/edit-akun', [DashboardController::class, 'edit'])->name('akun-admin.edit');
     Route::put('/edit-akun', [DashboardController::class, 'update'])->name('akun-admin.update');
 
-    Route::get('/lihatproduk', [ProdukController::class, 'index2'])->name('lihat.produk');
+    Route::get('/lihatproduk', [ProdukController::class, 'lihat'])->name('lihat.produk');
+    Route::get('/lihatproduk/tambah', [ProdukController::class, 'store'])->name('tambah.produk');
+    // Route::get('/lihatproduk/edit', [ProdukController::class, 'update'])->name('edit.produk');
+
+    Route::put('/admin/lihatproduk/{produk}/update', [ProdukController::class, 'update'])->name('produk.update');
+
+    // ROUTE BARU UNTUK HAPUS (Menggunakan HTTP Method DELETE)
+    // {produk} adalah Model Binding. Kita akan menggunakan ini untuk hapus produk.
+    // PERHATIAN: Perhatikan URL ini, karena berbeda dengan yang Anda gunakan di script JS Anda sebelumnya.
+    Route::delete('/admin/lihatproduk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+
     Route::get('/dashboard', [DashboardController::class, 'dashAdmin'])->name('dashboard');
 
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
@@ -52,16 +62,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
     Route::post('/pemesananOnline/{nomorPemesanan}/konfirmasi', [PemesananOnlineController::class, 'konfirmasiPembayaran'])->name('admin.pemesanan.online');
 
-    // 1. Untuk melihat Tabel Daftar Pesanan (Index)
-    Route::get('/pemesanan-offline', [PemesananOfflineController::class, 'index'])->name('pemesanan.offline.index');
-
-// 2. Untuk membuka Form Tambah Pesanan (Create)
-// URL saya bedakan jadi '/buat' agar tidak bentrok dengan index
-    Route::get('/pemesanan-offline/buat', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline.create');
-
-// 3. Untuk Proses Simpan ke Database (Store)
-// Method-nya POST
-    Route::post('/pemesanan-offline', [PemesananOfflineController::class, 'store'])->name('pemesanan.offline.store');
+    Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
     | (sesuai use case diagram Anda: Tambah, Edit, Hapus Produk)
@@ -122,6 +123,7 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])->name('pesanan.saya');
     Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])->name('pesanan.detail');
+    // web.php
     Route::put('/pesanan/batal/{nomorPemesanan}', [PemesananOnlineController::class, 'batalkanPesanan'])->name('pesanan.batal');
 });
 
