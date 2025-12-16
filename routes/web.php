@@ -62,7 +62,15 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
     Route::post('/pemesananOnline/{nomorPemesanan}/konfirmasi', [PemesananOnlineController::class, 'konfirmasiPembayaran'])->name('admin.pemesanan.online');
 
-    Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
+    Route::get('/pemesanan-offline', [PemesananOfflineController::class, 'index'])->name('pemesanan.offline.index');
+
+// 2. Untuk membuka Form Tambah Pesanan (Create)
+// URL saya bedakan jadi '/buat' agar tidak bentrok dengan index
+    Route::get('/pemesanan-offline/buat', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline.create');
+
+// 3. Untuk Proses Simpan ke Database (Store)
+// Method-nya POST
+    Route::post('/pemesanan-offline', [PemesananOfflineController::class, 'store'])->name('pemesanan.offline.store');
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
     | (sesuai use case diagram Anda: Tambah, Edit, Hapus Produk)
