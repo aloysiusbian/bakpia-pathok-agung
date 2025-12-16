@@ -129,7 +129,7 @@
                                 <input type="text" name="namaProduk" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Pilihan Jenis (Contoh: Kering/Basah)</label>
+                                <label class="form-label">Pilihan Jenis (Contoh: 15/25)</label>
                                 <input type="text" name="pilihanJenis" class="form-control" required>
                             </div>
                             <div class="col-md-6">

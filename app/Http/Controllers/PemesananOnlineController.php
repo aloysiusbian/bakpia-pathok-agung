@@ -29,10 +29,10 @@ class PemesananOnlineController extends Controller
 
         $totalToday = PemesananOnline::whereDate('tanggalPemesanan', $today)->count();
 
-        $paidCount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->count();
-        $paidAmount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->sum('totalNota');
+        $paidCount = PemesananOnline::where('statusPesanan', 'diproses')->count();
+        $paidAmount = PemesananOnline::where('statusPesanan', 'diproses')->sum('totalNota');
 
-        $pendingCount = PemesananOnline::where('statusPesanan', 'Menunggu Pembayaran')->count();
+        $pendingCount = PemesananOnline::where('statusPesanan', 'menunggu_pembayaran')->count();
 
         return [
             'total_today' => $totalToday,
@@ -283,14 +283,12 @@ class PemesananOnlineController extends Controller
 
         DB::beginTransaction();
         try {
-            // Ubah status pesanan menjadi 'shipped'
-            $order->statusPesanan = 'shipped';
+            $order->statusPesanan = 'diproses';
             $order->save();
 
             DB::commit();
-
             return redirect()->route('admin.pemesanan.online') // Arahkan kembali ke daftar pesanan admin
-                ->with('success', 'Pesanan ' . $order->nomorPemesanan . ' berhasil dikonfirmasi dan status diubah menjadi SHIPPED.');
+                ->with('success', 'Pesanan ' . $order->nomorPemesanan . ' berhasil dikonfirmasi dan status diubah menjadi DIPROSES.');
         } catch (\Throwable $e) {
             DB::rollBack();
             return back()->with('error', 'Gagal mengkonfirmasi pembayaran: ' . $e->getMessage());
@@ -364,7 +362,7 @@ class PemesananOnlineController extends Controller
         $idPelanggan = Auth::user()->idPelanggan;
 
         $totalPembelian = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->where('statusPesanan', 'shipped')
+            ->where('statusPesanan', 'menunggu_pembayaran')
             ->count();
 
         $pesananAktif = PemesananOnline::where('idPelanggan', $idPelanggan)
@@ -380,7 +378,7 @@ class PemesananOnlineController extends Controller
             ->count();
 
         $totalPengeluaran = PemesananOnline::where('idPelanggan', $idPelanggan)
-            ->where('statusPesanan', 'selesai')
+            ->where('statusPesanan', 'diproses')
             ->whereMonth('tanggalPemesanan', Carbon::now()->month)
             ->whereYear('tanggalPemesanan', Carbon::now()->year)
             ->sum('totalNota');
@@ -422,7 +420,7 @@ class PemesananOnlineController extends Controller
 
         $order->buktiPembayaran = 'storage/' . $savedPath;
         $order->catatan = $request->catatan;
-        $order->statusPesanan = 'diproses';
+        $order->statusPesanan = 'menunggu_pembayaran';
         $order->save();
 
         return redirect()->route('pembayaran.sukses', $nomorPemesanan);
@@ -438,17 +436,17 @@ class PemesananOnlineController extends Controller
     }
 
     public function batalkanPesanan($nomorPemesanan)
-{
-    $pesanan = pemesananOnline::where('nomorPemesanan', $nomorPemesanan)
-                ->where('idPelanggan', Auth::id()) // Pastikan milik user yang login
-                ->firstOrFail();
+    {
+        $pesanan = pemesananOnline::where('nomorPemesanan', $nomorPemesanan)
+            ->where('idPelanggan', Auth::id()) // Pastikan milik user yang login
+            ->firstOrFail();
 
-    if ($pesanan->statusPesanan == 'menunggu_pembayaran') {
-        $pesanan->statusPesanan = 'batal';
-        $pesanan->save();
-        return back()->with('success', 'Pesanan berhasil dibatalkan.');
+        if ($pesanan->statusPesanan == 'menunggu_pembayaran') {
+            $pesanan->statusPesanan = 'batal';
+            $pesanan->save();
+            return back()->with('success', 'Pesanan berhasil dibatalkan.');
+        }
+
+        return back()->with('error', 'Pesanan tidak dapat dibatalkan.');
     }
-
-    return back()->with('error', 'Pesanan tidak dapat dibatalkan.');
-}
 }

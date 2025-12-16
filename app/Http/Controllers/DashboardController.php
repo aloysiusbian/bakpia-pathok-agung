@@ -36,10 +36,10 @@ class DashboardController extends Controller
 
         $totalToday = PemesananOnline::whereDate('tanggalPemesanan', $today)->count();
 
-        $paidCount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->count();
-        $paidAmount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->sum('totalNota');
+        $paidCount = PemesananOnline::where('statusPesanan', 'diproses')->count();
+        $paidAmount = PemesananOnline::where('statusPesanan', 'diproses')->sum('totalNota');
 
-        $pendingCount = PemesananOnline::where('statusPesanan', 'Menunggu Pembayaran')->count();
+        $pendingCount = PemesananOnline::where('statusPesanan', 'menunggu_pembayaran')->count();
 
         return [
             'total_today' => $totalToday,

@@ -97,23 +97,17 @@
                       @php
                         $status = $order->statusPesanan ?? 'Dibatalkan';
                         $statusClass = [
-                          'Menunggu Pembayaran' => 'bg-warning text-dark',
-                          'Sudah Dibayar' => 'bg-success',
-                          'Dibatalkan' => 'bg-danger',
-                          'payment' => 'bg-warning text-dark',
-                          'pending' => 'bg-warning text-dark',
-                          'shipped' => 'bg-success',
-                          'cancel' => 'bg-danger',
+                          'menunggu_pembayaran' => 'bg-warning text-dark',
+                          'diproses' => 'bg-success',
+                          'batal' => 'bg-danger',
+                          'selesai' => 'bg-success',
                         ][$status] ?? 'bg-secondary';
 
                         $statusIcon = [
-                          'Menunggu Pembayaran' => 'bi-hourglass-split',
-                          'Sudah Dibayar' => 'bi-check-circle',
-                          'Dibatalkan' => 'bi-x-circle',
-                          'payment' => 'bi-hourglass-split',
-                          'pending' => 'bi-hourglass-split',
-                          'shipped' => 'bi-check-circle',
-                          'cancel' => 'bi-x-circle',
+                          'menunggu_pembayaran' => 'bi-hourglass-split',
+                          'diproses' => 'bi-check-circle',
+                          'batal' => 'bi-x-circle',
+                          'selesai' => 'bi-check-circle',
                         ][$status] ?? 'bi-question-circle';
                       @endphp
 
@@ -147,7 +141,7 @@
                           </button>
                         @endif
 
-                        @if ($order->statusPesanan == 'Sudah Dibayar' || $order->statusPesanan == 'pending')
+                        @if ($order->statusPesanan == 'menunggu_pembayaran')
                           <button class="btn btn-success btn-konfirmasi" data-bs-toggle="modal"
                             data-bs-target="#modalKonfirmasiPembayaran" data-orderid="{{ $order->nomorPemesanan }}">
                             <i class="bi bi-check2-circle"></i> Konfirmasi
@@ -203,7 +197,7 @@
         </div>
         <div class="modal-body">
           <p>Yakin ingin mengkonfirmasi pembayaran untuk pesanan <span id="orderIdSpan" class="fw-semibold"></span>?</p>
-          <form id="konfirmasiForm" method="POST" action="">
+          <form id="formKonfirmasi" method="POST" action="">
             @csrf
             <input type="hidden" name="order_id" id="konfirmasiOrderId">
             <p class="text-danger small mt-2">Tindakan ini tidak dapat dibatalkan.</p>
@@ -211,7 +205,7 @@
         </div>
         <div class="modal-footer">
           <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button class="btn btn-success" type="submit" form="konfirmasiForm">Ya, Konfirmasi</button>
+          <button class="btn btn-success" type="submit" form="formKonfirmasi">Ya, Konfirmasi</button>
         </div>
       </div>
     </div>
@@ -302,6 +296,43 @@
       btn.addEventListener('click', () => {
         const src = btn.getAttribute('data-bukti');
         imgBuktiTransfer.src = src;
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const modalKonfirmasi = document.getElementById('modalKonfirmasiPembayaran');
+
+      modalKonfirmasi.addEventListener('show.bs.modal', function (event) {
+        // Tombol yang memicu modal
+        const button = event.relatedTarget;
+
+        // Ambil data-orderid dari tombol
+        const orderId = button.getAttribute('data-orderid');
+
+        // 1. Dapatkan elemen form
+        const formKonfirmasi = document.getElementById('formKonfirmasi');
+
+        // 2. Dapatkan elemen untuk menampilkan ID
+        const orderIdDisplay = document.getElementById('orderIdDisplay');
+
+        // 3. Tentukan URL action
+        // Pastikan Anda telah membuat route dengan nama 'admin.konfirmasi.validasi'
+        // Contoh route: Route::post('/{nomorPemesanan}/konfirmasi', 'konfirmasiPembayaran')->name('admin.konfirmasi.validasi');
+
+        // Ganti ini dengan route actual Anda. Asumsi route Anda adalah POST.
+        // Gunakan fungsi route helper Laravel di blade jika memungkinkan, jika tidak, gunakan string:
+
+        // Jika di Blade: 
+        // const url = `{{ route('admin.pemesanan.online', ['nomorPemesanan' => '__ID__']) }}`.replace('__ID__', orderId);
+
+        // Jika hanya di file JS terpisah (atau tidak bisa akses route helper)
+        // Asumsikan URL: /admin/pemesanan/12345/konfirmasi
+        const url = `/admin/pemesananOnline/${orderId}/konfirmasi`;
+
+
+        // 4. Set action form dan tampilkan ID
+        formKonfirmasi.action = url;
+        orderIdDisplay.textContent = orderId;
       });
     });
 
