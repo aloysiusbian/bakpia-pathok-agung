@@ -12,7 +12,7 @@
                 <div class="row g-3">
                     <div class="col-md-5 text-center position-relative">
                         {{-- Gambar utama: abu-abu + overlay jika stok habis --}}
-                        <img src="{{ asset('images/' . $produk->gambar) }}" alt="{{ $produk->namaProduk }}"
+                        <img src="{{ $produk->display_image }}" alt="{{ $produk->namaProduk }}"
                              class="img-fluid rounded product-img-detail {{ $produk->stok <= 0 ? 'out' : '' }}"
                              onerror="this.onerror=null;this.src='https://placehold.co/400x400/A0522D/FFFFFF?text=Gambar+Tidak+Ada';">
 
@@ -25,7 +25,7 @@
                         @endif
 
                         <div class="d-flex justify-content-center mt-3 gap-2 thumbnail-scroll">
-                            <img src="{{ asset('images/' . $produk->gambar) }}" alt="Thumbnail 1"
+                            <img src="{{ $produk->display_image }}" alt="Thumbnail 1"
                                  class="img-thumbnail rounded thumbnail-item active"
                                  style="width: 60px; height: 60px; object-fit: cover; cursor: pointer;"
                                  data-bs-toggle="modal" data-bs-target="#imageZoomModal">
@@ -97,7 +97,7 @@
                         <h6 class="fw-bold mb-3">Pembelian Barang</h6>
 
                         <div class="d-flex align-items-center mb-3">
-                            <img src="{{ asset('images/' . $produk->gambar) }}" width="40" class="rounded me-3"
+                            <img src="{{ $produk->display_image }}" width="40" class="rounded me-3"
                                  alt="{{ $produk->namaProduk }}">
                             <span class="fw-bold">{{ $produk->namaProduk }}</span>
                         </div>

@@ -76,7 +76,7 @@
 
                       <div class="cart-thumb position-relative w-100">
                         <img
-                          src="{{ asset('images/' . $item->gambar) }}"
+                          src="{{ $item->produk->display_image }}"
                           alt="{{ $item->produk->namaProduk ?? 'Produk' }}"
                           class="rounded border w-100 cart-img"
                           style="aspect-ratio: 1/1; object-fit: cover;"
@@ -213,7 +213,7 @@
 
               {{-- gambar produk, abu-abu jika stok habis --}}
               <img
-                src="{{ asset('images/' . $product->gambar) }}"
+                src="{{ $product->display_image }}"
                 alt="{{ $product->namaProduk }}"
                 class="w-100 product-img {{ $product->stok < 1 ? 'out' : '' }}"
                 style="height:180px; object-fit:cover;"

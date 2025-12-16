@@ -3,7 +3,13 @@
 @section('title', 'Lihat Produk')
 
 @section('content')
+<style>
+    /* Menargetkan semua input */
+input::placeholder {
+    font-style: italic;
+}
 
+</style>
     <div class="content" id="content">
         <h2 class="mb-4 text-dark"><b>Daftar Produk</b></h2>
 
@@ -74,9 +80,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td class="text-center">
                                     {{-- Asumsi gambar disimpan di storage/app/public/images --}}
-                                    <img src="{{ asset('storage/produk_images/' . $produk->gambar) }}"
-                                        alt="{{ $produk->namaProduk }}" class="img-thumbnail-custom"
-                                        style="width: 70px; height: 70px; object-fit: cover;">
+                                    <img src="{{ $produk->display_image }}" alt="{{ $produk->namaProduk }}"
+                                        class="img-thumbnail-custom" style="width: 70px; height: 70px; object-fit: cover;">
                                 </td>
                                 <td class="fw-bold">{{ $produk->namaProduk }}</td>
                                 {{-- Menggunakan number_format untuk harga --}}
@@ -126,23 +131,23 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label">Nama Produk</label>
-                                <input type="text" name="namaProduk" class="form-control" required>
+                                <input type="text" name="namaProduk" class="form-control" placeholder="Nama Produk..." required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Pilihan Jenis (Contoh: Kering/Basah)</label>
-                                <input type="text" name="pilihanJenis" class="form-control" required>
+                                <label class="form-label">Pilihan Jenis</label>
+                                <input type="text" name="pilihanJenis" class="form-control" placeholder="Misal : 10,15,20..." required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Kategori</label>
-                                <input type="text" name="kategori" class="form-control" required>
+                                <input type="text" name="kategori" class="form-control" placeholder="Bakpia, Camilan, etc..." required>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Harga (Rp)</label>
-                                <input type="number" name="harga" class="form-control" required>
+                                <input type="number" name="harga" class="form-control" placeholder="....." required>
                             </div>
                             <div class="col-md-3">
                                 <label class="form-label">Stok</label>
-                                <input type="number" name="stok" class="form-control" required>
+                                <input type="number" name="stok" class="form-control"placeholder="....." required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Upload Gambar</label>
@@ -150,7 +155,7 @@
                             </div>
                             <div class="col-12">
                                 <label class="form-label">Deskripsi Produk</label>
-                                <textarea name="deskripsiProduk" rows="3" class="form-control"></textarea>
+                                <textarea name="deskripsiProduk" rows="3" class="form-control" placeholder="....."></textarea>
                             </div>
                         </div>
                     </div>

@@ -54,7 +54,7 @@
 
                 <div class="row mb-3">
                     <div class="col-auto">
-                        <img src="{{ asset('images/' . ($detail->produk->gambar ?? '')) }}"
+                       <img src="{{ $detail->produk->display_image ?? asset('images/bakpia-default.jpg') }}"
                              class="rounded border"
                              style="width: 120px; height: 120px; object-fit: cover;"
                              alt="{{ $detail->produk->namaProduk ?? 'Produk' }}"

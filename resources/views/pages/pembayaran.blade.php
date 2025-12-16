@@ -234,7 +234,7 @@
                                     Di sini kita dukung dua-duanya:
                                 --}}
                                 <img
-                                    src="{{ asset('images/' . ($item->gambar ?? $item->produk->gambar)) }}"
+                                    src="{{ $item->produk->display_image }}"
                                     alt="{{ $item->produk->namaProduk }}"
                                     class="product-image"
                                     onerror="this.onerror=null;this.src='https://placehold.co/160x160?text=Produk';">
