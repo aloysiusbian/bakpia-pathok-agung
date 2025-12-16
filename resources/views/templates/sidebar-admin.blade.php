@@ -269,7 +269,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('admin/pemesananOffline') ? 'active' : '' }}" href="/admin/pemesananOffline" title="Pemesanan Offline">
+                        <a class="nav-link {{ request()->is('admin/pemesanan-offline/buat') ? 'active' : '' }}" href="/admin/pemesanan-offline/buat" title="Pemesanan Offline">
                             <i class="bi bi-telephone"></i> <span>Pemesanan Offline</span>
                         </a>
                     </li>

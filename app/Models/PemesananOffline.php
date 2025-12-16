@@ -14,11 +14,14 @@ class PemesananOffline extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'idPenjualan',
         'namaPelanggan',
         'tanggalPemesanan',
         'totalNota',
         'metodePembayaran',
         'noTelpPelanggan',
+        'sumberPesanan',    
+        'catatan',          
         'alamatPengirim',
         'discountPerNota',
     ];

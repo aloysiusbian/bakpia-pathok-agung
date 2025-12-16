@@ -19,8 +19,11 @@ return new class extends Migration
             $table->double('totalNota', 10, 2);
             $table->string('metodePembayaran', 10);
             $table->string('noTelpPelanggan');
+            $table->string('sumberPesanan', 50)->nullable();
+            $table->text('catatan')->nullable();
             $table->text('alamatPengirim');
-            $table->decimal('discountPerNota', 3, 2);
+            $table->decimal('discountPerNota', 3, 2)->default(0);
+            
         });
     }
 
