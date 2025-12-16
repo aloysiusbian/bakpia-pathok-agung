@@ -52,7 +52,16 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     Route::get('/pemesananOnline', [PemesananOnlineController::class, 'index'])->name('pemesanan.online');
     Route::post('/pemesananOnline/{nomorPemesanan}/konfirmasi', [PemesananOnlineController::class, 'konfirmasiPembayaran'])->name('admin.pemesanan.online');
 
-    Route::get('/pemesananOffline', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline');
+    // 1. Untuk melihat Tabel Daftar Pesanan (Index)
+    Route::get('/pemesanan-offline', [PemesananOfflineController::class, 'index'])->name('pemesanan.offline.index');
+
+// 2. Untuk membuka Form Tambah Pesanan (Create)
+// URL saya bedakan jadi '/buat' agar tidak bentrok dengan index
+    Route::get('/pemesanan-offline/buat', [PemesananOfflineController::class, 'create'])->name('pemesanan.offline.create');
+
+// 3. Untuk Proses Simpan ke Database (Store)
+// Method-nya POST
+    Route::post('/pemesanan-offline', [PemesananOfflineController::class, 'store'])->name('pemesanan.offline.store');
     /*
     | Di sinilah Anda meletakkan route untuk mengelola produk
     | (sesuai use case diagram Anda: Tambah, Edit, Hapus Produk)
@@ -76,7 +85,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
 Route::middleware('auth:web')->group(function () {
 
     Route::get('/dashboard-pelanggan', [PemesananOnlineController::class, 'dashboard'])->name('dashboard.pelanggan');
-    Route::get('/lihat-profil', [ProfileController::class, 'index'])->name('profile.lihat');
+
     Route::get('/edit-profil', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/edit-profil', [ProfileController::class, 'update'])->name('profile.update');
 
@@ -113,8 +122,6 @@ Route::middleware('auth:web')->group(function () {
 
     Route::get('/pesanan-saya', [PemesananOnlineController::class, 'riwayat'])->name('pesanan.saya');
     Route::get('/pesanan/{nomorPemesanan}', [PemesananOnlineController::class, 'detail'])->name('pesanan.detail');
-    // web.php
-    Route::put('/pesanan/batal/{nomorPemesanan}', [PemesananOnlineController::class, 'batalkanPesanan'])->name('pesanan.batal');
 });
 
 /*
