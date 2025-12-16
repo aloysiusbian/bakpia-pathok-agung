@@ -184,7 +184,7 @@ class ProfileController extends Controller
         // Anda bisa cek dulu pakai ->exists(), lalu pilih ->insert() atau ->update() manual.
 
         return redirect()
-            ->route('profile.edit')
+            ->route('profile.lihat')
             ->with('success', 'Profil berhasil diperbarui.');
     }
 }
