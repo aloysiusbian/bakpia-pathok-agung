@@ -7,6 +7,7 @@
   <main class="content" id="content">
     <div class="container-fluid">
 
+      {{-- 1. Bagian Summary Cards --}}
       <div class="row g-3 mb-3">
         <div class="col-md-4">
           <div class="card summary-card p-3 shadow-sm bg-light">
@@ -46,29 +47,27 @@
         </div>
       </div>
 
+      {{-- 2. Header & Alert --}}
       <div class="d-flex justify-content-between align-items-center mb-3 mt-4">
         <div>
           <h4 class="mb-0">Daftar Pemesanan Online</h4>
           <small class="text-muted">Kelola pesanan yang masuk melalui website / aplikasi.</small>
         </div>
       </div>
-      {{-- Cek apakah ada pesan sukses di session --}}
+
       @if (session('success'))
-        <div class="alert alert-success">
-          {{ session('success') }}
-        </div>
+        <div class="alert alert-success">{{ session('success') }}</div>
       @endif
 
-      {{-- (Opsional) Cek juga pesan error --}}
       @if (session('error'))
-        <div class="alert alert-danger">
-          {{ session('error') }}
-        </div>
+        <div class="alert alert-danger">{{ session('error') }}</div>
       @endif
 
+      {{-- 3. Tabel Pesanan --}}
       <div class="card shadow-lg border-0">
         <div class="card-body">
-
+          
+          {{-- Search & Pagination Info --}}
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="input-group input-group-sm" style="max-width: 260px;">
               <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -102,7 +101,7 @@
                           'batal' => 'bg-danger',
                           'selesai' => 'bg-success',
                         ][$status] ?? 'bg-secondary';
-
+                        
                         $statusIcon = [
                           'menunggu_pembayaran' => 'bi-hourglass-split',
                           'diproses' => 'bi-check-circle',
@@ -118,18 +117,29 @@
 
                     <td class="text-center">
                       <div class="btn-group btn-group-sm" role="group">
+                        {{-- TOMBOL DETAIL (Memicu Modal Detail) --}}
+                        {{-- PERBAIKAN: Menambahkan data-items yang berisi JSON produk --}}
                         <button class="btn btn-outline-dark btn-detail" data-bs-toggle="modal"
-                          data-bs-target="#modalDetailPesanan" data-orderid="{{ $order->nomorPemesanan }}"
+                          data-bs-target="#modalDetailPesanan" 
+                          data-orderid="{{ $order->nomorPemesanan }}"
                           data-nama="{{ $order->pelanggan->username ?? 'Nama Tidak Tersedia' }}"
-                          data-alamat="{{ $order->alamatPengirim }}" data-hp="{{ $order->pelanggan->noTelp ?? '-' }}"
+                          data-alamat="{{ $order->alamatPengirim }}" 
+                          data-hp="{{ $order->pelanggan->noTelp ?? '-' }}"
                           data-metode="{{ $order->metodePembayaran }}"
                           data-total="Rp {{ number_format($order->totalNota, 0, ',', '.') }}"
                           data-tgl="{{ \Carbon\Carbon::parse($order->tanggalPemesanan)->format('d M Y') }}"
-                          data-status="{{ $order->statusPesanan }}">
+                          data-status="{{ $order->statusPesanan }}"
+                          data-items="{{ json_encode($order->detailTransaksiOnline->map(function($item){
+                              return [
+                                  'nama' => $item->produk->namaProduk ?? 'Produk Dihapus',
+                                  'qty' => $item->jumlahBarang,
+                                  'harga' => $item->harga
+                              ];
+                          })) }}">
                           <i class="bi bi-eye"></i> Detail
                         </button>
 
-                        {{-- BUKTI: ini yang dibetulkan --}}
+                        {{-- TOMBOL BUKTI PEMBAYARAN --}}
                         @if ($order->buktiPembayaran)
                           <button class="btn btn-outline-primary btn-lihat-bukti" data-bs-toggle="modal"
                             data-bs-target="#modalBuktiTransfer" data-bukti="{{ asset($order->buktiPembayaran) }}">
@@ -138,13 +148,6 @@
                         @else
                           <button class="btn btn-outline-secondary" disabled>
                             <i class="bi bi-file-earmark-image"></i> Tidak ada bukti
-                          </button>
-                        @endif
-
-                        @if ($order->statusPesanan == 'menunggu_pembayaran')
-                          <button class="btn btn-success btn-konfirmasi" data-bs-toggle="modal"
-                            data-bs-target="#modalKonfirmasiPembayaran" data-orderid="{{ $order->nomorPemesanan }}">
-                            <i class="bi bi-check2-circle"></i> Konfirmasi
                           </button>
                         @endif
                       </div>
@@ -159,6 +162,7 @@
             </table>
           </div>
 
+          {{-- Pagination Links --}}
           @if(isset($orders) && method_exists($orders, 'links'))
             <nav aria-label="Page navigation" class="mt-4">
               {{ $orders->links('pagination::bootstrap-5') }}
@@ -170,13 +174,13 @@
     </div>
   </main>
 
-  <div class="modal fade" id="modalBuktiTransfer" tabindex="-1" aria-labelledby="modalBuktiTransferLabel"
-    aria-hidden="true">
+  {{-- 4. Modal Bukti Transfer --}}
+  <div class="modal fade" id="modalBuktiTransfer" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalBuktiTransferLabel">Bukti Pembayaran</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          <h5 class="modal-title">Bukti Pembayaran</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body text-center">
           <img id="imgBuktiTransfer" src="" alt="Bukti Pembayaran" class="img-fluid rounded shadow-sm">
@@ -188,37 +192,15 @@
     </div>
   </div>
 
-  <div class="modal fade" id="modalKonfirmasiPembayaran" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Konfirmasi Pembayaran</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-        </div>
-        <div class="modal-body">
-          <p>Yakin ingin mengkonfirmasi pembayaran untuk pesanan <span id="orderIdSpan" class="fw-semibold"></span>?</p>
-          <form id="formKonfirmasi" method="POST" action="">
-            @csrf
-            <input type="hidden" name="order_id" id="konfirmasiOrderId">
-            <p class="text-danger small mt-2">Tindakan ini tidak dapat dibatalkan.</p>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button class="btn btn-success" type="submit" form="formKonfirmasi">Ya, Konfirmasi</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal fade" id="modalDetailPesanan" tabindex="-1" aria-labelledby="modalDetailPesananLabel"
-    aria-hidden="true">
+  {{-- 5. Modal Detail Pesanan & Konfirmasi --}}
+  <div class="modal fade" id="modalDetailPesanan" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalDetailPesananLabel">Detail Pesanan</h5>
+          <h5 class="modal-title">Detail Pesanan</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
+        
         <div class="modal-body">
           <div class="row mb-2">
             <div class="col-md-6">
@@ -230,8 +212,7 @@
             <div class="col-md-6">
               <p class="mb-1"><strong>Alamat:</strong><br><span id="detailAlamat"></span></p>
               <p class="mb-1"><strong>Metode Pembayaran:</strong> <span id="detailMetode"></span></p>
-              <p class="mb-1"><strong>Total:</strong> <span id="detailTotal" class="fw-bold text-lg text-primary"></span>
-              </p>
+              <p class="mb-1"><strong>Total:</strong> <span id="detailTotal" class="fw-bold text-lg text-primary"></span></p>
               <p class="mb-1"><strong>Status Pembayaran:</strong> <span id="detailStatus" class="fw-semibold"></span></p>
             </div>
           </div>
@@ -245,110 +226,55 @@
                 <th class="text-end">Harga Satuan</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td colspan="3" class="text-center text-muted">Data item pesanan dimuat melalui JavaScript atau Blade
-                  Component.</td>
-              </tr>
+            {{-- PERBAIKAN: Menambahkan ID pada tbody --}}
+            <tbody id="detailItemsBody">
+              {{-- Data akan diisi lewat Javascript --}}
             </tbody>
           </table>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+
+        {{-- FOOTER MODAL --}}
+        <div class="modal-footer position-relative justify-content-center">
+            
+            <form id="formKonfirmasiDetail" method="POST" action="" style="display: none;">
+                @csrf
+                {{-- @method('PUT') --}} 
+                <button type="submit" class="btn btn-success px-4" onclick="return confirm('Apakah Anda yakin ingin mengkonfirmasi pembayaran ini?')">
+                    <i class="bi bi-check-circle"></i> Konfirmasi Pembayaran
+                </button>
+            </form>
+
+            <button type="button" class="btn btn-secondary position-absolute end-0 me-3" data-bs-dismiss="modal">
+                Tutup
+            </button>
+
         </div>
       </div>
     </div>
   </div>
 
   <style>
-    .badge-status {
-      padding: 5px 10px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-    }
-
-    .summary-card {
-      transition: transform 0.2s;
-      border: none;
-    }
-
-    .summary-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .filter-select .input-group-text {
-      background-color: #fff;
-      border-right: none;
-    }
-
-    .filter-select .form-select {
-      border-left: none;
-    }
+    .badge-status { padding: 5px 10px; border-radius: 12px; font-size: 0.85rem; }
+    .summary-card { transition: transform 0.2s; border: none; }
+    .summary-card:hover { transform: translateY(-3px); }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
   <script>
-    // set gambar bukti dari data-bukti
+    // 1. Script Bukti Transfer
     const buktiButtons = document.querySelectorAll('.btn-lihat-bukti');
     const imgBuktiTransfer = document.getElementById('imgBuktiTransfer');
-
     buktiButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        const src = btn.getAttribute('data-bukti');
-        imgBuktiTransfer.src = src;
+        imgBuktiTransfer.src = btn.getAttribute('data-bukti');
       });
     });
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const modalKonfirmasi = document.getElementById('modalKonfirmasiPembayaran');
-
-      modalKonfirmasi.addEventListener('show.bs.modal', function (event) {
-        // Tombol yang memicu modal
-        const button = event.relatedTarget;
-
-        // Ambil data-orderid dari tombol
-        const orderId = button.getAttribute('data-orderid');
-
-        // 1. Dapatkan elemen form
-        const formKonfirmasi = document.getElementById('formKonfirmasi');
-
-        // 2. Dapatkan elemen untuk menampilkan ID
-        const orderIdDisplay = document.getElementById('orderIdDisplay');
-
-        // 3. Tentukan URL action
-        // Pastikan Anda telah membuat route dengan nama 'admin.konfirmasi.validasi'
-        // Contoh route: Route::post('/{nomorPemesanan}/konfirmasi', 'konfirmasiPembayaran')->name('admin.konfirmasi.validasi');
-
-        // Ganti ini dengan route actual Anda. Asumsi route Anda adalah POST.
-        // Gunakan fungsi route helper Laravel di blade jika memungkinkan, jika tidak, gunakan string:
-
-        // Jika di Blade: 
-        // const url = `{{ route('admin.pemesanan.online', ['nomorPemesanan' => '__ID__']) }}`.replace('__ID__', orderId);
-
-        // Jika hanya di file JS terpisah (atau tidak bisa akses route helper)
-        // Asumsikan URL: /admin/pemesanan/12345/konfirmasi
-        const url = `/admin/pemesananOnline/${orderId}/konfirmasi`;
-
-
-        // 4. Set action form dan tampilkan ID
-        formKonfirmasi.action = url;
-        orderIdDisplay.textContent = orderId;
-      });
-    });
-
-    // set ID pesanan ke modal konfirmasi
-    const konfirmasiButtons = document.querySelectorAll('.btn-konfirmasi');
-    const orderIdSpan = document.getElementById('orderIdSpan');
-
-    konfirmasiButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const orderId = btn.getAttribute('data-orderid');
-        orderIdSpan.textContent = orderId;
-      });
-    });
-
-    // set detail pesanan ke modal detail
+    // 2. Script Detail & Konfirmasi
     const detailButtons = document.querySelectorAll('.btn-detail');
+    
+    // Elemen Data Detail (Text)
     const detailOrderId = document.getElementById('detailOrderId');
     const detailNama = document.getElementById('detailNama');
     const detailAlamat = document.getElementById('detailAlamat');
@@ -357,17 +283,59 @@
     const detailTotal = document.getElementById('detailTotal');
     const detailTgl = document.getElementById('detailTgl');
     const detailStatus = document.getElementById('detailStatus');
+    
+    // PERBAIKAN: Elemen Tbody untuk Item
+    const detailItemsBody = document.getElementById('detailItemsBody');
+
+    // Elemen Form Konfirmasi
+    const formKonfirmasiDetail = document.getElementById('formKonfirmasiDetail');
 
     detailButtons.forEach(btn => {
       btn.addEventListener('click', () => {
-        detailOrderId.textContent = btn.dataset.orderid;
+        // Ambil data dari atribut tombol
+        const orderId = btn.dataset.orderid;
+        const status = btn.dataset.status;
+
+        // Isi Modal dengan Data Utama
+        detailOrderId.textContent = orderId;
         detailNama.textContent = btn.dataset.nama;
         detailAlamat.textContent = btn.dataset.alamat;
         detailHp.textContent = btn.dataset.hp;
         detailMetode.textContent = btn.dataset.metode;
         detailTotal.textContent = btn.dataset.total;
         detailTgl.textContent = btn.dataset.tgl;
-        detailStatus.textContent = btn.dataset.status;
+        detailStatus.textContent = status;
+
+        // PERBAIKAN: Isi Tabel Item Pesanan
+        const items = JSON.parse(btn.dataset.items || '[]'); // Ambil JSON dari data-items
+        detailItemsBody.innerHTML = ''; // Kosongkan tabel dulu
+
+        if(items.length > 0) {
+            items.forEach(item => {
+                // Format Rupiah sederhana di JS
+                const hargaFormatted = new Intl.NumberFormat('id-ID').format(item.harga);
+                
+                const row = `
+                    <tr>
+                        <td>${item.nama}</td>
+                        <td class="text-center">${item.qty}</td>
+                        <td class="text-end">Rp ${hargaFormatted}</td>
+                    </tr>
+                `;
+                detailItemsBody.innerHTML += row;
+            });
+        } else {
+            detailItemsBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Tidak ada data item.</td></tr>';
+        }
+
+        // Logika Tampilan Tombol Konfirmasi
+        if (status === 'menunggu_pembayaran') {
+            formKonfirmasiDetail.style.display = 'block';
+            // Pastikan URL sesuai dengan route Anda
+            formKonfirmasiDetail.action = `/admin/pemesananOnline/${orderId}/konfirmasi`; 
+        } else {
+            formKonfirmasiDetail.style.display = 'none';
+        }
       });
     });
   </script>

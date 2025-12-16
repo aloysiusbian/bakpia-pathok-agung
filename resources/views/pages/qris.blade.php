@@ -40,7 +40,7 @@
 </style>
 
 <div class="payment-box">
-    <h3>Pembayaran QRIS Pesanan {{ $order->nomorPemesanan }}</h3>
+    <h3>Pembayaran QRIS Pesanan</h3>
 
     <div class="qris-qr-code">
         <img src="{{ asset('images/qris_sample.png') }}" alt="QRIS QR Code" width="200" height="200">
