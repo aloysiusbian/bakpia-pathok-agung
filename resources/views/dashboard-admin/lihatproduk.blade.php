@@ -134,13 +134,8 @@ input::placeholder {
                                 <input type="text" name="namaProduk" class="form-control" placeholder="Nama Produk..." required>
                             </div>
                             <div class="col-md-6">
-<<<<<<< HEAD
-                                <label class="form-label">Pilihan Jenis (Contoh: 15/25)</label>
-                                <input type="text" name="pilihanJenis" class="form-control" required>
-=======
                                 <label class="form-label">Pilihan Jenis</label>
                                 <input type="text" name="pilihanJenis" class="form-control" placeholder="Misal : 10,15,20..." required>
->>>>>>> d77781e0d8238d5b979f5312b277ed28bfcbcc55
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Kategori</label>
