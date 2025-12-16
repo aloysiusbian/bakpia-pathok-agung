@@ -55,7 +55,7 @@ Route::middleware(['auth:admin'])->prefix('admin')->name('admin.')->group(functi
     // PERHATIAN: Perhatikan URL ini, karena berbeda dengan yang Anda gunakan di script JS Anda sebelumnya.
     Route::delete('/admin/lihatproduk/{produk}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 
-    Route::get('/dashboard', [DashboardController::class, 'dashAdmin'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 

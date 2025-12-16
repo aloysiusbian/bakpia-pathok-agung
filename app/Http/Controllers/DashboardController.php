@@ -6,16 +6,49 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Admin;
+use App\Models\PemesananOnline;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 
 class DashboardController extends Controller
 {
+
+    public function index()
+    {
+        $orders = PemesananOnline::with('pelanggan')
+            ->orderByDesc('tanggalPemesanan')
+            ->paginate(10);
+
+        $summary = $this->calculateOrderSummary();
+
+        return view('dashboard-admin.dashboard', compact('orders', 'summary'));
+    }
+
+    protected function calculateOrderSummary()
+    {
+        $today = Carbon::now()->toDateString();
+
+        $totalToday = PemesananOnline::whereDate('tanggalPemesanan', $today)->count();
+
+        $paidCount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->count();
+        $paidAmount = PemesananOnline::where('statusPesanan', 'Sudah Dibayar')->sum('totalNota');
+
+        $pendingCount = PemesananOnline::where('statusPesanan', 'Menunggu Pembayaran')->count();
+
+        return [
+            'total_today' => $totalToday,
+            'paid_count' => $paidCount,
+            'paid_amount' => $paidAmount,
+            'pending_count' => $pendingCount,
+        ];
+    }
+
     public function DashAdmin()
     {
         // Mendapatkan objek model Admin dari Guard 'admin'
